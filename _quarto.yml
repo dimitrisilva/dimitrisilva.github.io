@@ -1,0 +1,31 @@
+project:
+  type: website
+  output-dir: homepage
+
+website:
+  title: "Dimitri Silva"
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+      - text: Testing
+        href: testing.qmd
+
+format:
+  html:
+    theme: 
+      light: spacelab
+      dark: slate
+    mainfont: Computer Modern
+    monofont: Courier New
+    css: styles.css
+    html-math-method: katex
+    toc: true
+    toc-location: left
+    toc-depth: 3
+    toc-expand: 1
+    number-sections: true
+    number-depth: 3
+
+editor: visual
+

@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "experiments.html",
+    "href": "experiments.html",
+    "title": "Experiments",
+    "section": "",
+    "text": "Riemann integral:\n\n\\int_{a}^{b} f(x) dx\n\nLebesgue integral:\n\n\\int f d\\mu"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Home",
+    "section": "",
+    "text": "Hello! Welcome to my website!"
+  }
+]

@@ -1,6 +1,6 @@
 project:
   type: website
-  output-dir: homepage
+  output-dir: docs
 
 website:
   title: "Dimitri Silva"

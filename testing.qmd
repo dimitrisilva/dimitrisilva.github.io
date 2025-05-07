@@ -3,3 +3,7 @@ title: "Testing"
 ---
 
 Mathematical expression:
+
+$$
+\int f d\mu
+$$

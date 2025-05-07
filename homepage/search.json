@@ -1,16 +1,16 @@
 [
   {
+    "objectID": "testing.html",
+    "href": "testing.html",
+    "title": "Testing",
+    "section": "",
+    "text": "Mathematical expression:\n\n\\int f d\\mu"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Home",
     "section": "",
     "text": "Hello! Welcome to my website!"
-  },
-  {
-    "objectID": "testing.html",
-    "href": "testing.html",
-    "title": "Testing",
-    "section": "",
-    "text": "Mathematical expression:\n \\int f d\\mu"
   }
 ]

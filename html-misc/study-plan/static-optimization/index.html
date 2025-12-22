@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="static-optimization-study-plan">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Static Optimization Study Plan</title>
+  <style>
+    @font-face {
+      font-family: 'Latin Modern Roman';
+      src: format('woff2'), format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+    body {
+      background-color: rgb(196, 196, 196);
+      padding: 10px 20% 10px 20%;
+      text-align: justify;
+      font-family: 'Latin Modern Roman', serif;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .module-unread {
+      color: rgb(0, 0, 0);
+    }
+    .module-read {
+      color: rgb(128, 128, 128);
+    }
+    .module-item {
+      font-weight: bold;
+    }
+    details {
+      margin-bottom: 20px;
+      border: 1px solid rgb(204, 204, 204);
+      border-radius: 5px;
+      padding: 10px;
+    }
+    summary {
+      font-weight: bold;
+      cursor: pointer;
+    }
+    ul, ol {
+      list-style-type: disc;
+      margin-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid rgb(204, 204, 204);
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: rgb(216, 216, 216);
+    }
+  </style>
+  <script>
+    
+  </script>
+</head>
+<body>
+  <h1>Static Optimization for Economists</h1>
+  <p>This self-study plan is designed for economists seeking a rigorous understanding of static optimization theory, drawing from specified chapters in two key textbooks: <i>A First Course in Optimization Theory</i> by Rangarajan K. Sundaram (1996, hereafter "Sundaram") and <i>An Introduction to Mathematical Analysis for Economic Theory and Econometrics</i> by Dean Corbae, Maxwell B. Stinchcombe, and Juraj Zeman (2009, hereafter "Corbae et al."). The plan covers all material from Sundaram Chapters 1–8 and Corbae et al. Chapters 4–5, with greater emphasis on Corbae et al. where topics overlap, as their treatment often provides deeper economic applications and connections to advanced topics like fixed points and equilibria. The plan is organized into topic-based modules to facilitate logical progression and self-paced learning. Progress by marking modules as "read" to visually track completion.</p>
+  <br>
+  
+  <h2>Prerequisites</h2>
+  <p>To engage effectively with this study plan, learners must be familiar with foundational concepts in logic, set theory, and the real numbers from Corbae et al. Chapters 1–3. From Chapter 1 (Logic), key elements include understanding statements, implications, logical quantifiers (∃ and ∀), and proof techniques such as direct proof, proof by contrapositive, proof by contradiction, and mathematical induction. These are essential for parsing theorems and constructing arguments in optimization proofs. From Chapter 2 (Set Theory), minimally required are basic set notation and operations (unions, intersections, complements), products and relations (including functions and correspondences), equivalence relations, weak and partial orders, and the distinction between finite and infinite sets; concepts like lattices, supermodularity, Tarski's fixed-point theorem, the axiom of choice, and revealed preference are useful but not strictly necessary unless referenced in applications. From Chapter 3 (The Space of Real Numbers), focus on the limitations of rationals, the construction of reals via Cauchy sequences, completeness (every Cauchy sequence converges), supremum and infimum properties, summability of series, lim inf and lim sup, and the completeness axiom's role in ensuring solutions exist. These prerequisites enable comprehension of metric spaces, convergence, and compactness in subsequent modules; without them, proofs involving sequences or bounds may be inaccessible.</p>
+  <br>
+  
+  <!-- Module 01 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 1: Metric Spaces, Norms, and Vector Spaces in Finite Dimensions</summary>
+    <div id="mod1">
+      <p>This module introduces the structure of finite-dimensional spaces like ℝⁿ as metric and normed vector spaces, providing the foundational language for measuring distances, defining convergence, and analyzing optimization problems in multi-dimensional economic settings (e.g., utility maximization with multiple goods). Understanding these concepts is crucial for subsequent modules on completeness, compactness, and continuity, as they underpin the existence and characterization of optima in constrained environments.</p>
+      <p><span id="mod1-primary" class="module-item">Primary Source</span>. Corbae et al., Sections 4.1 (Basic Definitions for Metric Spaces), 4.3 (ℝⁿ as a Normed Vector Space).</p>
+      <p><span id="mod1-secondary" class="module-item">Secondary Source</span>. Sundaram, Sections 1.1 (Notation and Preliminary Definitions), 1.2.1–1.2.3 (Sequences, Limits, Subsequences, Cauchy Sequences), 1.3 (Matrices, for vector operations).</p>
+      <p><span id="mod1-prereq" class="module-item">Prerequisite Material</span>. Real numbers and distance from Corbae et al. Chapter 3; basic set theory and functions from Chapter 2.</p>
+      <p><span id="mod1-skippable" class="module-item">Skippable Concepts/Results</span>. Section 4.2 (Discrete Spaces) in Corbae et al., as it is illustrative but not required for continuous spaces in optimization.</p>
+      <p><span id="mod1-exercises" class="module-item">Suggested Exercises</span>. Corbae et al. end-of-chapter problems related to proving norm equivalence (if left as exercise; used in bounds for convergence proofs later).</p>
+      <p><span id="mod1-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Corbae et al. Section 4.1; note definitions of metric, metric space, and properties (non-negativity, symmetry, triangle inequality); compare with Euclidean distance from Chapter 3.</li>
+        <li>Study Corbae et al. Section 4.3; define vector addition, scalar multiplication, inner products, and norms (e.g., Euclidean, sup, L¹); prove that norms induce metrics.</li>
+        <li>Cross-reference Sundaram Section 1.1 for concise notation on ℝⁿ, inner products, and norms; compute examples of distances in ℝ².</li>
+        <li>Use Sundaram Section 1.3 to review matrix representations of vectors; practice vector operations.</li>
+        <li>Prove basic results like norm positivity and triangle inequality; apply to economic examples (e.g., distance between consumption bundles).</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 02 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 2: Completeness, Closure, Convergence, and Separability</summary>
+    <div id="mod2">
+      <p>Building on metrics, this module explores how sequences behave in finite-dimensional spaces, emphasizing completeness (every Cauchy sequence converges) and closure (limits stay within sets), which ensure solutions to approximation problems exist. These properties are vital for optimization, as they guarantee that iterative economic processes (e.g., price adjustments) converge, laying groundwork for compactness and continuity in ensuring maxima.</p>
+      <p><span id="mod2-primary" class="module-item">Primary Source</span>. Corbae et al., Sections 4.4 (Completeness), 4.5 (Closure, Convergence, and Completeness), 4.6 (Separability).</p>
+      <p><span id="mod2-secondary" class="module-item">Secondary Source</span>. Sundaram, Sections 1.2.1–1.2.6 (Sequences, Limits, Subsequences, Cauchy Sequences, Sup/Inf, Lim Sup/Inf).</p>
+      <p><span id="mod2-prereq" class="module-item">Prerequisite Material</span>. Metrics and norms from Module 1; Cauchy sequences in ℝ from Corbae et al. Chapter 3.</p>
+      <p><span id="mod2-skippable" class="module-item">Skippable Concepts/Results</span>. Advanced separability examples in Section 4.6 if not tied to density arguments later.</p>
+      <p><span id="mod2-exercises" class="module-item">Suggested Exercises</span>. Corbae et al. problems on proving completeness of ℝⁿ under various norms (unproven in text; used in contraction mappings).</p>
+      <p><span id="mod2-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Corbae et al. Section 4.4; define Cauchy sequences in metric spaces; prove ℝⁿ is complete.</li>
+        <li>Study Section 4.5; distinguish open/closed sets, closure, and limit points; prove equivalence of convergence definitions.</li>
+        <li>Explore Section 4.6; understand separability (dense countable subsets); note ℝⁿ is separable.</li>
+        <li>Review Sundaram Sections 1.2.1–1.2.3 for sequences in ℝⁿ; compute limits and Cauchy checks.</li>
+        <li>Use Sundaram 1.2.4–1.2.6 for sup/inf in sequences; apply to bounded economic series (e.g., utility levels).</li>
+        <li>Prove closure properties; test with examples like budget sets.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 03 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 3: Compactness and Connectedness</summary>
+    <div id="mod3">
+      <p>This module examines compact sets (closed and bounded in ℝⁿ) and connectedness, which ensure continuous functions attain maxima and preserve intervals under images. Compactness is foundational for existence of optima in economic models (e.g., closed budget sets), connecting prior convergence concepts to practical optimization results.</p>
+      <p><span id="mod3-primary" class="module-item">Primary Source</span>. Corbae et al., Sections 4.7 (Compactness in ℝⁿ), 4.12 (Connectedness).</p>
+      <p><span id="mod3-secondary" class="module-item">Secondary Source</span>. Sundaram, Sections 1.2.7–1.2.8 (Open/Closed Sets, Bounded and Compact Sets).</p>
+      <p><span id="mod3-prereq" class="module-item">Prerequisite Material</span>. Convergence and closure from Module 2.</p>
+      <p><span id="mod3-skippable" class="module-item">Skippable Concepts/Results</span>. Detailed connectedness applications in 4.12 if not central to path-connected sets in optimization.</p>
+      <p><span id="mod3-exercises" class="module-item">Suggested Exercises</span>. Corbae et al. problems proving Heine-Borel theorem (unproven; used in Weierstrass).</p>
+      <p><span id="mod3-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Corbae et al. Section 4.7; define compactness via open covers; prove Heine-Borel (compact iff closed/bounded in ℝⁿ).</li>
+        <li>Study Section 4.12; define connected sets; prove intervals in ℝ are connected.</li>
+        <li>Review Sundaram 1.2.7–1.2.8; identify open/closed balls, compact sets.</li>
+        <li>Prove compactness implies closure/boundedness; apply to feasible sets in utility max.</li>
+        <li>Explore connectedness in economic contexts (e.g., connected preference sets).</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 04 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 4: Continuous Functions, Lipschitz/Uniform Continuity, and Correspondences</summary>
+    <div id="mod4">
+      <p>Focusing on function behavior in metric spaces, this module covers continuity types and correspondences (multi-valued functions), critical for modeling choice sets in economics. These ensure smooth changes in optima, bridging to existence theorems like the maximum theorem.</p>
+      <p><span id="mod4-primary" class="module-item">Primary Source</span>. Corbae et al., Sections 4.8 (Continuous Functions on ℝⁿ), 4.9 (Lipschitz and Uniform Continuity), 4.10 (Correspondences and the Theorem of the Maximum, partial).</p>
+      <p><span id="mod4-secondary" class="module-item">Secondary Source</span>. Sundaram, Section 1.4 (Functions: Continuous, Differentiable).</p>
+      <p><span id="mod4-prereq" class="module-item">Prerequisite Material</span>. Compactness from Module 3.</p>
+      <p><span id="mod4-skippable" class="module-item">Skippable Concepts/Results</span>. Advanced Lipschitz examples in 4.9 if not needed for contractions.</p>
+      <p><span id="mod4-exercises" class="module-item">Suggested Exercises</span>. Corbae et al. problems on uniform continuity over compact sets (unproven; used in maxima).</p>
+      <p><span id="mod4-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Corbae et al. Section 4.8; define continuity at points and globally; prove continuous images of compact sets are compact.</li>
+        <li>Study 4.9; distinguish Lipschitz (bounded derivative) and uniform continuity; prove compactness implies uniform continuity.</li>
+        <li>Introduce correspondences in 4.10; note upper/lower semicontinuity.</li>
+        <li>Review Sundaram 1.4.1; compare continuity definitions.</li>
+        <li>Prove preservation of compactness/connectedness; apply to demand functions.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 05 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 5: Existence of Optima and the Theorem of the Maximum</summary>
+    <div id="mod5">
+      <p>This module addresses when optimization problems have solutions, using Weierstrass and Berge's maximum theorem for parametric families. Essential for economic theory, it ensures equilibria exist, connecting continuity and compactness to practical optima identification.</p>
+      <p><span id="mod5-primary" class="module-item">Primary Source</span>. Corbae et al., Section 4.10 (Correspondences and the Theorem of the Maximum).</p>
+      <p><span id="mod5-secondary" class="module-item">Secondary Source</span>. Sundaram, Chapter 3 (Existence of Solutions: The Weierstrass Theorem), Section 2.1–2.3 (Optimization Problems and Examples).</p>
+      <p><span id="mod5-prereq" class="module-item">Prerequisite Material</span>. Continuity and correspondences from Module 4; compactness from Module 3.</p>
+      <p><span id="mod5-skippable" class="module-item">Skippable Concepts/Results</span>. None; core for plan.</p>
+      <p><span id="mod5-exercises" class="module-item">Suggested Exercises</span>. Sundaram exercises on Weierstrass applications (unproven examples used in constraints).</p>
+      <p><span id="mod5-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Corbae et al. 4.10; prove theorem of the maximum for correspondences.</li>
+        <li>Study Sundaram Chapter 3; prove Weierstrass (continuous function on compact set attains max/min).</li>
+        <li>Review Sundaram 2.1–2.3; formulate economic problems (e.g., utility max).</li>
+        <li>Apply to parametric changes; prove argmax is upper semicontinuous.</li>
+        <li>Solve examples like profit max under compact inputs.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 06 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 6: Contraction Mappings and Fixed-Point Theorems</summary>
+    <div id="mod6">
+      <p>Exploring contractions for uniqueness and fixed points for equilibria, this module applies to dynamic models but focuses on static uses (e.g., Nash). It builds on metrics for iterative solution convergence.</p>
+      <p><span id="mod6-primary" class="module-item">Primary Source</span>. Corbae et al., Section 4.11 (Banach's Contraction Mapping Theorem), Sections 5.11–5.12 (Fixed-Point Theorems and Applications).</p>
+      <p><span id="mod6-secondary" class="module-item">Secondary Source</span>. None directly overlapping in specified chapters.</p>
+      <p><span id="mod6-prereq" class="module-item">Prerequisite Material</span>. Metrics from Module 1; completeness from Module 2.</p>
+      <p><span id="mod6-skippable" class="module-item">Skippable Concepts/Results</span>. Section 5.12 (Nash/Perfect Equilibria) if focusing solely on optimization, not games.</p>
+      <p><span id="mod6-exercises" class="module-item">Suggested Exercises</span>. Corbae et al. problems proving uniqueness via contractions (unproven; used in equilibria).</p>
+      <p><span id="mod6-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Corbae et al. 4.11; define contractions; prove Banach theorem (unique fixed point in complete spaces).</li>
+        <li>Study 5.11; apply Brouwer/Schauder to general equilibrium.</li>
+        <li>Explore 5.12; see Kakutani for Nash.</li>
+        <li>Prove fixed-point existence; apply to market clearing.</li>
+        <li>Iterate contractions numerically for economic examples.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 07 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 7: Convex Sets, Geometry, and Boundary Issues</summary>
+    <div id="mod7">
+      <p>This module delves into convex sets' geometry, crucial for optimization as they ensure unique optima and enable separation. It forms the basis for duality and constraints.</p>
+      <p><span id="mod7-primary" class="module-item">Primary Source</span>. Corbae et al., Sections 5.1 (Basic Geometry of Convexity), 5.5 (Boundary Issues).</p>
+      <p><span id="mod7-secondary" class="module-item">Secondary Source</span>. Sundaram, Sections 1.2.9 (Convex Combinations and Sets), 7.1 (Convexity Defined).</p>
+      <p><span id="mod7-prereq" class="module-item">Prerequisite Material</span>. Vector spaces from Module 1.</p>
+      <p><span id="mod7-skippable" class="module-item">Skippable Concepts/Results</span>. Detailed boundary examples in 5.5 if not needed for separation.</p>
+      <p><span id="mod7-exercises" class="module-item">Suggested Exercises</span>. Corbae et al. problems on convex hulls (unproven; used in separation).</p>
+      <p><span id="mod7-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Corbae et al. 5.1; define convex sets, combinations, hulls.</li>
+        <li>Study 5.5; explore relative interiors, boundaries.</li>
+        <li>Review Sundaram 1.2.9 and 7.1; prove convexity preservation.</li>
+        <li>Construct examples (e.g., budget sets).</li>
+        <li>Prove Carathéodory's theorem if applicable.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 08 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 8: Separation Theorems, Dual Spaces, and Duality</summary>
+    <div id="mod8">
+      <p>Covering separation of convex sets and dual spaces, this module supports welfare theorems and duality in optimization, linking geometry to economic interpretations.</p>
+      <p><span id="mod8-primary" class="module-item">Primary Source</span>. Corbae et al., Sections 5.2 (Dual Space of ℝⁿ), 5.3 (Three Degrees of Convex Separation), 5.4 (Strong Separation and Neoclassical Duality), 5.7 (Separation and Hahn-Banach Theorem).</p>
+      <p><span id="mod8-secondary" class="module-item">Secondary Source</span>. Sundaram, Section 1.6.1 (Separation Theorems).</p>
+      <p><span id="mod8-prereq" class="module-item">Prerequisite Material</span>. Convex sets from Module 7.</p>
+      <p><span id="mod8-skippable" class="module-item">Skippable Concepts/Results</span>. Advanced Hahn-Banach extensions in 5.7 if not core.</p>
+      <p><span id="mod8-exercises" class="module-item">Suggested Exercises</span>. Corbae et al. problems proving supporting hyperplanes (unproven; used in KT).</p>
+      <p><span id="mod8-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Corbae et al. 5.2; define dual spaces, linear functionals.</li>
+        <li>Study 5.3–5.4; prove weak/strong separation; apply to duality (profit/utility).</li>
+        <li>Explore 5.7; extend to Hahn-Banach.</li>
+        <li>Review Sundaram 1.6.1; compare separation statements.</li>
+        <li>Apply to welfare theorems.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 09 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 9: Concave and Convex Functions, Differentiability</summary>
+    <div id="mod9">
+      <p>This module studies concave/convex functions' properties, including differentiability, essential for sufficient optimality conditions and economic assumptions like diminishing returns.</p>
+      <p><span id="mod9-primary" class="module-item">Primary Source</span>. Corbae et al., Sections 5.6 (Concave and Convex Functions), 5.10 (Differentiability and Concavity).</p>
+      <p><span id="mod9-secondary" class="module-item">Secondary Source</span>. Sundaram, Sections 7.1–7.2 (Concave/Convex Functions, Implications).</p>
+      <p><span id="mod9-prereq" class="module-item">Prerequisite Material</span>. Continuity from Module 4; convexity from Module 7.</p>
+      <p><span id="mod9-skippable" class="module-item">Skippable Concepts/Results</span>. None; central.</p>
+      <p><span id="mod9-exercises" class="module-item">Suggested Exercises</span>. Corbae et al. problems on Hessian characterizations (unproven; used in second-order conditions).</p>
+      <p><span id="mod9-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Corbae et al. 5.6; define concave/convex; prove Jensen's inequality.</li>
+        <li>Study 5.10; link differentiability to concavity via gradients/Hessians.</li>
+        <li>Review Sundaram 7.1–7.2; prove continuity and derivative properties.</li>
+        <li>Classify economic functions (e.g., Cobb-Douglas).</li>
+        <li>Prove second-derivative tests.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 10 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 10: Unconstrained Optimization</summary>
+    <div id="mod10">
+      <p>Examining optima without constraints, this module uses first- and second-order conditions, foundational for interior solutions in economic models like profit maximization.</p>
+      <p><span id="mod10-primary" class="module-item">Primary Source</span>. Corbae et al., implicit in 5.6 and 5.10 (via concavity for optima).</p>
+      <p><span id="mod10-secondary" class="module-item">Secondary Source</span>. Sundaram, Chapter 4 (Unconstrained Optima).</p>
+      <p><span id="mod10-prereq" class="module-item">Prerequisite Material</span>. Differentiability from Module 9.</p>
+      <p><span id="mod10-skippable" class="module-item">Skippable Concepts/Results</span>. None.</p>
+      <p><span id="mod10-exercises" class="module-item">Suggested Exercises</span>. Sundaram exercises on second-order failures (unproven; illustrates limits).</p>
+      <p><span id="mod10-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Sundaram Chapter 4; derive FOCs (gradient zero), SOCs (Hessian negative semidefinite).</li>
+        <li>Cross-reference Corbae 5.6/5.10 for convexity implications.</li>
+        <li>Prove necessity/sufficiency.</li>
+        <li>Solve examples (e.g., cost min interior).</li>
+        <li>Analyze failures without convexity.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 11 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 11: Equality-Constrained Optimization and Lagrange Multipliers</summary>
+    <div id="mod11">
+      <p>This module introduces Lagrange for equality constraints, interpreting multipliers as shadow prices, key for resource allocation in economics.</p>
+      <p><span id="mod11-primary" class="module-item">Primary Source</span>. Corbae et al., Section 5.9 (Interpreting Lagrange Multipliers).</p>
+      <p><span id="mod11-secondary" class="module-item">Secondary Source</span>. Sundaram, Chapter 5 (Equality Constraints and the Theorem of Lagrange).</p>
+      <p><span id="mod11-prereq" class="module-item">Prerequisite Material</span>. Unconstrained from Module 10.</p>
+      <p><span id="mod11-skippable" class="module-item">Skippable Concepts/Results</span>. None.</p>
+      <p><span id="mod11-exercises" class="module-item">Suggested Exercises</span>. Sundaram exercises on CQ failures (unproven; shows when method fails).</p>
+      <p><span id="mod11-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Sundaram Chapter 5; state Lagrange theorem, constraint qualification.</li>
+        <li>Study Corbae 5.9; interpret multipliers economically.</li>
+        <li>Derive FOCs; prove theorem.</li>
+        <li>Apply to utility max with budget.</li>
+        <li>Check SOCs.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 12 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 12: Inequality-Constrained Optimization and Kuhn-Tucker Theorem</summary>
+    <div id="mod12">
+      <p>Covering KT for inequalities, this module handles binding/non-binding constraints, essential for non-negativity in economic models.</p>
+      <p><span id="mod12-primary" class="module-item">Primary Source</span>. Corbae et al., Section 5.8 (Separation and Kuhn-Tucker Theorem).</p>
+      <p><span id="mod12-secondary" class="module-item">Secondary Source</span>. Sundaram, Chapter 6 (Inequality Constraints and the Theorem of Kuhn and Tucker).</p>
+      <p><span id="mod12-prereq" class="module-item">Prerequisite Material</span>. Lagrange from Module 11; separation from Module 8.</p>
+      <p><span id="mod12-skippable" class="module-item">Skippable Concepts/Results</span>. Mixed constraints in Sundaram 6.4 if focusing on pure inequalities.</p>
+      <p><span id="mod12-exercises" class="module-item">Suggested Exercises</span>. Sundaram exercises on slack multipliers (unproven; used in interpretations).</p>
+      <p><span id="mod12-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Sundaram Chapter 6; state KT theorem, CQ, complementarity.</li>
+        <li>Study Corbae 5.8; link to separation.</li>
+        <li>Derive KKT conditions; prove.</li>
+        <li>Solve portfolio choice with non-negativity.</li>
+        <li>Analyze failures.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 13 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 13: Convexity and Quasi-Convexity in Optimization</summary>
+    <div id="mod13">
+      <p>This module applies convexity/quasi-convexity for sufficient conditions, ensuring global optima in concave problems like utility maximization.</p>
+      <p><span id="mod13-primary" class="module-item">Primary Source</span>. Corbae et al., implicit in 5.6/5.10 (concavity for optima).</p>
+      <p><span id="mod13-secondary" class="module-item">Secondary Source</span>. Sundaram, Chapters 7 (Convex Structures) and 8 (Quasi-Convexity).</p>
+      <p><span id="mod13-prereq" class="module-item">Prerequisite Material</span>. Functions from Module 9; KT from Module 12.</p>
+      <p><span id="mod13-skippable" class="module-item">Skippable Concepts/Results</span>. Sundaram 8.2 quasi as generalization if time-limited.</p>
+      <p><span id="mod13-exercises" class="module-item">Suggested Exercises</span>. Sundaram exercises on quasi-convexity tests (unproven; extends convexity).</p>
+      <p><span id="mod13-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Sundaram Chapter 7; apply convexity to unconstrained/KT.</li>
+        <li>Study Chapter 8; define quasi-concave/convex; prove FOCs sufficient.</li>
+        <li>Cross-reference Corbae 5.6/5.10 for differentiability.</li>
+        <li>Prove global optima under concavity.</li>
+        <li>Apply to producer theory.</li>
+      </ol>
+    </div>
+  </details>
+  <br>
+  
+  <h2>Summary Table</h2>
+  <table>
+    <tr>
+      <th>Module</th>
+      <th>Sundaram</th>
+      <th>Corbae et al.</th>
+    </tr>
+    <tr>
+      <td>1: Metric Spaces, Norms, and Vector Spaces in Finite Dimensions</td>
+      <td>1.1, 1.2.1–1.2.3, 1.3</td>
+      <td>4.1, 4.3</td>
+    </tr>
+    <tr>
+      <td>2: Completeness, Closure, Convergence, and Separability</td>
+      <td>1.2.1–1.2.6</td>
+      <td>4.4–4.6</td>
+    </tr>
+    <tr>
+      <td>3: Compactness and Connectedness</td>
+      <td>1.2.7–1.2.8</td>
+      <td>4.7, 4.12</td>
+    </tr>
+    <tr>
+      <td>4: Continuous Functions, Lipschitz/Uniform Continuity, and Correspondences</td>
+      <td>1.4</td>
+      <td>4.8–4.10 (partial)</td>
+    </tr>
+    <tr>
+      <td>5: Existence of Optima and the Theorem of the Maximum</td>
+      <td>2.1–2.3, Chapter 3</td>
+      <td>4.10</td>
+    </tr>
+    <tr>
+      <td>6: Contraction Mappings and Fixed-Point Theorems</td>
+      <td>None</td>
+      <td>4.11, 5.11–5.12</td>
+    </tr>
+    <tr>
+      <td>7: Convex Sets, Geometry, and Boundary Issues</td>
+      <td>1.2.9, 7.1</td>
+      <td>5.1, 5.5</td>
+    </tr>
+    <tr>
+      <td>8: Separation Theorems, Dual Spaces, and Duality</td>
+      <td>1.6.1</td>
+      <td>5.2–5.4, 5.7</td>
+    </tr>
+    <tr>
+      <td>9: Concave and Convex Functions, Differentiability</td>
+      <td>7.1–7.2</td>
+      <td>5.6, 5.10</td>
+    </tr>
+    <tr>
+      <td>10: Unconstrained Optimization</td>
+      <td>Chapter 4</td>
+      <td>5.6, 5.10 (implicit)</td>
+    </tr>
+    <tr>
+      <td>11: Equality-Constrained Optimization and Lagrange Multipliers</td>
+      <td>Chapter 5</td>
+      <td>5.9</td>
+    </tr>
+    <tr>
+      <td>12: Inequality-Constrained Optimization and Kuhn-Tucker Theorem</td>
+      <td>Chapter 6</td>
+      <td>5.8</td>
+    </tr>
+    <tr>
+      <td>13: Convexity and Quasi-Convexity in Optimization</td>
+      <td>Chapters 7–8</td>
+      <td>5.6, 5.10 (implicit)</td>
+    </tr>
+  </table>
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="bibtex-item-creator">
+  <meta name="robots" content="noindex, nofollow">
+  <title>BibTeX Item Creator</title>
+  <link rel="stylesheet" href="bibitem-creator.css">
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>BibTeX Item Creator</h1>
+    </header>
+    
+    <!-- Introduction -->
+    <section class="Introduction">
+      <p class="introduction">
+        The <span class="italic">BibTeX Item Creator</span> is a web-based application designed to facilitate the generation of properly formatted BibTeX entries for bibliographic references. The application provides an intuitive interface that guides users through the process of creating citation entries by dynamically adjusting available fields based on the selected entry type. Users begin by selecting an <span class="emphasize">entry type</span> from a set of radio buttons. The application supports fourteen standard BibTeX entry types, including <code>article</code>, <code>book</code>, <code>inbook</code>, <code>booklet</code>, <code>incollection</code>, <code>conference</code>, <code>inproceedings</code>, <code>proceedings</code>, <code>manual</code>, <code>mastersthesis</code>, <code>phdthesis</code>, <code>techreport</code>, <code>unpublished</code>, and <code>misc</code>. Each entry type corresponds to a specific category of bibliographic source, such as journal articles, books, conference proceedings, or theses.
+      </p>
+      <p class="introduction">
+        The <span class="emphasize">entry fields</span> available for input are dynamically configured based on the selected entry type. When a user selects an entry type, <span class="emphasize">the application automatically enables only those fields that are relevant to that particular type of bibliographic reference</span>. Fields that are not applicable to the selected entry type remain disabled, preventing users from entering information in inappropriate fields and ensuring that the generated BibTeX entry conforms to standard bibliographic conventions. Enabled entry fields are further categorized into two groups: mandatory and optional. <span class="emphasize">Mandatory fields</span>, which are displayed in bold typeface, represent the minimum information required to create a valid and complete BibTeX entry for the selected entry type. <span class="emphasize">Optional fields</span>, displayed in regular typeface, provide additional bibliographic details that may enhance the reference but are not strictly required. This visual distinction assists users in prioritizing their data entry and ensures that all essential information is provided before generating the BibTeX output.
+      </p>
+      <p class="introduction">
+        <span class="emphasize">The application automatically handles the conversion of special characters and diacritics into proper TeX format</span>, ensuring that author names, titles, and other bibliographic information containing non-ASCII characters are correctly represented in the generated BibTeX entry. Additionally, the system generates a unique citation key for each entry based on the author's surname, publication year, and the first significant word of the title, following common BibTeX conventions. Users may select or deselect all available fields simultaneously using the provided checkboxes, and fields are automatically marked as selected when text is entered into their corresponding input boxes. Once all desired information has been entered, users can generate the BibTeX entry by clicking the <span class="italic">Create</span> button, after which the formatted output can be copied to the clipboard for immediate use in LaTeX documents. Conveniently, it is also possible to <span class="emphasize">create a skeleton BibTeX entry</span>, with empty fields and no identifier, by leaving selected fields blank and then asking the application to create it.
+      </p>
+    </section>
+    <br>
+    
+    <!-- BibTeX Data -->
+    <h2>Bibliographic Information</h2>
+    
+    <!-- BibTeX Entry Choice -->
+    <section class="entry-type-section" aria-labelledby="entry-type-heading">
+      <h3 id="entry-type-heading">Entry type</h3>
+    
+      <div class="entry-type-container">
+        <div class="entry-type-list">
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="article">
+            <span class="entry-name">article</span>
+            <span class="entry-description">Article from a journal, magazine, newspaper, or periodical</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="book">
+            <span class="entry-name">book</span>
+            <span class="entry-description">Book with clearly identified publisher</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="inbook">
+            <span class="entry-name">inbook</span>
+            <span class="entry-description">Section--chapter or page range--within a book</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="booklet">
+            <span class="entry-name">booklet</span>
+            <span class="entry-description">Printed work that is bound, with no identified publisher</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="incollection">
+            <span class="entry-name">incollection</span>
+            <span class="entry-description">Titled section of a book</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="conference">
+            <span class="entry-name">conference</span>
+            <span class="entry-description">Paper published in conference proceedings</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="inproceedings">
+            <span class="entry-name">inproceedings</span>
+            <span class="entry-description">Paper published in conference proceedings</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="proceedings">
+            <span class="entry-name">proceedings</span>
+            <span class="entry-description">Conference proceedings</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="manual">
+            <span class="entry-name">manual</span>
+            <span class="entry-description">Technical manual</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="mastersthesis">
+            <span class="entry-name">mastersthesis</span>
+            <span class="entry-description">Master's level degree thesis</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="phdthesis">
+            <span class="entry-name">phdthesis</span>
+            <span class="entry-description">PhD level degree thesis</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="techreport">
+            <span class="entry-name">techreport</span>
+            <span class="entry-description">Institutionally published work</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="unpublished">
+            <span class="entry-name">unpublished</span>
+            <span class="entry-description">Draft or manuscript in preparation</span>
+          </label>
+          
+          <label class="entry-option">
+            <input type="radio" name="entryType" value="misc" checked>
+            <span class="entry-name">misc</span>
+            <span class="entry-description">Any other document</span>
+          </label>
+        </div>
+      </div>
+    </section>
+     
+    <!-- BibTeX Fields -->
+    <section class="fields-section" aria-labelledby="entry-fields-heading">
+      <h3 id="entry-fields-heading">Entry fields</h3>
+      
+      <!-- Select/deselection all option -->
+      <div class="field-selection">
+        <div class="selection-group">
+          <label class="checkbox-selection">
+            <input type="checkbox" id="selectAll" aria-label="Select all available entry fields">
+            <span class="selection-name">Select all</span>
+          </label>
+        </div>
+        <div class="selection-group">
+          <label class="checkbox-selection">
+            <input type="checkbox" id="deselectAll" aria-label="Deselect all entry fields">
+            <span class="selection-name">Deselect all</span>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Fields -->
+      <div class="fields-container">
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="title" id="checkbox-title">
+            <span class="field-name" data-field="title">title</span>
+          </label>
+          <input type="text" class="field-input" data-field="title" placeholder="Title of the work" aria-label="Title of the work">
+        </div>
+        
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="author" id="checkbox-author">
+            <span class="field-name" data-field="author">author</span>
+          </label>
+          <input type="text" class="field-input" data-field="author" placeholder="Name(s) of author(s)" aria-label="Name(s) of author(s)">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="journal" id="checkbox-journal">
+            <span class="field-name" data-field="journal">journal</span>
+          </label>
+          <input type="text" class="field-input" data-field="journal" placeholder="Name of journal" aria-label="Name of journal">
+        </div>
+       
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="booktitle"  id="checkbox-booktitle">
+            <span class="field-name" data-field="booktitle">booktitle</span>
+          </label>
+          <input type="text" class="field-input" data-field="booktitle" placeholder="Title of book (if it is an incollection or inproceedings)" aria-label="Title of book (if it is an incollection or inproceedings)">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="editor" id="checkbox-editor">
+            <span class="field-name" data-field="editor">editor</span>
+          </label>
+          <input type="text" class="field-input" data-field="editor" placeholder="Name(s) of editor(s)" aria-label="Name(s) of editor(s)">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="type" id="checkbox-type">
+            <span class="field-name" data-field="type">type</span>
+          </label>
+          <input type="text" class="field-input" data-field="type" placeholder="Type of report or other information" aria-label="Type of report or other information">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="edition" id="checkbox-edition">
+            <span class="field-name" data-field="edition">edition</span>
+          </label>
+          <input type="text" class="field-input" data-field="edition" placeholder="Edition of book" aria-label="Edition of book">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="series" id="checkbox-series">
+            <span class="field-name" data-field="series">series</span>
+          </label>
+          <input type="text" class="field-input" data-field="series" placeholder="Name of series the book is published in" aria-label="Name of series the book is published in">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="volume" id="checkbox-volume">
+            <span class="field-name" data-field="volume">volume</span>
+          </label>
+          <input type="text" class="field-input" data-field="volume" placeholder="Volume of journal or book" aria-label="Volume of journal or book">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="number" id="checkbox-number">
+            <span class="field-name" data-field="number">number</span>
+          </label>
+          <input type="text" class="field-input" data-field="number" placeholder="Number of journal" aria-label="Number of journal">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="chapter"  id="checkbox-chapter">
+            <span class="field-name" data-field="chapter">chapter</span>
+          </label>
+          <input type="text" class="field-input" data-field="chapter" placeholder="Chapter of book" aria-label="Chapter of book">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="pages" id="checkbox-pages">
+            <span class="field-name" data-field="pages">pages</span>
+          </label>
+          <input type="text" class="field-input" data-field="pages" placeholder="Page range" aria-label="Page range">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="year" id="checkbox-year">
+            <span class="field-name" data-field="year">year</span>
+          </label>
+          <input type="text" class="field-input" data-field="year" placeholder="Year of publication" aria-label="Year of publication">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="month" id="checkbox-month">
+            <span class="field-name" data-field="month">month</span>
+          </label>
+          <input type="text" class="field-input" data-field="month" placeholder="Month of publication" aria-label="Month of publication">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="publisher" id="checkbox-publisher">
+            <span class="field-name" data-field="publisher">publisher</span>
+          </label>
+          <input type="text" class="field-input" data-field="publisher" placeholder="Publisher name" aria-label="Publisher name">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="address" id="checkbox-address">
+            <span class="field-name" data-field="address">address</span>
+          </label>
+          <input type="text" class="field-input" data-field="address" placeholder="Publisher's address" aria-label="Publisher's address">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="institution" id="checkbox-institution">
+            <span class="field-name" data-field="institution">institution</span>
+          </label>
+          <input type="text" class="field-input" data-field="institution" placeholder="Institution where a report was written" aria-label="Institution where a report was written">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="organization" id="checkbox-organization">
+            <span class="field-name" data-field="organization">organization</span>
+          </label>
+          <input type="text" class="field-input" data-field="organization" placeholder="Organization that sponsored the conference" aria-label="Organization that sponsored the conference">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="school" id="checkbox-school">
+            <span class="field-name" data-field="school">school</span>
+          </label>
+          <input type="text" class="field-input" data-field="school" placeholder="School where the thesis was written" aria-label="School where the thesis was written">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="crossref" id="checkbox-crossref">
+            <span class="field-name" data-field="crossref">crossref</span>
+          </label>
+          <input type="text" class="field-input" data-field="crossref" placeholder="Cross-reference to another entry" aria-label="Cross-reference to another entry">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="annote" id="checkbox-annote">
+            <span class="field-name" data-field="annote">annote</span>
+          </label>
+          <input type="text" class="field-input" data-field="annote" placeholder="Annotation" aria-label="Annotation">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="note" id="checkbox-note">
+            <span class="field-name" data-field="note">note</span>
+          </label>
+          <input type="text" class="field-input" data-field="note" placeholder="Any other information" aria-label="Any other information">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="url" id="checkbox-url">
+            <span class="field-name" data-field="url">url</span>
+          </label>
+          <input type="text" class="field-input" data-field="url" placeholder="Uniform Resource Locator of document" aria-label="Uniform Resource Locator of document">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="doi" id="checkbox-doi">
+            <span class="field-name" data-field="doi">doi</span>
+          </label>
+          <input type="text" class="field-input" data-field="doi" placeholder="Digital Object Identifier" aria-label="Digital Object Identifier">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="howpublished" id="checkbox-howpublished">
+            <span class="field-name" data-field="howpublished">howpublished</span>
+          </label>
+          <input type="text" class="field-input" data-field="howpublished" placeholder="How it was published" aria-label="How it was published">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="issn" id="checkbox-issn">
+            <span class="field-name" data-field="issn">issn</span>
+          </label>
+          <input type="text" class="field-input" data-field="issn" placeholder="International Standard Serial Number" aria-label="International Standard Serial Number">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="isbn" id="checkbox-isbn">
+            <span class="field-name" data-field="isbn">isbn</span>
+          </label>
+          <input type="text" class="field-input" data-field="isbn" placeholder="International Standard Book Number" aria-label="International Standard Book Number">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="keywords" id="checkbox-keywords">
+            <span class="field-name" data-field="keywords">keywords</span>
+          </label>
+          <input type="text" class="field-input" data-field="keywords" placeholder="Keywords" aria-label="Keywords">
+        </div>
+      
+        <div class="field-group">
+          <label class="field-label">
+            <input type="checkbox" name="fields" value="abstract" id="checkbox-abstract">
+            <span class="field-name" data-field="abstract">abstract</span>
+          </label>
+          <textarea class="field-input" data-field="abstract" placeholder="Abstract" aria-label="Abstract"></textarea>
+        </div>
+      </div>
+    </section>
+    
+    <br>
+    
+    <!-- Action Buttons -->
+    <section class="button-group" aria-labelledby="action-heading">
+      <h2 id="action-heading">BibTeX Item Generation</h2>
+      <button id="generateBtn" class="btn btn-primary" type="button" aria-label="Create BibTeX entry from selected fields">Create</button>
+    </section>
+    
+    <!-- Output Section -->
+    <section class="output-section" id="outputSection" style="display: none;">
+      <h2>Generated BibTeX</h2>
+      <pre id="bibtexOutput"></pre>
+      <button id="copyBtn" class="btn btn-secondary" disabled aria-label="Copy generated BibTeX entry to clipboard">Copy</button>
+    </section>
+  </main>
+  
+  <footer class="site-footer">
+    <p class="footer-text">
+      Created by <span class="author-name">Dimitri Silva</span> with assistance from Claude
+    </p>
+    <p class="footer-links">
+      <a href="https://dimitrisilva.github.io/" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <!--a href="mailto:myemail@hotmail.com">Contact</a-->
+    </p>
+  </footer>
+  
+  <script src="bibitem-creator.js"></script>
+</body>
+</html>
+
+<!-- 
+  Dean (2019: Ch. 5, 8, 9)
+  Flanagan (2020: Sec. 4.10, 8, 11, 13)
+  https://developer.mozilla.org/ja/docs/Web/API/HTMLElement/dataset
+-->

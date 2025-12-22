@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="measure-theoretic-probability-study-plan">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Measure-Theoretic Probability Study Plan</title>
+  <style>
+    @font-face {
+      font-family: 'Latin Modern Roman';
+      src: format('woff2'), format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+    body {
+      background-color: rgb(196, 196, 196);
+      padding: 10px 20% 10px 20%;
+      text-align: justify;
+      font-family: 'Latin Modern Roman', serif;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .module-unread {
+      color: rgb(0, 0, 0);
+    }
+    .module-read {
+      color: rgb(128, 128, 128);
+    }
+    .module-item {
+      font-weight: bold;
+    }
+    details {
+      margin-bottom: 20px;
+      border: 1px solid rgb(204, 204, 204);
+      border-radius: 5px;
+      padding: 10px;
+    }
+    summary {
+      font-weight: bold;
+      cursor: pointer;
+    }
+    ul, ol {
+      list-style-type: disc;
+      margin-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid rgb(204, 204, 204);
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: rgb(216, 216, 216);
+    }
+  </style>
+  <script>
+    
+  </script>
+</head>
+<body>
+  <h1>Self-Study Plan in Measure-Theoretic Probability Theory</h1>
+  <p>This self-study plan is designed for learners seeking a rigorous introduction to measure-theoretic probability theory, drawing from three key textbooks: Jeffrey S. Rosenthal's <i>A First Look at Rigorous Probability Theory</i> (referred to as Rosenthal), Marek Capiński and Ekkehard Kopp's <i>Measure, Integral and Probability</i> (referred to as Capiński & Kopp), and chapters 6 through 9 of Dean Corbae, Maxwell B. Stinchcombe, and Juraj Zeman's <i>An Introduction to Mathematical Analysis for Economic Theory and Econometrics</i> (referred to as Corbae et al.). The plan emphasizes material from Corbae et al. where applicable, while incorporating gentler expositions from the other texts to build foundational understanding. All specified content from the textbooks is covered, with overlaps highlighted to avoid redundancy while ensuring comprehensive exposure. The plan is divided into topic-based modules, each building on the previous to create a logical progression from basic concepts to advanced applications in probability.</p>
+  <br>
+  
+  <h2>Prerequisites from Corbae et al. Chapters 1–5</h2>
+  <p>To understand the content in chapters 6–9 of Corbae et al., learners must be familiar with fundamental mathematical tools from earlier chapters, though these are not part of the core study plan. From Chapter 1, grasp basic logic including statements, implication, quantifiers, and proof techniques (sections 1.1–1.5). From Chapter 2, know set theory basics such as notation, products, relations, functions, equivalence relations, orders, lattices, finite/infinite sets, and the axiom of choice (sections 2.1–2.4, 2.6–2.7, 2.10–2.11). From Chapter 3, understand the real numbers, including rationality, distance, Cauchy sequences, completeness, supremum/infimum, summability, and lim inf/sup (sections 3.1–3.7, 3.9).</p>
+  <p>From Chapter 4, review finite-dimensional metric spaces, including definitions, discrete spaces, norms in ℝⁿ, completeness, closure/convergence, separability, compactness, continuous functions, and connectedness (sections 4.1–4.8, 4.12). From Chapter 5, focus on convex analysis essentials like geometry of convexity, separation theorems, concave/convex functions, and fixed-point theorems (sections 5.1, 5.3–5.6, 5.11). These concepts provide the analytical foundation for metric and measure spaces; review them as needed for self-paced progress.</p>
+  <br>
+  
+  <!-- Module 01 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 1: Motivation and Preliminaries</summary>
+    <div id="mod1">
+      <p>This module introduces the need for measure theory in probability, covering basic set theory, limitations of Riemann integration, and concepts like countable/uncountable sets and topological properties in ℝ. It establishes why rigorous probability requires measures to handle continuous random variables and non-measurable sets, setting the stage for constructing probability spaces in subsequent modules.</p>
+      <p><span id="mod1-primary" class="module-item">Primary Source</span>. Capiński & Kopp, Chapter 1 (detailed on Riemann limitations and random number selection).</p>
+      <p><span id="mod1-secondary" class="module-item">Secondary Sources</span>. Rosenthal, Chapter 1 (concise on various random variables and non-measurable sets); Corbae et al., Chapter 6, Sections 6.1–6.2 (complementary on metric spaces for broader context, emphasizing compactness and continuous functions).</p>
+      <p><span id="mod1-prereq" class="module-item">Prerequisite Material</span>. None from the specified texts, but review set theory and real numbers from Corbae et al. prerequisites.</p>
+      <p><span id="mod1-skippable" class="module-item">Skippable Concepts/Results</span>. In Capiński & Kopp, skip detailed examples of Riemann integral failures if familiar with calculus; in Rosenthal, skip exercises on paradoxical sets unless interested in foundational issues.</p>
+      <p><span id="mod1-exercises" class="module-item">Suggested Exercises</span>. From Capiński & Kopp, Exercise 1.3 (proving properties of countable sets, used in measure extension); from Rosenthal, Exercise 1.2 (constructing non-measurable sets, foundational for later uniqueness theorems).</p>
+      <p><span id="mod1-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Capiński & Kopp Chapter 1 for overview of set theory and Riemann limits.</li>
+        <li>Compare with Rosenthal Chapter 1 for probability-specific motivation.</li>
+        <li>Skim Corbae et al. Sections 6.1–6.2 for metric preliminaries.</li>
+        <li>Work suggested exercises to solidify countability.</li>
+        <li>Note overlaps: All texts emphasize uncountable sets, but Corbae adds metric compactness for later optimization.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 02 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 2: Metric Spaces</summary>
+    <div id="mod2">
+      <p>This module explores general metric spaces, including compactness, completeness, continuous functions, and approximations, which are crucial for understanding probability measures on abstract spaces and weak convergence in later modules.</p>
+      <p><span id="mod2-primary" class="module-item">Primary Source</span>. Corbae et al., Chapter 6 (detailed on compact sets, continuous functions, distribution functions, approximation, and Lebesgue measure introduction).</p>
+      <p><span id="mod2-secondary" class="module-item">Secondary Sources</span>. Capiński & Kopp, Chapter 1, Sections 1.1.3 (complementary on topology in ℝ); Rosenthal, Appendix A (basic set theory for metric contexts).</p>
+      <p><span id="mod2-prereq" class="module-item">Prerequisite Material</span>. Set theory from Module 1; real numbers and finite-dimensional metrics from Corbae prerequisites.</p>
+      <p><span id="mod2-skippable" class="module-item">Skippable Concepts/Results</span>. In Corbae et al., skip Section 6.5 (regression as approximation) if not interested in econometric applications; Lemma 6.4.2 (specific approximation bound) not essential for probability.</p>
+      <p><span id="mod2-exercises" class="module-item">Suggested Exercises</span>. From Corbae et al., Exercise 6.11.2 (proving completeness of function spaces, used in L^p completeness); from Capiński & Kopp, none specific but review topology exercises.</p>
+      <p><span id="mod2-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Corbae et al. Chapter 6 for comprehensive metric theory.</li>
+        <li>Use Capiński & Kopp Section 1.1.3 for gentler topology intro.</li>
+        <li>Refer to Rosenthal Appendix A for set axioms if needed.</li>
+        <li>Prove key theorems like the Metric Completion Theorem.</li>
+        <li>Work suggested exercises. Overlaps: Corbae emphasizes economic applications like maximum theorem, while others focus on real line topology.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 03 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 3: Measures and Probability Spaces</summary>
+    <div id="mod3">
+      <p>This module covers sigma-algebras, measures, outer measures, Lebesgue measure, and probability spaces, providing the foundation for assigning probabilities to events in uncountable sample spaces, leading to integration.</p>
+      <p><span id="mod3-primary" class="module-item">Primary Source</span>. Corbae et al., Chapter 7, Sections 7.1, 7.6, 7.9 (detailed on basics, nonatomic measures, null sets).</p>
+      <p><span id="mod3-secondary" class="module-item">Secondary Sources</span>. Capiński & Kopp, Chapter 2 (gentler on outer measure, Lebesgue, Borel sets, probability); Rosenthal, Chapter 2 (concise on probability triples, extension theorem).</p>
+      <p><span id="mod3-prereq" class="module-item">Prerequisite Material</span>. Set theory from Module 1; completeness from Module 2.</p>
+      <p><span id="mod3-skippable" class="module-item">Skippable Concepts/Results</span>. In Capiński & Kopp, skip Section 2.6.3 (finance applications); in Rosenthal, Theorem 2.3 (extension variants) if time-limited.</p>
+      <p><span id="mod3-exercises" class="module-item">Suggested Exercises</span>. From Corbae et al., Exercise 7.11.1 (nonatomic measures existence, used in distributions); from Rosenthal, Exercise 2.3 (constructing measures, foundational for products).</p>
+      <p><span id="mod3-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Start with Capiński & Kopp Chapter 2 for gentle build-up.</li>
+        <li>Deepen with Corbae Sections 7.1, 7.6.</li>
+        <li>Use Rosenthal Chapter 2 for extension theorems.</li>
+        <li>Construct Lebesgue measure step-by-step.</li>
+        <li>Work exercises. Overlaps: All cover Lebesgue measure, but Corbae emphasizes nonatomic for economics, Rosenthal uniqueness.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 04 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 4: Measurable Functions</summary>
+    <div id="mod4">
+      <p>This module introduces measurable functions, their properties, and probability distributions, bridging measures to integration by allowing random variables on measure spaces.</p>
+      <p><span id="mod4-primary" class="module-item">Primary Source</span>. Corbae et al., Chapter 7, Sections 7.3 (good sets, measurability).</p>
+      <p><span id="mod4-secondary" class="module-item">Secondary Sources</span>. Capiński & Kopp, Chapter 3 (detailed on Lebesgue-measurable functions, examples, probability); Rosenthal, Chapter 3, Sections 3.1–3.2 (random variables, independence).</p>
+      <p><span id="mod4-prereq" class="module-item">Prerequisite Material</span>. Measures from Module 3.</p>
+      <p><span id="mod4-skippable" class="module-item">Skippable Concepts/Results</span>. In Capiński & Kopp, skip Section 3.5.5 (finance); Proposition 3.4.3 (minor property).</p>
+      <p><span id="mod4-exercises" class="module-item">Suggested Exercises</span>. From Capiński & Kopp, Exercise 3.2 (proving measurability, used in integral definition).</p>
+      <p><span id="mod4-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Capiński & Kopp Chapter 3 for basics.</li>
+        <li>Enhance with Corbae Section 7.3.</li>
+        <li>Review Rosenthal Sections 3.1–3.2 for probability view.</li>
+        <li>Practice generating sigma-fields.</li>
+        <li>Work exercises. Overlaps: Measurability definitions similar, Corbae adds good sets for advanced proofs.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 05 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 5: Lebesgue Integral and Convergence Theorems</summary>
+    <div id="mod5">
+      <p>This module defines the Lebesgue integral, monotone/dominated convergence, and relations to Riemann, fundamental for expectations in probability.</p>
+      <p><span id="mod5-primary" class="module-item">Primary Source</span>. Corbae et al., Chapter 7, Sections 7.2, 7.5, 7.12 (limit results, dominated convergence, Lebesgue appendix).</p>
+      <p><span id="mod5-secondary" class="module-item">Secondary Sources</span>. Capiński & Kopp, Chapter 4 (integral definition, convergence theorems, probability expectations); Rosenthal, Chapter 4 (expected values, integration connection).</p>
+      <p><span id="mod5-prereq" class="module-item">Prerequisite Material</span>. Measurable functions from Module 4.</p>
+      <p><span id="mod5-skippable" class="module-item">Skippable Concepts/Results</span>. In Rosenthal, skip Section 4.4 (integration details if familiar); Theorem 4.2.2 (minor variant).</p>
+      <p><span id="mod5-exercises" class="module-item">Suggested Exercises</span>. From Corbae et al., Exercise 7.5.1 (uniform integrability, used in limits); from Capiński & Kopp, Exercise 4.3 (integral properties).</p>
+      <p><span id="mod5-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Study Capiński & Kopp Chapter 4 for step-by-step integral build.</li>
+        <li>Focus on Corbae Sections 7.2, 7.5 for convergence.</li>
+        <li>Use Rosenthal Chapter 4 for probability applications.</li>
+        <li>Prove dominated convergence.</li>
+        <li>Work exercises. Overlaps: Convergence theorems central, Corbae emphasizes uniform integrability.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 06 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 6: L^p Spaces</summary>
+    <div id="mod6">
+      <p>This module examines L^p spaces, completeness, norms, and applications, key for advanced probability like moments and regression.</p>
+      <p><span id="mod6-primary" class="module-item">Primary Source</span>. Corbae et al., Chapter 8 (basics, regression, duals, weak convergence).</p>
+      <p><span id="mod6-secondary" class="module-item">Secondary Sources</span>. Capiński & Kopp, Chapter 5 (L1, L2, Lp completeness, probability moments); Rosenthal, none direct but Chapter 4 for expectations.</p>
+      <p><span id="mod6-prereq" class="module-item">Prerequisite Material</span>. Integral from Module 5.</p>
+      <p><span id="mod6-skippable" class="module-item">Skippable Concepts/Results</span>. In Corbae et al., skip Sections 8.6–8.7 (economies/games) if not economic-focused; Proposition 8.3.3 (technical detail).</p>
+      <p><span id="mod6-exercises" class="module-item">Suggested Exercises</span>. From Corbae et al., Exercise 8.4.2 (regression proofs, used in estimation); from Capiński & Kopp, Exercise 5.1 (L1 properties).</p>
+      <p><span id="mod6-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Corbae Chapter 8 for detailed L^p theory.</li>
+        <li>Use Capiński & Kopp Chapter 5 for gentler intro.</li>
+        <li>Connect to Rosenthal expectations.</li>
+        <li>Prove completeness.</li>
+        <li>Work exercises. Overlaps: L^p norms, Corbae adds economic uses.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 07 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 7: Product Measures, Fubini, and Radon-Nikodym</summary>
+    <div id="mod7">
+      <p>This module covers product measures, Fubini's theorem, Radon-Nikodym, densities, and conditional expectation, essential for joint distributions and conditioning.</p>
+      <p><span id="mod7-primary" class="module-item">Primary Source</span>. Corbae et al., Chapter 7, Sections 7.7, 7.11; Chapter 8, Section 8.5 (products, signed measures, densities).</p>
+      <p><span id="mod7-secondary" class="module-item">Secondary Sources</span>. Capiński & Kopp, Chapters 6–7 (products, Fubini, Radon-Nikodym, martingales); Rosenthal, Chapters 6,12,13 (distributions, decompositions, conditional).</p>
+      <p><span id="mod7-prereq" class="module-item">Prerequisite Material</span>. L^p from Module 6.</p>
+      <p><span id="mod7-skippable" class="module-item">Skippable Concepts/Results</span>. In Capiński & Kopp, skip Section 7.4.3 (finance); Theorem 7.3.4 (advanced variation).</p>
+      <p><span id="mod7-exercises" class="module-item">Suggested Exercises</span>. From Corbae et al., Exercise 7.7.1 (Fubini applications); from Rosenthal, Exercise 13.1 (conditional properties).</p>
+      <p><span id="mod7-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Study Capiński & Kopp Chapters 6–7 for basics.</li>
+        <li>Deepen with Corbae Sections.</li>
+        <li>Use Rosenthal for probability focus.</li>
+        <li>Prove Fubini and Radon-Nikodym.</li>
+        <li>Work exercises. Overlaps: Radon-Nikodym, Corbae emphasizes signed measures.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 08 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 8: Limit Theorems and Modes of Convergence</summary>
+    <div id="mod8">
+      <p>This module discusses convergence modes, laws of large numbers, Borel-Cantelli, and central limit theorem, critical for asymptotic probability results.</p>
+      <p><span id="mod8-primary" class="module-item">Primary Source</span>. Corbae et al., Chapter 7, Sections 7.4, 7.10; Chapter 8, Section 8.9 (0-1 laws, Skorohod, weak convergence in L^p).</p>
+      <p><span id="mod8-secondary" class="module-item">Secondary Sources</span>. Capiński & Kopp, Chapter 8 (modes, probability convergence, LLN, CLT); Rosenthal, Chapters 5,9,10 (inequalities, limits, weak convergence).</p>
+      <p><span id="mod8-prereq" class="module-item">Prerequisite Material</span>. Products from Module 7.</p>
+      <p><span id="mod8-skippable" class="module-item">Skippable Concepts/Results</span>. In Rosenthal, skip Section 9.3 (large deviations); Lemma 5.4.1 (minor).</p>
+      <p><span id="mod8-exercises" class="module-item">Suggested Exercises</span>. From Capiński & Kopp, Exercise 8.4 (strong LLN); from Rosenthal, Exercise 5.3 (LLN proofs).</p>
+      <p><span id="mod8-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Capiński & Kopp Chapter 8 for overview.</li>
+        <li>Focus on Corbae Sections for advanced.</li>
+        <li>Use Rosenthal for theorems.</li>
+        <li>Prove CLT variants.</li>
+        <li>Work exercises. Overlaps: LLN/CLT, Corbae adds Skorohod.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 09 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 9: Characteristic Functions and Martingales</summary>
+    <div id="mod9">
+      <p>This module covers characteristic functions, martingales, and decompositions, useful for distribution identification and stochastic processes.</p>
+      <p><span id="mod9-primary" class="module-item">Primary Source</span>. Corbae et al., Chapter 7, Section 7.8 (nonmeasurable sets, related to decompositions).</p>
+      <p><span id="mod9-secondary" class="module-item">Secondary Sources</span>. Capiński & Kopp, Sections 4.7.4, 6.5.4, 7.4.2 (characteristic, martingales); Rosenthal, Chapters 11,14 (characteristic, martingales).</p>
+      <p><span id="mod9-prereq" class="module-item">Prerequisite Material</span>. Limits from Module 8.</p>
+      <p><span id="mod9-skippable" class="module-item">Skippable Concepts/Results</span>. In Rosenthal, skip Section 14.4 (advanced stopping); Theorem 11.3.1 (generalization).</p>
+      <p><span id="mod9-exercises" class="module-item">Suggested Exercises</span>. From Rosenthal, Exercise 11.2 (continuity theorem).</p>
+      <p><span id="mod9-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Rosenthal Chapters 11,14 for focus.</li>
+        <li>Supplement with Capiński & Kopp sections.</li>
+        <li>Connect to Corbae Section 7.8.</li>
+        <li>Prove inversion formulas.</li>
+        <li>Work exercises. Overlaps: Characteristic functions, Corbae on equity applications.</li>
+      </ol>
+    </div>
+  </details>
+  
+  <!-- Module 10 -->
+  <details class="module-unread">
+    <summary class="module-summary">Module 10: Probabilities on Metric Spaces and Advanced Topics</summary>
+    <div id="mod10">
+      <p>This module addresses probabilities on metric spaces, weak convergence, Riesz representation, regular conditional probabilities, and stochastic processes, culminating in advanced applications.</p>
+      <p><span id="mod10-primary" class="module-item">Primary Source</span>. Corbae et al., Chapter 9 (full chapter on metric probabilities, utility, Polish spaces, CLT proof).</p>
+      <p><span id="mod10-secondary" class="module-item">Secondary Sources</span>. Rosenthal, Chapters 10,15 (weak convergence, processes); Capiński & Kopp, none direct.</p>
+      <p><span id="mod10-prereq" class="module-item">Prerequisite Material</span>. Characteristic from Module 9.</p>
+      <p><span id="mod10-skippable" class="module-item">Skippable Concepts/Results</span>. In Corbae et al., skip Section 9.1 (uncertainty choice) if not economic; Theorem 9.13.1 (nonexistence details).</p>
+      <p><span id="mod10-exercises" class="module-item">Suggested Exercises</span>. From Corbae et al., Exercise 9.11.1 (rcp properties).</p>
+      <p><span id="mod10-steps" class="module-item">Study Steps</span>.</p>
+      <ol>
+        <li>Read Corbae Chapter 9 for core.</li>
+        <li>Use Rosenthal Chapters 10,15 for convergence and processes.</li>
+        <li>Note economic applications.</li>
+        <li>Prove Riesz theorem.</li>
+        <li>Work exercises. Overlaps: Weak convergence, Corbae emphasizes Polish spaces.</li>
+      </ol>
+    </div>
+  </details>
+  <br>
+  
+  <h2>Summary Table</h2>
+  <table>
+    <tr>
+      <th>Module</th>
+      <th>Rosenthal</th>
+      <th>Capiński & Kopp</th>
+      <th>Corbae et al.</th>
+    </tr>
+    <tr>
+      <td>1: Motivation and Preliminaries</td>
+      <td>Chapter 1</td>
+      <td>Chapter 1</td>
+      <td>Chapter 6, Sections 6.1–6.2</td>
+    </tr>
+    <tr>
+      <td>2: Metric Spaces</td>
+      <td>Appendix A</td>
+      <td>Chapter 1, Section 1.1.3</td>
+      <td>Chapter 6</td>
+    </tr>
+    <tr>
+      <td>3: Measures and Probability Spaces</td>
+      <td>Chapter 2</td>
+      <td>Chapter 2</td>
+      <td>Chapter 7, Sections 7.1, 7.6, 7.9</td>
+    </tr>
+    <tr>
+      <td>4: Measurable Functions</td>
+      <td>Chapter 3, Sections 3.1–3.2</td>
+      <td>Chapter 3</td>
+      <td>Chapter 7, Section 7.3</td>
+    </tr>
+    <tr>
+      <td>5: Lebesgue Integral and Convergence Theorems</td>
+      <td>Chapter 4</td>
+      <td>Chapter 4</td>
+      <td>Chapter 7, Sections 7.2, 7.5, 7.12</td>
+    </tr>
+    <tr>
+      <td>6: L^p Spaces</td>
+      <td>Chapter 4 (partial)</td>
+      <td>Chapter 5</td>
+      <td>Chapter 8</td>
+    </tr>
+    <tr>
+      <td>7: Product Measures, Fubini, and Radon-Nikodym</td>
+      <td>Chapters 6,12,13</td>
+      <td>Chapters 6–7</td>
+      <td>Chapter 7, Sections 7.7, 7.11; Chapter 8, Section 8.5</td>
+    </tr>
+    <tr>
+      <td>8: Limit Theorems and Modes of Convergence</td>
+      <td>Chapters 5,9,10</td>
+      <td>Chapter 8</td>
+      <td>Chapter 7, Sections 7.4, 7.10; Chapter 8, Section 8.9</td>
+    </tr>
+    <tr>
+      <td>9: Characteristic Functions and Martingales</td>
+      <td>Chapters 11,14</td>
+      <td>Sections 4.7.4, 6.5.4, 7.4.2</td>
+      <td>Chapter 7, Section 7.8</td>
+    </tr>
+    <tr>
+      <td>10: Probabilities on Metric Spaces and Advanced Topics</td>
+      <td>Chapters 10,15</td>
+      <td>N/A</td>
+      <td>Chapter 9</td>
+    </tr>
+  </table>
+</body>
+</html>

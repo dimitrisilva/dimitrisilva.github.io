@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="gcp-study-plan">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Google Cloud Platform Study Plan</title>
+  <style>
+    @font-face {
+      font-family: 'Latin Modern Roman';
+      src: format('woff2'), format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+    body {
+      background-color: rgb(196, 196, 196);
+      padding: 10px 20% 10px 20%;
+      text-align: justify;
+      font-family: 'Latin Modern Roman', serif;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .module-unread {
+      color: rgb(0, 0, 0);
+    }
+    .module-read {
+      color: rgb(128, 128, 128);
+    }
+    .module-item {
+      font-weight: bold;
+    }
+    details {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+    }
+    summary {
+      font-weight: bold;
+      cursor: pointer;
+    }
+    ul {
+      list-style-type: disc;
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Self-Study Plan for Mastering Google Cloud Platform (GCP) for Data Science and Machine Learning</h1>
+  <p>This syllabus is designed as a progressive self-study plan to build proficiency in GCP, leveraging a background in Python, R, SQL, and econometrics. It emphasizes cloud-native tools for data ingestion, storage, processing, analysis, and machine learning, while minimizing overlap between textbooks. The primary focus is on free-tier GCP services (e.g., BigQuery sandbox, limited Cloud Storage, free tiers of Pub/Sub, Dataflow for small jobs, Vertex AI notebooks with constraints, and Google Earth Engine public datasets). No paid features are required; stick to sandbox limits (e.g., 1 TB/month query in BigQuery) and monitor usage to avoid charges. The plan is divided into modules, each building skills toward specific exercises. Allocate 1-2 weeks per module based on your pace, with hands-on practice integrated.</p>
+  <br>
+  
+  <details class="module-unread">
+    <summary class="module-summary">Module 1: GCP Fundamentals and Setup</summary>
+    <div id="mod1">
+      <p>This module introduces GCP basics, including account setup, navigation, and core concepts like serverless computing and separation of compute/storage. Relevance: Data scientists need a scalable, collaborative environment to handle large datasets without managing infrastructure, enabling focus on analysis and ML rather than ops.</p>
+      <p><span id="mod1-material" class="module-item">Material to study</span>.</p>
+        <ul>
+          <li>Primary: <i>Data Engineering with Google Cloud Platform (Wijaya, 2024)</i> - Chapter 2 (Big Data Capabilities on GCP), focusing on console intro, service mapping, quotas, and serverless concepts.</li>
+          <li>Alternatives: <i>Data Science on the Google Cloud Platform (Lakshmanan, 2022)</i> - Chapter 1 (sections on Cloud Computing and Serverless) for a data-focused perspective.</li>
+        </ul>
+      <p><span id="mod1-exercises" class="module-item">Exercises</span>.</p>
+      <ul>
+        <li>Set up a free GCP account and explore the console: Pin services like BigQuery, Cloud Storage, and Pub/Sub; create a project and check quotas via Cloud Shell (gcloud commands).</li>
+        <li>Toward Exercise 2 (Brazilian bonds): Use Cloud Shell to download sample CSV bond data from a public site (e.g., via wget to a public dataset proxy) and upload to Cloud Storage.</li>
+        <li>Toward Exercise 3 (Google Trends): Query public Google Trends data in BigQuery's public datasets (e.g., search for trends samples) and preview in console.</li>
+      </ul>
+    </div>
+  </details>
+  
+  <details class="module-unread">
+    <summary class="module-summary">Module 2: Data Storage and Warehousing with BigQuery</summary>
+    <div id="mod2">
+      <p>Learn BigQuery's architecture, data loading, schema design, and basic SQL queries. Relevance: BigQuery is a serverless data warehouse for petabyte-scale analytics; it's essential for economists/data scientists to store, query, and analyze structured data efficiently for time series, trends, or geospatial insights.</p>
+      <p><span id="mod2-material" class="module-item">Material to study</span>.</p>
+      <ul>
+        <li>Primary: <i>Google BigQuery: The Definitive Guide (Lakshmanan and Tigani, 2019)</i> - Chapters 1 (What Is Google BigQuery?), 2 (Query Essentials), and 4 (Loading Data into BigQuery).</li>
+        <li>Alternatives: <i>Data Engineering with Google Cloud Platform (Wijaya, 2024)</i> - Chapter 3 (Building a Data Warehouse in BigQuery) for practical loading examples.</li>
+      </ul>
+      <p><span id="mod2-exercises" class="module-item">Exercises</span>.</p>
+      <ul>
+        <li>Create a BigQuery dataset in sandbox mode, load a local CSV (e.g., sample news or bond data), and run basic queries (SELECT, WHERE, GROUP BY).</li>
+        <li>Toward Exercise 1 (YouTube news): Load sample JSON from YouTube API responses into BigQuery, query to extract titles/points.</li>
+        <li>Toward Exercise 2 (Brazilian bonds): Load daily bond prices CSV into a partitioned table (by date), compute summary stats with SQL (e.g., AVG, STDDEV).</li>
+        <li>Toward Exercise 4 (Earth Engine): Query public geospatial datasets in BigQuery (e.g., NOAA weather) and visualize simple aggregates.</li>
+      </ul>
+    </div>
+  </details>
+  
+  <details class="module-unread">
+    <summary class="module-summary">Module 3: Advanced Querying and Optimization in BigQuery</summary>
+    <div id="mod3">
+      <p>Cover data types, functions, joins, arrays/structs, partitioning/clustering, and performance optimization. Relevance: Efficient querying reduces costs and enables complex econometric analyses like time series modeling or statistical summaries on large datasets.</p>
+      <p><span id="mod3-material" class="module-item">Material to study</span>.</p>
+      <ul>
+        <li>Primary: <i>Google BigQuery: The Definitive Guide (Lakshmanan and Tigani, 2019)</i> - Chapters 3 (Data Types, Functions, and Operators) and 7 (Optimizing Performance and Cost).</li>
+        <li>Alternatives: <i>Data Science on the Google Cloud Platform (Lakshmanan, 2022)</i> - Chapter 3 (sections on Schema Exploration and Querying Using BigQuery).</li>
+      </ul>
+      <p><span id="mod3-exercises" class="module-item">Exercises</span>.</p>
+      <ul>
+        <li>Use TIMESTAMP functions to handle dates in a table, partition by date, and optimize a join query.</li>
+        <li>Toward Exercise 2 (Brazilian bonds): Query bond data for time series stats (e.g., rolling averages with WINDOW functions), optimize for low scan size.</li>
+        <li>Toward Exercise 3 (Google Trends): Join Trends data with external sources (federated query if free), compute correlations or aggregates.</li>
+        <li>Toward Exercise 1 (YouTube news): Use STRING functions to parse and summarize text fields from loaded YouTube data.</li>
+      </ul>
+    </div>
+  </details>
+  
+  <details class="module-unread">
+    <summary class="module-summary">Module 4: Data Ingestion and Batch Processing</summary>
+    <div id="mod4">
+      <p>Ingest data from various sources, use Cloud Storage for staging, and process batches with Dataflow or Spark on Dataproc (free-tier limits). Relevance: Automates data pipelines for real-world DS/ML, handling ETL/ELT for econometric data or trends.</p>
+      <p><span id="mod4-material" class="module-item">Material to study</span>.</p>
+      <ul>
+        <li>Primary: <i>Data Science on the Google Cloud Platform (Lakshmanan, 2022)</i> - Chapter 2 (Ingesting Data into the Cloud).</li>
+        <li>Alternatives: <i>Data Engineering with Google Cloud Platform (Wijaya, 2024)</i> - Chapter 5 (Building a Data Processing Pipeline) for Dataproc examples; <i>Google BigQuery Guide</i> - Chapter 4 (federated queries section).</li>
+      </ul>
+      <p><span id="mod4-exercises" class="module-item">Exercises</span>.</p>
+      <ul>
+        <li>Ingest CSV/JSON to Cloud Storage, load to BigQuery via Dataflow template (small job).</li>
+        <li>Toward Exercise 2 (Brazilian bonds): Script in Python (Cloud Shell) to download bond data daily, stage in Storage, load to BigQuery.</li>
+        <li>Toward Exercise 4 (Earth Engine): Export small Earth Engine dataset to Storage, ingest to BigQuery for stats.</li>
+      </ul>
+    </div>
+  </details>
+  
+  <details class="module-unread">
+    <summary class="module-summary">Module 5: Streaming Data Processing</summary>
+    <div id="mod5">
+      <p>Handle real-time data with Pub/Sub and Dataflow for streaming pipelines. Relevance: Enables near-real-time analysis for dynamic data like news or trends, crucial for time-sensitive econometric models.</p>
+      <p><span id="mod5-material" class="module-item">Material to study</span>.</p>
+      <ul>
+        <li>Primary: <i>Data Science on the Google Cloud Platform (Lakshmanan, 2022)</i> - Chapter 4 (Streaming Data: Publication and Ingest).</li>
+        <li>Alternatives: <i>Data Engineering with Google Cloud Platform (Wijaya, 2024)</i> - Chapter 6 (Building a Data Processing Pipeline with Streaming Data); <i>Streaming Systems (Akidau et al., 2018)</i> - Chapters on windowing/time (theoretical complement).</li>
+      </ul>
+      <p><span id="mod5-exercises" class="module-item">Exercises</span>.</p>
+      <ul>
+        <li>Create Pub/Sub topic, publish messages, process stream with Dataflow (windowing/aggregation).</li>
+        <li>Toward Exercise 1 (YouTube news): Simulate streaming YouTube links via Pub/Sub, process to extract/summarize points.</li>
+        <li>Toward Exercise 3 (Google Trends): Stream mock Trends updates, aggregate in real-time.</li>
+      </ul>
+    </div>
+  </details>
+  
+  <details class="module-unread">
+    <summary class="module-summary">Module 6: Interactive Exploration and Visualization</summary>
+    <div id="mod6">
+      <p>Use Vertex AI notebooks for EDA, build dashboards with Looker Studio. Relevance: Facilitates exploratory analysis and visualization of models/results, key for interpreting econometric outputs or geospatial data.</p>
+      <p><span id="mod6-material" class="module-item">Material to study</span>.</p>
+      <ul>
+        <li>Primary: <i>Data Science on the Google Cloud Platform (Lakshmanan, 2022)</i> - Chapters 3 (Creating Compelling Dashboards) and 5 (Interactive Data Exploration).</li>
+        <li>Alternatives: <i>Data Engineering with Google Cloud Platform (Wijaya, 2024)</i> - Chapter 7 (Visualizing Data with Looker Studio).</li>
+      </ul>
+      <p><span id="mod6-exercises" class="module-item">Exercises</span>.</p>
+      <ul>
+        <li>In Vertex AI notebook (free instance), query BigQuery with pandas/R, plot distributions.</li>
+        <li>Toward Exercise 2 (Brazilian bonds): EDA in notebook: plot time series, compute stats.</li>
+        <li>Toward Exercise 3 (Google Trends): Build Looker dashboard for statistical visuals.</li>
+        <li>Toward Exercise 1 (YouTube news): Visualize summarized news points in dashboard.</li>
+      </ul>
+    </div>
+  </details>
+  
+  <details class="module-unread">
+    <summary class="module-summary">Module 7: Machine Learning on GCP</summary>
+    <div id="mod7">
+      <p>Build ML models with BigQuery ML and Vertex AI (free tiers). Relevance: Integrates SQL-based ML for forecasting/time series, bridging your econometric knowledge to scalable ML.</p>
+      <p><span id="mod7-material" class="module-item">Material to study</span>.</p>
+      <ul>
+        <li>Primary: <i>Google BigQuery: The Definitive Guide (Lakshmanan and Tigani, 2019)</i> - Chapter 9 (Machine Learning in BigQuery).</li>
+        <li>Alternatives: <i>Data Science on the Google Cloud Platform (Lakshmanan, 2022)</i> - Chapters 6 (Bayesian Classifier) and 7 (Statistical Time-Series Forecasting); <i>Data Engineering with Google Cloud Platform (Wijaya, 2024)</i> - Chapter 8 (ML on GCP).</li>
+      </ul>
+      <p><span id="mod7-exercises" class="module-item">Exercises</span>.</p>
+      <ul>
+        <li>Train simple regression in BigQuery ML on sample data.</li>
+        <li>Toward Exercise 2 (Brazilian bonds): Forecast bond prices with time-series model in BigQuery ML.</li>
+        <li>Toward Exercise 4 (Earth Engine): Simple ML on geospatial data (e.g., classify land cover).</li>
+      </ul>
+    </div>
+  </details>
+  
+  <details class="module-unread">
+    <summary class="module-summary">Module 8: Advanced Topics: Geospatial, Orchestration, and Integration</summary>
+    <div id="mod8">
+      <p>Orchestrate pipelines with Composer, handle GIS, integrate APIs. Relevance: Automates end-to-end workflows for complex projects like news summarization or geospatial stats.</p>
+      <p><span id="mod8-material" class="module-item">Material to study</span>.</p>
+      <ul>
+        <li>Primary: <i>Data Engineering with Google Cloud Platform (Wijaya, 2024)</i> - Chapters 4 (Building Workflows with Cloud Composer) and 9 (Geospatial in BigQuery).</li>
+        <li>Alternatives: <i>Google BigQuery Guide</i> - Chapter 10 (GIS); <i>Data Science on GCP</i> - Chapter 9 (ML with TensorFlow).</li>
+      </ul>
+      <p><span id="mod8-exercises" class="module-item">Exercises</span>.</p>
+      <ul>
+        <li>Create DAG in Composer to orchestrate ingestion/query.</li>
+        <li>Toward Exercise 4 (Earth Engine): Analyze geospatial data (e.g., climate trends) with GIS functions.</li>
+        <li>Toward Exercise 1 (YouTube news): Orchestrate pipeline for link ingestion, summary (use free Vertex AI for translation if available), audio output via Python.</li>
+      </ul>
+    </div>
+  </details>
+  
+  <details class="module-unread">
+    <summary class="module-summary">Module 9: Capstone Integration and Projects</summary>
+    <div id="mod9">
+      <p>Synthesize skills into full pipelines. Relevance: Applies GCP to real DS/ML workflows, closing knowledge gaps.</p>
+      <p><span id="mod9-material" class="module-item">Material to study</span>.</p> 
+      <ul>
+        <li>Review all books' summaries; <i>Streaming Systems</i> for advanced streaming if needed.</li>
+      </ul>
+      <p><span id="mod9-exercises" class="module-item">Exercises</span>. Complete full projects:</p>
+      <ul>
+        <li>Exercise 1: Pipeline for YouTube news (ingest links via Pub/Sub, process in Dataflow, summarize in notebook, output audio).</li>
+        <li>Exercise 2: Bond analysis pipeline (ingest, model in BigQuery ML, dashboard).</li>
+        <li>Exercise 3: Trends stats in BigQuery/Looker.</li>
+        <li>Exercise 4: Earth Engine geospatial stats (e.g., deforestation analysis, visualize).</li>
+      </ul>
+    </div>
+  </details>
+</body>
+</html>

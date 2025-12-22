@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="git-github-cheat-sheet">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Git and GitHub Cheat Sheet</title>
+  <style>
+    @font-face {
+      font-family: 'Latin Modern Roman';
+      src: format('woff2'), format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+    body {
+      background-color: rgb(196, 196, 196);
+      margin: 0;
+      padding: 0;
+      text-align: justify;
+      font-family: 'Latin Modern Roman', serif;
+      line-height: 1.6;
+    }
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 250px;
+      max-height: 100vh;
+      box-sizing: border-box;
+      background-color: rgb(220, 220, 220);
+      padding: 20px;
+      overflow-y: auto;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+    .sidebar h3 {
+      margin-top: 0;
+      font-size: 1.2em;
+      text-align: center;
+      color: rgb(51, 51, 51);
+    }
+    .sidebar nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar nav ul li {
+      margin-bottom: 10px;
+      text-align: left;
+    }
+    .sidebar nav ul li a {
+      display: block;
+      padding: 8px 12px;
+      color: rgb(51, 51, 51);
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+    .sidebar nav ul li a:hover {
+      background-color: rgb(240, 240, 240);
+      text-decoration: none;
+    }
+    .sidebar nav ul li a.active {
+      background-color: rgb(0, 102, 204);
+      color: rgb(255, 255, 255);
+    }
+    .main-content {
+      margin-left: 250px;
+      padding: 10px 5% 10px 5%;
+      flex: 1;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    code {
+      background-color: rgb(220, 220, 220);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+    }
+    pre {
+      background-color: rgb(220, 220, 220);
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    pre code {
+      background-color: transparent;
+      padding: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    th, td {
+      border: 1px solid rgb(220, 220, 220);
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: rgb(220, 220, 220);
+    }
+    a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    
+    /* レスポンシブデザイン用 */
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 10px 5%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <aside class="sidebar">
+    <h3>Navigation</h3>
+    <nav>
+      <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#installation">Installation and GUIs</a></li>
+        <li><a href="#setup">Setup</a></li>
+        <li><a href="#initialization">Setup and initialization</a></li>
+        <li><a href="#stage-snapshot">Stage and snapshot</a></li>
+        <li><a href="#branch-merge">Branch and merge</a></li>
+        <li><a href="#inspect-compare">Inspect and compare</a></li>
+        <li><a href="#tracking-path">Tracking path changes</a></li>
+        <li><a href="#ignoring">Ignoring patterns</a></li>
+        <li><a href="#share-update">Share and update</a></li>
+        <li><a href="#rewrite-history">Rewrite history</a></li>
+        <li><a href="#stash">Stash: Temporary storage</a></li>
+        <li><a href="#issues">Issues</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+<h1>Git and GitHub Cheat Sheet</h1>
+
+<div class="section" id="introduction">
+<h2>Introduction</h2>
+
+<p>Git is a distributed version control system that helps you track changes in your code, collaborate with others, and maintain a complete history of your project. GitHub is a web-based platform that hosts Git repositories and adds collaborative features like issue tracking, pull requests, and project management tools.</p>
+
+<p>With Git, you can:</p>
+<ul>
+  <li><strong>Track changes</strong>: Keep a complete history of all modifications to your project</li>
+  <li><strong>Work with branches</strong>: Develop features independently without affecting the main codebase</li>
+  <li><strong>Collaborate</strong>: Multiple people can work on the same project simultaneously</li>
+  <li><strong>Revert mistakes</strong>: Undo changes or restore previous versions of your work</li>
+  <li><strong>Backup your work</strong>: Keep your code safe in remote repositories</li>
+</ul>
+
+<p>With GitHub, you can additionally:</p>
+<ul>
+  <li><strong>Share your code</strong>: Make your projects publicly available or collaborate privately</li>
+  <li><strong>Review code</strong>: Use pull requests to discuss and review changes before merging</li>
+  <li><strong>Track issues</strong>: Manage bugs, feature requests, and project tasks</li>
+  <li><strong>Document projects</strong>: Use README files and wikis to explain your work</li>
+</ul>
+
+<p>This cheat sheet provides not just commands, but explanations of when and why to use them, helping you understand the differences between similar commands and avoid common confusion. It is based on cheat sheets from <a href="https://education.github.com/git-cheat-sheet-education.pdf">GitHub Education</a> and <a href="https://git-scm.com/cheat-sheet">Git</a> and on Ken Mueller's repository of <a href="https://github.com/kenmueller/gitignore">gitignore rules</a>.</p>
+</div>
+
+<div class="section" id="installation">
+<h2>Installation and GUIs</h2>
+
+<p>Before using Git, you need to install it on your system. GitHub offers user-friendly desktop applications for Windows and Mac that provide graphical interfaces for common Git operations. However, the command-line interface (CLI) is more powerful and works on all platforms.</p>
+
+<p><strong>GitHub Desktop for Windows</strong>: <a href="https://desktop.github.com/">https://desktop.github.com/</a></p>
+
+<p><strong>GitHub Desktop for Mac</strong>: <a href="https://desktop.github.com/">https://desktop.github.com/</a></p>
+
+<p><strong>Git for all platforms</strong>: <a href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></p>
+
+<p>For beginners, GitHub Desktop can help you visualize branches and commits, but learning the command line will give you full control over Git's capabilities.</p>
+</div>
+
+<div class="section" id="setup">
+<h2>Setup</h2>
+
+<p>After installing Git, you need to configure your identity. This information will be attached to every commit you make, so it's important to set it up correctly. These settings are typically configured once per machine using the <code>--global</code> flag, which applies them to all repositories on your system.</p>
+
+<h3>Configure your identity</h3>
+
+<pre><code>git config --global user.name "&lt;firstname lastname&gt;"</code></pre>
+<p>Sets your name as it will appear in commit history. Use your real name or the name you want associated with your contributions.</p>
+
+<pre><code>git config --global user.email "&lt;valid-email&gt;"</code></pre>
+<p>Sets your email address for commits. If using GitHub, use the email associated with your GitHub account to link commits to your profile.</p>
+
+<h3>Configure your text editor</h3>
+
+<pre><code>git config --global core.editor "&lt;executable&gt; -multiInst -notabbar -nosession -noPlugin"</code></pre>
+<p>Sets the default text editor for commit messages and other Git operations. Common options include <code>nano</code>, <code>vim</code>, <code>code</code> (VS Code), or <code>notepad++</code>. The flags shown are example options for Notepad++; adjust them based on your chosen editor.</p>
+
+<h3>View your configuration</h3>
+
+<pre><code>git config [--global] --list</code></pre>
+<p>Displays all your Git configuration settings. Use <code>--global</code> to see only global settings, or omit it to see both global and repository-specific settings.</p>
+</div>
+
+<div class="section" id="initialization">
+<h2>Setup and initialization</h2>
+
+<p>To start using Git with a project, you need to either initialize a new repository or clone an existing one. Understanding the difference between these two approaches is fundamental.</p>
+
+<h3>Initialize a new repository</h3>
+
+<p>When starting a new project from scratch, you create a directory and initialize it as a Git repository:</p>
+
+<pre><code>mkdir &lt;project-name&gt;
+cd &lt;project-name&gt;/
+git init</code></pre>
+<p>Creates a new directory, navigates into it, and initializes an empty Git repository. This creates a hidden <code>.git</code> directory that stores all Git data.</p>
+
+<h3>Clone an existing repository</h3>
+
+<p>When you want to work on an existing project (from GitHub or elsewhere), you clone it:</p>
+
+<pre><code>git clone &lt;url&gt;</code></pre>
+<p>Downloads a complete copy of a remote repository, including all files, branches, and commit history. This automatically creates a directory with the repository name and sets up the remote connection. You don't need to run <code>git init</code> after cloning.</p>
+
+<p>Alternatively, you can clone into a specific directory:</p>
+
+<pre><code>mkdir &lt;project-name&gt;
+cd &lt;project-name&gt;/
+git clone &lt;url&gt; .</code></pre>
+<p>The <code>.</code> at the end clones into the current directory instead of creating a new subdirectory.</p>
+
+<p><strong>Important</strong>: Set your operating system's file explorer to show hidden files so you can see the <code>.git</code> directory. However, <strong>never manually modify files inside the <code>.git</code> directory</strong> as this can corrupt your repository.</p>
+</div>
+
+<div class="section" id="stage-snapshot">
+<h2>Stage and snapshot</h2>
+
+<p>Understanding Git's three states is crucial: <strong>modified</strong>, <strong>staged</strong>, and <strong>committed</strong>. When you change a file in your working directory, it's <strong>modified</strong>. When you run <code>git add</code>, it becomes <strong>staged</strong> (ready to be committed). When you run <code>git commit</code>, a snapshot is taken and the changes become <strong>committed</strong> (permanently recorded in history). Untracked files are ignored by Git until you explicitly stage and commit them or add them to <code>.gitignore</code>.</p>
+
+<p><strong>Commit messages</strong> follow a specific format:</p>
+<ul>
+  <li><strong>Title</strong>: A brief summary (under 50 characters)</li>
+  <li><strong>Body</strong> (optional): Detailed explanation of what and why (not how)</li>
+  <li><strong>Footer</strong> (optional): References to issues using keywords like <code>Closes #3</code>, <code>Fixes #12</code>, or <code>Resolves #7</code></li>
+  <li><strong>Comments</strong>: Lines starting with <code>#</code> are ignored in commit messages</li>
+</ul>
+
+<h3>Check repository status</h3>
+
+<pre><code>git status</code></pre>
+<p>Shows which files are modified, staged, or untracked. This is the most frequently used Git command and should be run often to understand your repository's current state.</p>
+
+<h3>Stage files for commit</h3>
+
+<pre><code>git add &lt;file(s)&gt;</code></pre>
+<p>Stages specific files for the next commit. You can specify multiple files separated by spaces, or use wildcards (e.g., <code>*.txt</code>).</p>
+
+<pre><code>git add .</code></pre>
+<p>Stages all modified and new files in the current directory and its subdirectories. <strong>Be careful</strong>: this stages everything, which might include files you didn't intend to commit. Always run <code>git status</code> afterwards to verify what was staged.</p>
+
+<pre><code>git add -p</code></pre>
+<p>Interactively stages changes in "patches" (portions of files). This lets you review each change and decide whether to stage it. Useful when you've made multiple unrelated changes in the same file and want to commit them separately.</p>
+
+<h3>Unstage files</h3>
+
+<pre><code>git reset [&lt;file(s)&gt;]</code></pre>
+<p>Removes files from the staging area without deleting your changes in the working directory. If no file is specified, unstages all files. This is the opposite of <code>git add</code>. <strong>Note</strong>: This does not affect committed changes, only staged ones.</p>
+
+<h3>View changes</h3>
+
+<pre><code>git diff HEAD</code></pre>
+<p>Shows all changes in your working directory compared to the last commit (HEAD), including both staged and unstaged changes. Useful for reviewing everything you've changed since the last commit.</p>
+
+<pre><code>git diff --staged</code></pre>
+<p>Shows only changes that are staged (ready to be committed). Use this before committing to review exactly what will be included in the snapshot. Also available as <code>git diff --cached</code>.</p>
+
+<pre><code>git diff</code></pre>
+<p>Shows only unstaged changes in your working directory. This is the difference between <code>git diff</code> and <code>git diff --staged</code>: the former shows what's <strong>not yet staged</strong>, while the latter shows what <strong>is staged</strong>.</p>
+
+<h3>Create commits</h3>
+
+<pre><code>git commit</code></pre>
+<p>Opens your configured text editor to write a commit message, then creates a commit with all staged changes. The editor allows you to write a detailed multi-line message with title, body, and footer.</p>
+
+<pre><code>git commit -m "&lt;message&gt;"</code></pre>
+<p>Creates a commit with a single-line message directly from the command line. Convenient for simple commits, but doesn't allow for detailed descriptions. The message should be concise and descriptive.</p>
+
+<pre><code>git commit -am "&lt;message&gt;"</code></pre>
+<p><strong>Shortcut</strong> that stages all <strong>modified</strong> (but not new) files and commits them in one step. Equivalent to <code>git add</code> (on tracked files only) + <code>git commit -m</code>. <strong>Warning</strong>: This doesn't stage untracked files, so new files won't be included.</p>
+</div>
+
+<div class="section" id="branch-merge">
+<h2>Branch and merge</h2>
+
+<p>Branches allow you to develop features, fix bugs, or experiment with ideas in isolation from your main codebase. The default branch is usually called <code>main</code> or <code>master</code>. When you create a branch, you're creating a pointer to a specific commit; switching branches changes which files appear in your working directory.</p>
+
+<h3>List and create branches</h3>
+
+<pre><code>git branch</code></pre>
+<p>Lists all local branches and highlights the current branch with an asterisk (*). Use <code>git branch -a</code> to also see remote branches.</p>
+
+<pre><code>git branch &lt;branch&gt;</code></pre>
+<p>Creates a new branch at your current commit but <strong>doesn't switch to it</strong>. The new branch is just created; you remain on your current branch.</p>
+
+<h3>Switch branches</h3>
+
+<pre><code>git switch &lt;branch&gt;</code></pre>
+<p>Switches to an existing branch. This is the <strong>newer, recommended</strong> command for switching branches (introduced in Git 2.23). It updates your working directory to match the branch's latest commit.</p>
+
+<pre><code>git checkout &lt;branch&gt;</code></pre>
+<p>The <strong>older</strong> way to switch branches. While still widely used, <code>git switch</code> is now preferred because <code>git checkout</code> has multiple purposes (switching branches, restoring files, creating branches), which can be confusing.</p>
+
+<h3>Create and switch in one command</h3>
+
+<pre><code>git switch -c &lt;branch&gt;</code></pre>
+<p>Creates a new branch and immediately switches to it. The <code>-c</code> stands for "create". This is equivalent to <code>git branch &lt;branch&gt;</code> + <code>git switch &lt;branch&gt;</code>.</p>
+
+<pre><code>git checkout -b &lt;branch&gt;</code></pre>
+<p>The <strong>older</strong> way to create and switch to a new branch. Equivalent to <code>git switch -c</code>, but uses the legacy <code>checkout</code> command.</p>
+
+<p><strong>Recommendation</strong>: Use <code>git switch</code> and <code>git switch -c</code> for clarity. Reserve <code>git checkout</code> for restoring files.</p>
+
+<h3>Delete branches</h3>
+
+<pre><code>git branch -d &lt;branch&gt;</code></pre>
+<p><strong>Safely</strong> deletes a branch that has been fully merged into your current branch. Git will refuse to delete it if there are unmerged changes, preventing accidental data loss.</p>
+
+<pre><code>git branch -D &lt;branch&gt;</code></pre>
+<p><strong>Forcefully</strong> deletes a branch even if it hasn't been merged. <strong>Use with caution</strong>: any commits unique to that branch will be lost unless they've been pushed to a remote or merged elsewhere.</p>
+
+<h3>Merge branches</h3>
+
+<pre><code>git merge &lt;branch&gt;</code></pre>
+<p>Merges the specified branch into your current branch. If there are conflicting changes (both branches modified the same lines), Git will pause and ask you to resolve conflicts manually. After resolving, stage the files and complete the merge with <code>git commit</code>.</p>
+
+<p><strong>Tip</strong>: Always switch to the branch you want to merge <strong>into</strong> before running <code>git merge</code>. For example, to merge a feature branch into <code>main</code>: first <code>git switch main</code>, then <code>git merge feature-branch</code>.</p>
+</div>
+
+<div class="section" id="inspect-compare">
+<h2>Inspect and compare</h2>
+
+<p>These commands help you understand what has changed in your project over time. The <code>git log</code> command shows commit history, while <code>git diff</code> compares different states of your code. The <code>git show</code> command displays details of specific commits, and <code>git blame</code> helps identify who changed each line of a file.</p>
+
+<h3>View commit history</h3>
+
+<pre><code>git log</code></pre>
+<p>Shows the commit history of the current branch in reverse chronological order (newest first). Each entry includes commit hash, author, date, and message.</p>
+
+<pre><code>git log [&lt;branch&gt;]</code></pre>
+<p>Shows commit history of a specific branch without switching to it. Useful for comparing what's in another branch.</p>
+
+<pre><code>git log &lt;one-branch&gt;..&lt;another-branch&gt;</code></pre>
+<p>Shows commits in <code>&lt;another-branch&gt;</code> that are <strong>not</strong> in <code>&lt;one-branch&gt;</code>. This is useful for seeing what changes would be merged if you merged <code>&lt;another-branch&gt;</code> into <code>&lt;one-branch&gt;</code>. For example, <code>git log main..feature</code> shows commits in <code>feature</code> that aren't in <code>main</code>.</p>
+
+<pre><code>git log &lt;file&gt;</code></pre>
+<p>Shows only commits that modified a specific file. Useful for tracking the history of a particular file.</p>
+
+<pre><code>git log --follow &lt;file&gt;</code></pre>
+<p>Similar to <code>git log &lt;file&gt;</code>, but <strong>follows renames</strong>. If the file was renamed or moved, this command traces its full history across name changes.</p>
+
+<h3>Compare changes</h3>
+
+<pre><code>git diff &lt;file&gt;</code></pre>
+<p>Shows <strong>unstaged</strong> changes in a specific file compared to the last commit. This is more focused than <code>git diff</code> (which shows all unstaged changes).</p>
+
+<pre><code>git diff --staged &lt;file&gt;</code></pre>
+<p>Shows <strong>staged</strong> changes in a specific file. Use this to review what will be committed for that file.</p>
+
+<pre><code>git diff &lt;one-branch&gt;..&lt;another-branch&gt;</code></pre>
+<p>Compares the tips (latest commits) of two branches. Shows what would change if you merged <code>&lt;another-branch&gt;</code> into <code>&lt;one-branch&gt;</code>.</p>
+
+<pre><code>git diff &lt;one-commit&gt; &lt;another-commit&gt;</code></pre>
+<p>Compares two specific commits identified by their hashes (or references like <code>HEAD~1</code>). Shows all changes between those two snapshots.</p>
+
+<pre><code>git diff &lt;commit&gt; &lt;file&gt;</code></pre>
+<p>Compares a specific file as it exists now (in your working directory) to how it existed in a specific commit.</p>
+
+<pre><code>git diff &lt;commit&gt; --stat</code></pre>
+<p>Shows a <strong>summary</strong> of changes in a commit: which files were modified and how many lines were added/removed. No actual code differences are shown, just statistics. Useful for a quick overview.</p>
+
+<h3>Inspect specific commits</h3>
+
+<pre><code>git show &lt;commit&gt;</code></pre>
+<p>Shows the full details of a specific commit: the message, author, date, and the actual changes (diff) introduced by that commit. If no commit is specified, shows the most recent commit.</p>
+
+<pre><code>git show &lt;commit&gt; --stat</code></pre>
+<p>Shows only the <strong>summary</strong> of changes in a commit (which files changed, how many lines), without showing the actual code differences.</p>
+
+<h3>Track line-by-line changes</h3>
+
+<pre><code>git blame &lt;file&gt;</code></pre>
+<p>Shows who last modified each line of a file and in which commit. Useful for understanding why a particular line exists or tracking down when a bug was introduced. <strong>Note</strong>: The name "blame" is historical; it's not about blaming people, but about tracing history.</p>
+
+<h3>Common <code>git log</code> parameters</h3>
+
+<p>The most useful flags for <code>git log</code> are:</p>
+<ul>
+  <li><code>--reverse</code>: Shows commits in chronological order (oldest first)</li>
+  <li><code>-n &lt;number&gt;</code>: Limits output to the most recent <code>&lt;number&gt;</code> commits (e.g., <code>git log -n 5</code>)</li>
+  <li><code>--since="&lt;YYYY-MM-DD&gt;"</code> or <code>--after="&lt;YYYY-MM-DD&gt;"</code>: Shows commits after a date</li>
+  <li><code>--until="&lt;YYYY-MM-DD&gt;"</code> or <code>--before="&lt;YYYY-MM-DD&gt;"</code>: Shows commits before a date</li>
+  <li><code>--author="&lt;name&gt;"</code>: Shows only commits by a specific author</li>
+  <li><code>--stat</code>: Shows which files were changed and how many lines added/removed</li>
+  <li><code>--graph</code>: Displays branches and merges visually as an ASCII graph</li>
+  <li><code>--oneline</code>: Shows each commit on a single line (hash + message) for a compact view</li>
+</ul>
+
+<p>These flags can be combined, e.g., <code>git log --oneline --graph --since="2024-01-01"</code>.</p>
+</div>
+
+<div class="section" id="tracking-path">
+<h2>Tracking path changes</h2>
+
+<p>Git automatically tracks when you rename or move files, but you should use Git commands to perform these operations so Git can properly record them in history. If you rename files outside of Git (using your file explorer), Git might see it as deleting one file and creating a new one, losing the connection to the file's history.</p>
+
+<h3>Remove files</h3>
+
+<pre><code>git rm &lt;file&gt;</code></pre>
+<p>Removes a file from both your working directory and the staging area. The file is deleted from disk and the deletion is staged for the next commit. This is equivalent to manually deleting the file and then running <code>git add &lt;file&gt;</code>.</p>
+
+<pre><code>git rm --cached &lt;file&gt;</code></pre>
+<p>Removes a file from Git's tracking (unstages and untracks it) but <strong>keeps it in your working directory</strong>. Useful when you accidentally committed a file that should have been in <code>.gitignore</code>. After this, add the file to <code>.gitignore</code> to prevent tracking it again.</p>
+
+<h3>Move or rename files</h3>
+
+<pre><code>git mv &lt;source&gt; &lt;target&gt;</code></pre>
+<p>Renames or moves a file and stages the change for commit. This is equivalent to: (1) manually moving/renaming the file, (2) running <code>git rm &lt;source&gt;</code>, and (3) running <code>git add &lt;target&gt;</code>. Git preserves the file's history across the rename.</p>
+
+<h3>Track moves in history</h3>
+
+<pre><code>git log --stat -M</code></pre>
+<p>Shows commit history with move/rename detection. The <code>-M</code> flag tells Git to detect when files were renamed or moved. Without it, renames might appear as separate deletions and additions. The <code>--stat</code> flag shows which files changed in each commit.</p>
+</div>
+
+<div class="section" id="ignoring">
+<h2>Ignoring patterns</h2>
+
+<p>Not everything in your working directory should be tracked by Git. Build artifacts, temporary files, API keys, and personal configuration files should typically be ignored. The <code>.gitignore</code> file tells Git which files and directories to ignore.</p>
+
+<h3>Setting up <code>.gitignore</code></h3>
+
+<p>Place a <code>.gitignore</code> file at the root of your repository to apply rules globally across the entire project. You can also place <code>.gitignore</code> files in subdirectories to apply rules only to those specific directories.</p>
+
+<p><strong>Important</strong>: <code>.gitignore</code> only affects <strong>untracked</strong> files. If a file is already tracked by Git, adding it to <code>.gitignore</code> won't stop tracking it. You must first use <code>git rm --cached &lt;file&gt;</code> to untrack it.</p>
+
+<h3>Global ignore file</h3>
+
+<pre><code>git config --global core.excludesfile &lt;text-file-with-filenames&gt;</code></pre>
+<p>Sets a global <code>.gitignore</code> file that applies to <strong>all</strong> repositories on your system. Useful for ignoring OS-specific files (like <code>.DS_Store</code> on Mac or <code>Thumbs.db</code> on Windows) or editor-specific files (like <code>.vscode/</code> or <code>.idea/</code>).</p>
+
+<pre><code>git config --global core.excludesfile</code></pre>
+<p>Displays the path to your global <code>.gitignore</code> file (if configured).</p>
+
+<h3><code>.gitignore</code> patterns</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Rule</th>
+      <th>Explanation</th>
+      <th>Examples ignored</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>example.txt</code></td>
+      <td>Ignores a specific file by name anywhere in the repository</td>
+      <td><code>example.txt</code>, <code>subfolder/example.txt</code></td>
+    </tr>
+    <tr>
+      <td><code>!example.txt</code></td>
+      <td>Un-ignores a previously ignored file (exception rule)</td>
+      <td>Keeps <code>example.txt</code> even if <code>*.txt</code> is ignored</td>
+    </tr>
+    <tr>
+      <td><code>*.txt</code></td>
+      <td>Ignores all files with <code>.txt</code> extension</td>
+      <td><code>file.txt</code>, <code>notes.txt</code></td>
+    </tr>
+    <tr>
+      <td><code>example</code></td>
+      <td>Ignores files or directories named <code>example</code></td>
+      <td><code>example</code>, <code>example.txt</code>, <code>example/</code></td>
+    </tr>
+    <tr>
+      <td><code>examples/</code></td>
+      <td>Ignores an entire directory and all its contents</td>
+      <td>Everything inside <code>examples/</code></td>
+    </tr>
+    <tr>
+      <td><code>examples/example.txt</code></td>
+      <td>Ignores a specific file in a specific directory</td>
+      <td>Only <code>examples/example.txt</code></td>
+    </tr>
+    <tr>
+      <td><code>examples/*</code></td>
+      <td>Ignores all files directly inside a directory (but not subdirectories)</td>
+      <td>Files in <code>examples/</code> but not <code>examples/sub/</code></td>
+    </tr>
+    <tr>
+      <td><code>**/example.txt</code></td>
+      <td>Ignores <code>example.txt</code> in any directory (recursive)</td>
+      <td><code>example.txt</code>, <code>sub/example.txt</code>, <code>a/b/example.txt</code></td>
+    </tr>
+    <tr>
+      <td><code>/example.txt</code></td>
+      <td>Ignores <code>example.txt</code> only in the repository root</td>
+      <td>Only <code>example.txt</code> at root, not <code>sub/example.txt</code></td>
+    </tr>
+    <tr>
+      <td><code>[Ee]xample.txt</code></td>
+      <td>Case-insensitive match using character ranges</td>
+      <td><code>Example.txt</code>, <code>example.txt</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Tips</strong>:</p>
+<ul>
+  <li>Blank lines are ignored</li>
+  <li>Lines starting with <code>#</code> are comments</li>
+  <li>Trailing spaces are ignored unless escaped with <code>\</code></li>
+  <li>Use <code>/</code> at the end to explicitly specify a directory</li>
+  <li>Use <code>!</code> for exceptions, but they must come <strong>after</strong> the general rule</li>
+</ul>
+</div>
+
+<div class="section" id="share-update">
+<h2>Share and update</h2>
+
+<p>Git is distributed, meaning each developer has a complete copy of the repository. To collaborate, you connect your local repository to a remote repository (typically on GitHub, GitLab, or Bitbucket). This section covers how to push your changes to a remote and pull changes from others.</p>
+
+<h3>Setting up a remote repository</h3>
+
+<p>Before you can push or pull, you need a remote repository. On GitHub:</p>
+<ol>
+  <li>Click the "+" icon in the top right and select "New repository"</li>
+  <li>Name your repository and choose public or private</li>
+  <li><strong>Don't</strong> initialize with README if you already have a local repository</li>
+  <li>GitHub will provide a URL (HTTPS or SSH) to use with Git</li>
+</ol>
+
+<p>After creating the remote repository, link it to your local repository using <code>git remote add</code>.</p>
+
+<h3>Add a remote connection</h3>
+
+<pre><code>git remote add &lt;url-alias&gt; &lt;url&gt;</code></pre>
+<p>Connects your local repository to a remote repository. The <code>&lt;url-alias&gt;</code> is typically <code>origin</code> (by convention, your main remote), but you can name it anything. The <code>&lt;url&gt;</code> is provided by GitHub (or your hosting service) and can be HTTPS or SSH format.</p>
+
+<p>Example: <code>git remote add origin https://github.com/username/repo.git</code></p>
+
+<p><strong>Note</strong>: If you cloned a repository, the remote <code>origin</code> is already configured automatically.</p>
+
+<h3>Send changes to remote</h3>
+
+<pre><code>git push &lt;url-alias&gt; &lt;branch&gt;</code></pre>
+<p>Uploads your local commits to the remote repository. The first time you push a new branch, you might need to use <code>git push -u &lt;url-alias&gt; &lt;branch&gt;</code> (the <code>-u</code> flag sets up tracking, so future <code>git push</code> commands don't need to specify the remote and branch).</p>
+
+<h3>Retrieve changes from remote</h3>
+
+<pre><code>git fetch &lt;url-alias&gt;</code></pre>
+<p>Downloads all branches and commits from the remote repository but <strong>doesn't merge</strong> them into your local branches. This updates your local copy of the remote branches (e.g., <code>origin/main</code>) so you can inspect changes before integrating them. Use <code>git log origin/main</code> to see what was fetched.</p>
+
+<pre><code>git fetch &lt;url-alias&gt; &lt;branch&gt;</code></pre>
+<p>Fetches only a specific branch from the remote. Faster than fetching all branches if you only care about one.</p>
+
+<h3>Pull changes (fetch + merge)</h3>
+
+<pre><code>git pull [&lt;url-alias&gt; &lt;branch&gt;]</code></pre>
+<p>Downloads changes from the remote and <strong>immediately merges</strong> them into your current branch. This is equivalent to <code>git fetch</code> followed by <code>git merge</code>. If there are conflicts, you'll need to resolve them manually.</p>
+
+<p><strong>Common confusion</strong>: <code>git pull</code> = <code>git fetch</code> + <code>git merge</code>. If you want to review changes before merging, use <code>git fetch</code> first, then merge manually.</p>
+
+<h3>Merge remote branches</h3>
+
+<pre><code>git merge &lt;url-alias&gt;/&lt;branch&gt;</code></pre>
+<p>Merges a remote branch (that you've already fetched) into your current local branch. For example, after <code>git fetch origin</code>, you can run <code>git merge origin/main</code> to integrate the remote <code>main</code> branch into your current branch.</p>
+
+<p><strong>Workflow tip</strong>: A safer workflow is:</p>
+<ol>
+  <li><code>git fetch origin</code> (download changes)</li>
+  <li><code>git log origin/main</code> (review what changed)</li>
+  <li><code>git merge origin/main</code> (integrate if satisfied)</li>
+</ol>
+
+<p>This gives you more control than <code>git pull</code>, which combines all three steps.</p>
+</div>
+
+<div class="section" id="rewrite-history">
+<h2>Rewrite history</h2>
+
+<p>Git allows you to modify commit history, but <strong>be very careful</strong> when rewriting history on branches that others are using. Rewriting shared history can cause major problems for collaborators. These commands are generally safe on local branches or branches you haven't pushed yet.</p>
+
+<h3>Undo a commit by creating a new commit</h3>
+
+<pre><code>git revert &lt;commit&gt;</code></pre>
+<p>Creates a <strong>new commit</strong> that undoes the changes from a specific commit. This is the <strong>safest</strong> way to undo changes because it doesn't rewrite history—it just adds a new commit on top. Use this when you've already pushed commits to a shared branch.</p>
+
+<p><strong>Difference from <code>reset</code></strong>: <code>revert</code> creates a new commit; <code>reset</code> moves the branch pointer backward.</p>
+
+<h3>Modify the most recent commit</h3>
+
+<pre><code>git commit --amend</code></pre>
+<p>Lets you modify the <strong>last commit</strong>. This can:</p>
+<ul>
+  <li>Change the commit message</li>
+  <li>Add forgotten files (stage them first with <code>git add</code>, then run <code>--amend</code>)</li>
+  <li>Modify the changes included in the commit</li>
+</ul>
+
+<p><strong>Warning</strong>: This rewrites the commit (creates a new hash). If you already pushed the commit, amending it will cause problems. Only use on commits that haven't been shared.</p>
+
+<h3>Reapply commits on a different base</h3>
+
+<pre><code>git rebase &lt;branch&gt;</code></pre>
+<p>Moves your current branch's commits to start from the tip of <code>&lt;branch&gt;</code>. This "replays" your commits on top of the latest changes from another branch, creating a linear history. Often used to keep feature branches up-to-date with <code>main</code>.</p>
+
+<p><strong>Example</strong>: You're on <code>feature</code> branch, and <code>main</code> has new commits. Running <code>git rebase main</code> moves your <code>feature</code> commits to start after the latest <code>main</code> commit.</p>
+
+<p><strong>Warning</strong>: Rebasing rewrites commit hashes. Never rebase commits that have been pushed and that others might be using.</p>
+
+<p><strong>Difference from <code>merge</code></strong>: <code>merge</code> creates a merge commit and preserves both branches' history; <code>rebase</code> creates a linear history by replaying commits.</p>
+
+<h3>Discard commits and changes</h3>
+
+<pre><code>git reset --hard [HEAD]</code></pre>
+<p><strong>Permanently discards</strong> all uncommitted changes in your working directory and staging area, resetting to the last commit. <strong>This is destructive and cannot be undone</strong>.</p>
+
+<p>Use this when you want to throw away all current work and start fresh from the last commit.</p>
+
+<pre><code>git reset --hard &lt;commit&gt;</code></pre>
+<p>Moves your branch pointer back to a specific commit and <strong>permanently deletes</strong> all commits after it, along with all uncommitted changes. <strong>Extremely destructive</strong>—use only when you're certain you want to lose that work.</p>
+
+<p><strong>Comparison of reset modes</strong>:</p>
+<ul>
+  <li><code>git reset --soft &lt;commit&gt;</code>: Moves branch pointer back but keeps changes staged</li>
+  <li><code>git reset --mixed &lt;commit&gt;</code> (default): Moves branch pointer back and unstages changes (but keeps them in working directory)</li>
+  <li><code>git reset --hard &lt;commit&gt;</code>: Moves branch pointer back and <strong>deletes all changes</strong></li>
+</ul>
+
+<p><strong>Warning</strong>: Never use <code>--hard</code> on commits that have been pushed unless you fully understand the consequences.</p>
+</div>
+
+<div class="section" id="stash">
+<h2>Stash: Temporary storage</h2>
+
+<p>Sometimes you need to switch branches but aren't ready to commit your current work. The stash feature lets you temporarily save your changes without creating a commit, allowing you to return to a clean working directory.</p>
+
+<h3>Save changes temporarily</h3>
+
+<pre><code>git stash</code></pre>
+<p>Saves your current uncommitted changes (both staged and unstaged) and reverts your working directory to match the last commit. This lets you switch branches without committing half-finished work. Your changes are stored in a "stash" that you can reapply later.</p>
+
+<p><strong>Full command</strong>: <code>git stash push</code> (but <code>git stash</code> is the shorthand)</p>
+
+<h3>View stashed changes</h3>
+
+<pre><code>git stash list</code></pre>
+<p>Shows all stashes you've created, listed in reverse chronological order (most recent first). Each stash has an identifier like <code>stash@{0}</code>, <code>stash@{1}</code>, etc.</p>
+
+<h3>Reapply stashed changes</h3>
+
+<pre><code>git stash pop</code></pre>
+<p>Reapplies the most recent stash (stash@{0}) to your working directory and <strong>removes</strong> it from the stash list. If there are conflicts with your current work, Git will notify you.</p>
+
+<p><strong>Alternative</strong>: <code>git stash apply</code> reapplies the stash but <strong>keeps</strong> it in the stash list (doesn't remove it).</p>
+
+<h3>Delete a stash</h3>
+
+<pre><code>git stash drop</code></pre>
+<p>Deletes the most recent stash without applying it. Useful if you decide you no longer need those changes.</p>
+
+<p><strong>To delete a specific stash</strong>: <code>git stash drop stash@{1}</code></p>
+
+<p><strong>To delete all stashes</strong>: <code>git stash clear</code> (use with caution)</p>
+
+<p><strong>Common workflow</strong>:</p>
+<ol>
+  <li>You're working on feature-A but need to quickly fix a bug</li>
+  <li><code>git stash</code> (save your feature-A work)</li>
+  <li><code>git switch main</code> (switch to main branch)</li>
+  <li>Fix the bug and commit</li>
+  <li><code>git switch feature-A</code> (back to your feature branch)</li>
+  <li><code>git stash pop</code> (restore your feature-A work)</li>
+</ol>
+</div>
+
+<div class="section" id="issues">
+<h2>Issues</h2>
+
+<p>Issues are GitHub's built-in tool for tracking tasks, bugs, feature requests, and discussions. They're not part of Git itself, but are essential for collaborative projects on GitHub. Issues help teams organize work and communicate about specific problems or enhancements.</p>
+
+<h3>Creating and managing issues</h3>
+
+<p>To create an issue:</p>
+<ol>
+  <li>Go to your GitHub repository</li>
+  <li>Click the <strong>Issues</strong> tab</li>
+  <li>Click "New issue"</li>
+  <li>Write a descriptive title and detailed description</li>
+  <li>Optionally add labels (e.g., "bug", "enhancement", "documentation")</li>
+  <li>Optionally assign the issue to team members</li>
+</ol>
+
+<h3>Labeling issues</h3>
+
+<p>Labels help categorize and prioritize issues. Common labels include:</p>
+<ul>
+  <li><strong>bug</strong>: Something isn't working</li>
+  <li><strong>enhancement</strong>: New feature or improvement</li>
+  <li><strong>documentation</strong>: Improvements to documentation</li>
+  <li><strong>good first issue</strong>: Good for newcomers to the project</li>
+  <li><strong>priority: high/medium/low</strong>: Indicates urgency</li>
+</ul>
+
+<p>You can create custom labels specific to your project's needs.</p>
+
+<h3>Linking commits to issues</h3>
+
+<p>You can reference and automatically close issues from commit messages using keywords:</p>
+
+<ul>
+  <li><code>Closes #3</code> or <code>Fixes #12</code> or <code>Resolves #7</code> in a commit message will automatically close those issues when the commit is merged into the default branch</li>
+</ul>
+
+<p><strong>Example commit message</strong>:</p>
+<pre><code>Fix user authentication bug
+
+The login form was not validating email format correctly,
+causing valid emails to be rejected.
+
+Fixes #42</code></pre>
+
+<p>When this commit is pushed to the main branch, issue #42 will automatically close.</p>
+
+<h3>Best practices</h3>
+
+<ul>
+  <li><strong>Be descriptive</strong>: Write clear issue titles and detailed descriptions</li>
+  <li><strong>One issue per problem</strong>: Don't combine multiple unrelated bugs in one issue</li>
+  <li><strong>Use templates</strong>: Many projects have issue templates to ensure all necessary information is provided</li>
+  <li><strong>Reference issues in commits</strong>: Use "Closes #X" to maintain traceability</li>
+  <li><strong>Update issues</strong>: Comment on issues with progress updates or additional information</li>
+</ul>
+</div>
+
+</main>
+</div>
+
+</body>
+</html>

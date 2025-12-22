@@ -1,0 +1,277 @@
+/* BibTeX Processing Style Sheet*/
+
+:root {
+  /* Color pallette */
+  --color-bg-body: rgb(191, 191, 191);
+  --color-bg-input: rgb(223, 223, 223);
+  --color-border: rgb(127, 127, 127);
+  --color-text-primary: rgb(0, 0, 0);
+  --color-text-secondary: rgb(79, 79, 79);
+  --color-success: rgb(40, 167, 69);
+  --color-error: rgb(220, 53, 69);
+  /*--color-text-muted: rgb(79, 79, 79);*/
+  
+  /* Fonts */
+  --font-serif: 'Latin Modern Roman', serif;
+  --font-mono: 'Courier New', Courier, monospace;
+  --font-size-base: 1.00em;
+  --font-size-small: 0.75em;
+  --font-size-large: 2.00em;
+  --font-weight-normal: 400;
+  --font-weight-semibold: 600;
+  
+  /* Spacing */
+  --spacing-small: 2px;
+  --spacing-medium: 10px;
+  --spacing-large: 60px;
+  
+  /* Borders */
+  --border-radius: 6px;
+  --border-width: 1px;
+  
+  /* Layout */
+  --padding-horizontal: 20%;
+  --padding-vertical: 10px;
+}
+
+@font-face {
+  font-family: 'Latin Modern Roman';
+  src: format('woff2'), format('woff');
+  font-weight: var(--font-weight-normal);
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  background-color: var(--color-bg-body);
+  padding: var(--padding-vertical) var(--padding-horizontal);
+  font-family: var(--font-serif);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: var(--font-size-large);
+  margin-bottom: var(--spacing-large);
+  text-align: center;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+/* Introduction section */
+.introduction {
+  text-align: justify;
+  text-justify: inter-word;
+  margin-bottom: 30px;
+  line-height: 1.8;
+}
+
+.introduction p {
+  margin-bottom: 15px;
+}
+
+.introduction em {
+  font-style: italic;
+  font-weight: var(--font-weight-semibold);
+}
+
+.introduction strong {
+  font-weight: var(--font-weight-semibold);
+}
+
+.introduction code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background-color: rgba(127, 127, 127, 0.1);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+/* BibTeX processing section */
+fieldset {
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+legend {
+  font-weight: var(--font-weight-semibold);
+  padding: 0 10px;
+  color: var(--color-text-primary);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 300px;
+  background-color: var(--color-bg-input);
+  padding: var(--spacing-small) 0px 0px var(--spacing-medium);
+  width: 100%;
+  box-sizing: border-box;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-small);
+  color: var(--color-text-primary);
+}
+
+textarea:focus {
+  outline: 2px solid var(--color-border);
+  outline-offset: 2px;
+}
+
+label {
+  display: inline-block;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+input[type='radio'], input[type='checkbox'] {
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:disabled + span {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px 10px 10px 0px;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius);
+  background-color: var(--color-bg-input);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button:hover:not(:disabled) {
+  background-color: rgb(199, 199, 199);
+  transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+pre {
+  overflow: auto;
+  resize: vertical;
+  max-height: 420px;
+  background-color: var(--color-bg-input);
+  padding: var(--spacing-medium);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-small);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: var(--color-text-primary);
+}
+
+#textDisplay  {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.controls {
+  margin: 20px 0;
+}
+
+.action-buttons {
+  margin-top: 15px;
+}
+
+.error-message {
+  color: var(--color-error);
+  background-color: rgba(220, 53, 69, 0.1);
+  padding: var(--spacing-medium);
+  border: var(--border-width) solid var(--color-error);
+  border-radius: var(--border-radius);
+  margin: var(--spacing-medium) 0;
+}
+
+.success-message {
+  color: var(--color-success);
+  background-color: rgba(40, 167, 69, 0.1);
+  padding: var(--spacing-medium);
+  border: var(--border-width) solid var(--color-success);
+  border-radius: var(--border-radius);
+  margin: var(--spacing-medium) 0;
+}
+
+/* Footer */
+.site-footer {
+  margin-top: 60px;
+  padding: 20px 0;
+  text-align: center;
+  border-top: 1px solid var(--color-border);
+}
+
+.footer-text {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-small);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.author-name {
+  font-weight: 600;
+}
+
+.footer-links {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-small);
+  margin: 0;
+}
+
+.footer-links a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  padding: 0 8px;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: rgb(50, 50, 50);
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-widt: 768px) {
+  body {
+    padding: var(--padding-vertical) 5%;
+  }
+  
+  h1 {
+    font-size: 1.5em;
+  }
+  
+  textarea {
+    min-height: 200px;
+  }
+  
+  button {
+    width: 100%;
+    margin: 5px 0;
+  }
+}

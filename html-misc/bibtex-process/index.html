@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="bibtex-process">
+  <meta name="robots" content="noindex, nofollow">
+  <title>BibTeX Processing</title>
+  <link rel="stylesheet" href="bibtex-process.css">
+</head>
+<body>
+  <!--
+  // Content for testing
+  let content = `
+    @incollection{aaberge2015multidimensional,
+      title = {Multidimensional Poverty and Inequality},
+      author = {Aaberge, Rolf and Brandolini, Andrea},
+      volume = {2},
+      editor = {Anthony B. Atkinson and Fran\c{c}ois Bourguignon},
+      booktitle = {Handbook of Income Distribution},
+      chapter = {3},
+      series = {Handbooks in Economics},
+      pages = {141--216},
+      publisher = {Elsevier},
+      year = {2015},
+      doi = {10.1016/B978-0-444-59428-0.00004-7},
+      url = {http://www.sciencedirect.com/science/article/pii/B9780444594280000047},
+      issn = {1574-0056},
+      keywords = {inequality, poverty, deprivation, multidimensional well-being, capabilities and functionings},
+      abstract = {This chapter examines different approaches to the measurement of multidimensional inequality and poverty. It first outlines three aspects preliminary to any multidimensional study: the selection of the relevant dimensions, the indicators used to measure them, and the procedures for their weighting. It then considers the counting approach and the axiomatic treatment in poverty measurement. Finally, it reviews the axiomatic approach to inequality analysis. The chapter also provides a selective review of the rapidly growing theoretical literature with the twofold aim of highlighting areas for future research and offering some guidance on how to use multidimensional methods in empirical and policy-oriented applications.}
+    }
+    
+    @article{abadie2002bootstrap,
+      title = {Bootstrap tests for distributional treatment effects in instrumental variable models},
+      author = {Abadie, Alberto},
+      journal = {Journal of the American Statistical Association},
+      volume = {97},
+      number = {457},
+      pages = {284--292},
+      year = {2002},
+      url = {http://amstat.tandfonline.com/doi/abs/10.1198/016214502753479419},
+      doi = {10.1198/016214502753479419},
+      publisher = {Taylor \& Francis},
+      abstract = {This article considers the problem of assessing the distributional consequences of a treatment on some outcome variable of interest when treatment intake is (possibly) nonrandomized, but there is a binary instrument available for the researcher. Such a scenario is common in observational studies and in randomized experiments with imperfect compliance. One possible approach to this problem is to compare the counterfactual cumulative distribution functions of the outcome with and without the treatment. This article shows how to estimate these distributions using instrumental variable methods and a simple bootstrap procedure is proposed to test distributional hypotheses, such as equality of distributions, first-order and second-order stochastic dominance. These tests and estimators are applied to the study of the effects of veteran status on the distribution of civilian earnings. The results show a negative effect of military service during the Vietnam era that appears to be concentrated on the lower tail of the distribution of earnings. First-order stochastic dominance cannot be rejected by the data.}
+    }
+    
+    @book{acemoglu2009introduction,
+      title = {Introduction to Modern Economic Growth},
+      author = {Acemoglu, Daron},
+      year = {2009},
+      url = {https://press.princeton.edu/books/hardcover/9780691132921/introduction-to-modern-economic-growth},
+      publisher = {Princeton University Press},
+      abstract = {Introduction to Modern Economic Growth is a groundbreaking text from one of today's leading economists. Daron Acemoglu gives graduate students not only the tools to analyze growth and related macroeconomic problems, but also the broad perspective needed to apply those tools to the big-picture questions of growth and divergence. And he introduces the economic and mathematical foundations of modern growth theory and macroeconomics in a rigorous but easy to follow manner. After covering the necessary background on dynamic general equilibrium and dynamic optimization, the book presents the basic workhorse models of growth and takes students to the frontier areas of growth theory, including models of human capital, endogenous technological change, technology transfer, international trade, economic development, and political economy. The book integrates these theories with data and shows how theoretical approaches can lead to better perspectives on the fundamental causes of economic growth and the wealth of nations.}
+    }
+    
+    @article{ban2023robust,
+      title={Robust Difference-in-differences Models},
+      author={Ban, Kyunghoon and K{\'e}dagni, D{\'e}sir{\'e}},
+      journal={arXiv preprint arXiv:2211.06710},
+      year={2023},
+      publisher={arXiv}
+    }
+    
+    @article{bai2024primer,
+      title={A Primer on the Analysis of Randomized Experiments and a Survey of some Recent Advances},
+      journal={arXiv preprint arXiv:2405.03910},
+      author={Bai, Yuehao and Shaikh, Azeem M and Tabord-Meehan, Max},
+      year={2024},
+      url={https://arxiv.org/abs/2405.03910},
+      doi={10.48550/arXiv.2405.03910}
+    }
+    
+    @article{baker2025difference,
+      year={2025},
+      title={Difference-in-Differences Designs: A Practitioner's Guide},
+      author={Baker, Andrew and Callaway, Brantly and Cunningham, Scott and Goodman-Bacon, Andrew and Sant'Anna, Pedro HC},
+      journal={arXiv preprint arXiv:2503.13323},
+      publisher={arXiv}
+    }
+    
+    @techreport{deming2024skills,
+      title = {Skills and Human Capital in the Labor Market},
+      author = {Deming, David J. and Silliman, Mikko I.},
+      year = {2024},
+      url = {https://www.nber.org/papers/w32908},
+      doi = {10.3386/w32908},
+      institution = {National Bureau of Economic Research},
+      abstract = {This paper synthesizes the economics literature on skills and human capital, with a particular focus on higher-order capacities like social and decision-making skills. We review the empirical evidence on returns to human capital from both a micro and macro perspective, as well as the evidence on returns to human capital investment over the life-cycle. We highlight two key limitations of human capital theory as currently implemented. First, prior work mostly assumes that human capital is one-dimensional and can be measured by education or test scores alone. Second, human capital is typically modeled as augmenting the marginal product of labor with workers being treated as factors of production, just like physical capital. We argue for a new approach that treats workers as agents who decide how to allocate their labor over job tasks. Traditional cognitive skills make workers more productive in any task, while higher-order skills govern workers' choices of which tasks to perform and whether to work alone or in a team. We illustrate the value of this approach with stylized models that incorporate teamwork and decision-making skills and generate predictions about how returns to skills vary across contexts.}
+    }`;
+  -->
+  <main>
+    <header>
+      <h1>BibTeX Processing</h1>
+    </header>
+    
+    <section class="introduction">
+      <p>
+        The <em>BibTeX Processing Tool</em> is a web-based application designed to facilitate the management and formatting of bibliographic references in BibTeX format. This tool provides researchers and academics with a streamlined interface for processing BibTeX entries, generating formatted citations, and managing reference materials. Users can select from multiple operation modes to accomplish different bibliographic tasks: <strong>Process BibTeX</strong> standardizes and formats entries according to conventional BibTeX specifications; <strong>HTML</strong> generates HTML-formatted citations suitable for inclusion in web pages or digital documents; <strong>LaTeX</strong> produces LaTeX-style formatted references for direct incorporation into academic manuscripts; <strong>File name</strong> creates descriptive filenames based on author, year, and title information; and <strong>Open link</strong> automatically opens available URLs and DOIs in separate browser tabs for quick access to referenced materials.
+      </p>
+      
+      <p>
+        The application offers three optional, operation-specific features to enhance processing flexibility. The <strong>Alternative TeX representation</strong> option, available when processing BibTeX entries or generating LaTeX output, converts standard TeX character encodings (e.g., <code>{\\'a}</code>) to their alternative representations (e.g., <code>\'{a}</code>), ensuring compatibility with different LaTeX compilers and document preparation systems. The <strong>Impute standard BibTeX ID</strong> option automatically generates citation keys following a standardized format based on the first author's surname, publication year, and the first significant word of the title, replacing the original citation keys in the input. This feature, available when processing BibTeX entries or generating HTML output, is particularly useful for maintaining consistency across large bibliographic databases or when standardizing references from multiple sources. Finally, the <strong>Sort entries</strong> option, available when processing BibTeX, allows sorting the processing entries according to their entry IDs.
+      </p>
+      
+      <p>
+        To ensure proper functionality, input BibTeX entries must adhere to a specific format: all field values must be enclosed in curly braces (e.g., <code>title = {Example Title}</code>) rather than quotation marks, as the parser relies on this convention to correctly identify and extract field contents. Entries that use quotation marks for field delimiters may not be parsed correctly. Once processing is complete, users can copy the generated output to the clipboard or download it as a text file for immediate use in their research workflow. The HTML and LaTeX outputs can be directly incorporated into web documents and academic manuscripts respectively, the file name output provides properly formatted filenames for organizing reference materials, and the open link operation facilitates rapid access to online resources by opening all available URLs and DOIs in separate browser tabs simultaneously.
+      </p>
+    </section>
+    <br>
+    
+    <section class="rawBibTeX">
+      <h2>Original BibTeX entries</h2>
+      <textarea id="textInput" aria-label="BibTeX input area"></textarea>
+      
+      <div class="controls">
+        <fieldset>
+          <legend>Operation Mode</legend>
+          <label>
+            <input type="radio" name="operationMode" value="process" checked>
+            <span>Process BibTeX</span>
+          </label>
+          <label>
+            <input type="radio" name="operationMode" value="html">
+            <span>HTML</span>
+          </label>
+          <label>
+            <input type="radio" name="operationMode" value="latex">
+            <span>LaTeX</span>
+          </label>
+          <label>
+            <input type="radio" name="operationMode" value="title">
+            <span>File name</span>
+          </label>
+          <label>
+            <input type="radio" name="operationMode" value="open">
+            <span>Open link</span>
+          </label>
+        </fieldset>
+        
+        <fieldset>
+          <legend>Options</legend>
+          <label>
+            <input type="checkbox" id="applyTexReplacement">
+            <span>Alternative TeX representation</span>
+          </label>
+          <label>
+            <input type="checkbox" id="imputeBibId">
+            <span>Impute standard BibTeX ID</span>
+          </label>
+          <label>
+            <input type = "checkbox" id="sortEntries">
+            <span>Sort entries</span>
+          </label>
+          <br>
+        </fieldset>
+        
+        <button id="submitButton">Submit</button>
+      </div>
+    </section>
+    
+    <section class="processedBibTeX">
+      <h2 id="contentPreviewHeading" style="display: none;">Processed BibTeX entries</h2>
+      <div id="textDisplay">
+        <pre id="outputContent"></pre>
+      </div>
+      <div class="action-buttons">
+        <button id="copyButton" type="button" style="display: none;">Copy</button>
+        <button id="downloadButton" type="button" style="display: none;">Download</button>
+      </div>
+    </section>
+  </main>
+  
+  <footer class="site-footer">
+    <p class="footer-text">
+      Created by <span class="author-name">Dimitri Silva</span> with assistance from Claude
+    </p>
+    <p class="footer-links">
+      <a href="https://dimitrisilva.github.io/" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <!--a href="mailto:myemail@hotmail.com">Contact</a-->
+    </p>
+  </footer>
+  
+  <script src="bibtex-process.js"></script>
+</body>
+</html>

@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="gcp-study-plan">
+  <meta name="description" content="mastering-gcp">
   <meta name="robots" content="noindex, nofollow">
-  <title>Google Cloud Platform Study Plan</title>
+  <title>Mastering Google Cloud Platform for Data Science</title>
   <style>
     @font-face {
       font-family: 'Latin Modern Roman';
@@ -46,11 +46,24 @@
       list-style-type: disc;
       margin-left: 20px;
     }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid rgb(204, 204, 204);
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: rgb(216, 216, 216);
+    }
   </style>
 </head>
 <body>
-  <h1>Self-Study Plan for Mastering Google Cloud Platform (GCP) for Data Science and Machine Learning</h1>
-  <p>This syllabus is designed as a progressive self-study plan to build proficiency in GCP, leveraging a background in Python, R, SQL, and econometrics. It emphasizes cloud-native tools for data ingestion, storage, processing, analysis, and machine learning, while minimizing overlap between textbooks. The primary focus is on free-tier GCP services (e.g., BigQuery sandbox, limited Cloud Storage, free tiers of Pub/Sub, Dataflow for small jobs, Vertex AI notebooks with constraints, and Google Earth Engine public datasets). No paid features are required; stick to sandbox limits (e.g., 1 TB/month query in BigQuery) and monitor usage to avoid charges. The plan is divided into modules, each building skills toward specific exercises. Allocate 1-2 weeks per module based on your pace, with hands-on practice integrated.</p>
+  <h1>Mastering Google Cloud Platform for Data Science</h1>
+  <p>This syllabus is designed as a progressive self-study plan to build proficiency in Google Cloud Platform (GCP), leveraging a background in Python, R, SQL, and econometrics. It emphasizes cloud-native tools for data ingestion, storage, processing, analysis, and machine learning, while minimizing overlap between textbooks. The primary focus is on free-tier GCP services (e.g., BigQuery sandbox, limited Cloud Storage, free tiers of Pub/Sub, Dataflow for small jobs, Vertex AI notebooks with constraints, and Google Earth Engine public datasets). No paid features are required; stick to sandbox limits (e.g., 1 TB/month query in BigQuery) and monitor usage to avoid charges. The plan is divided into modules, each building skills toward specific exercises. Allocate 1-2 weeks per module based on your pace, with hands-on practice integrated.</p>
   <br>
   
   <details class="module-unread">
@@ -217,5 +230,84 @@
       </ul>
     </div>
   </details>
+  <br>
+  
+  <h2>Summary Table</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Module</th>
+        <th>Data Science on the Google Cloud Platform (Lakshmanan, 2022)</th>
+        <th>Google BigQuery: The Definitive Guide (Lakshmanan and Tigani, 2019)</th>
+        <th>Data Engineering with Google Cloud Platform (Wijaya, 2024)</th>
+        <th>Streaming Systems (Akidau, Chernyak and Lax, 2018)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Module 1: GCP Fundamentals and Setup</td>
+        <td>Alternative: Chapter 1 (sections on Cloud Computing and Serverless)</td>
+        <td>None</td>
+        <td>Primary: Chapter 2 (Big Data Capabilities on GCP)</td>
+        <td>None</td>
+      </tr>
+      <tr>
+        <td>Module 2: Data Storage and Warehousing with BigQuery</td>
+        <td>None</td>
+        <td>Primary: Chapters 1 (What Is Google BigQuery?), 2 (Query Essentials), 4 (Loading Data into BigQuery)</td>
+        <td>Alternative: Chapter 3 (Building a Data Warehouse in BigQuery)</td>
+        <td>None</td>
+      </tr>
+      <tr>
+        <td>Module 3: Advanced Querying and Optimization in BigQuery</td>
+        <td>Alternative: Chapter 3 (sections on Schema Exploration and Querying Using BigQuery)</td>
+        <td>Primary: Chapters 3 (Data Types, Functions, and Operators), 7 (Optimizing Performance and Cost)</td>
+        <td>None</td>
+        <td>None</td>
+      </tr>
+      <tr>
+        <td>Module 4: Data Ingestion and Batch Processing</td>
+        <td>Primary: Chapter 2 (Ingesting Data into the Cloud)</td>
+        <td>Alternative: Chapter 4 (federated queries section)</td>
+        <td>Alternative: Chapter 5 (Building a Data Processing Pipeline)</td>
+        <td>None</td>
+      </tr>
+      <tr>
+        <td>Module 5: Streaming Data Processing</td>
+        <td>Primary: Chapter 4 (Streaming Data: Publication and Ingest)</td>
+        <td>None</td>
+        <td>Alternative: Chapter 6 (Building a Data Processing Pipeline with Streaming Data)</td>
+        <td>Alternative: Chapters on windowing/time (Chapters 2-4: The What, Where, When, and How of Data Processing; Watermarks; Advanced Windowing)</td>
+      </tr>
+      <tr>
+        <td>Module 6: Interactive Exploration and Visualization</td>
+        <td>Primary: Chapters 3 (Creating Compelling Dashboards), 5 (Interactive Data Exploration)</td>
+        <td>None</td>
+        <td>Alternative: Chapter 7 (Visualizing Data with Looker Studio)</td>
+        <td>None</td>
+      </tr>
+      <tr>
+        <td>Module 7: Machine Learning on GCP</td>
+        <td>Alternative: Chapters 6 (Bayesian Classifier), 7 (Statistical Time-Series Forecasting)</td>
+        <td>Primary: Chapter 9 (Machine Learning in BigQuery)</td>
+        <td>Alternative: Chapter 8 (ML on GCP)</td>
+        <td>None</td>
+      </tr>
+      <tr>
+        <td>Module 8: Advanced Topics: Geospatial, Orchestration, and Integration</td>
+        <td>Alternative: Chapter 9 (ML with TensorFlow)</td>
+        <td>Alternative: Chapter 10 (GIS)</td>
+        <td>Primary: Chapters 4 (Building Workflows with Cloud Composer), 9 (Geospatial in BigQuery)</td>
+        <td>None</td>
+      </tr>
+      <tr>
+        <td>Module 9: Capstone Integration and Projects</td>
+        <td>Review summaries</td>
+        <td>Review summaries</td>
+        <td>Review summaries</td>
+        <td>Review for advanced streaming if needed</td>
+      </tr>
+    </tbody>
+  </table>
 </body>
 </html>

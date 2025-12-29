@@ -1,0 +1,3 @@
+# Ignoring any text (.txt) file
+
+**/*.txt

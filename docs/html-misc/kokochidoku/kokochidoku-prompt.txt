@@ -1,0 +1,11 @@
+## 
+
+---
+
+## Draft
+
+Word segmentation: Kuromoji.js
+Reading and meaning: WanaKana and Jisho API
+
+
+Other stuff: https://guidetojapanese.org/learn/

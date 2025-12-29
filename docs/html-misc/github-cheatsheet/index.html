@@ -115,6 +115,9 @@
     .section {
       margin-bottom: 40px;
     }
+    .separator {
+      text-align: center;
+    }
     
     @media (max-width: 768px) {
       .sidebar {
@@ -177,7 +180,43 @@
   <li><strong>Document projects</strong>: Use README files and wikis to explain your work</li>
 </ul>
 
-<p>This cheat sheet provides not just commands, but explanations of when and why to use them, helping you understand the differences between similar commands and avoid common confusion. It is based on cheat sheets from <a href="https://education.github.com/git-cheat-sheet-education.pdf">GitHub Education</a> and <a href="https://git-scm.com/cheat-sheet">Git</a> and on Ken Mueller's repository of <a href="https://github.com/kenmueller/gitignore">gitignore rules</a>.</p>
+<p class="separator">***</p>
+
+<p>A typical version control workflow with Git and GitHub begins with <a href="#setup">setup</a> and <a href="#initialization">initialization</a>. When starting fresh, you configure Git with your identity (name and email) so that your contributions are properly attributed. You then either initialize a new repository in an existing project directory or clone an existing repository from GitHub to your local machine. This establishes the foundation for tracking your project's history.</p>
+
+<p>Once your repository is ready, the core development cycle revolves around <a href="#stage-snapshot">staging and snapshotting</a> changes. As you work on your project, you modify files in your working directory. When you've made meaningful progress, you stage these changes using <code>git add</code>, which prepares them for a permanent snapshot. You then commit these staged changes with <code>git commit</code>, creating a point in your project's history that you can always return to. This cycle of modify-stage-commit repeats continuously throughout development. Good practice involves making frequent, focused commits with clear messages that explain what changed and why.</p>
+
+<p>For more complex projects or when working on multiple features simultaneously, <a href="#branch-merge">branching and merging</a> becomes essential. You create separate branches to develop new features or fix bugs in isolation from your main codebase. This allows you to experiment freely without affecting stable code. Once your work on a branch is complete and tested, you merge it back into the main branch. If conflicts arise during merging—when the same lines were modified differently in both branches—you resolve them manually before completing the merge. This branching workflow is fundamental to collaborative development and enables multiple developers to work on different features simultaneously without interfering with each other.</p>
+
+<p>Throughout development, you'll frequently need to <a href="#inspect-compare">inspect and compare</a> your project's history. Commands like <code>git log</code> help you understand what has changed over time, who made specific changes, and why. The <code>git diff</code> family of commands allows you to compare different versions of your code—whether between your working directory and the last commit, between branches, or between any two points in history. The <code>git blame</code> command helps trace the origin of specific lines of code, which is invaluable when debugging or understanding why certain decisions were made.</p>
+
+<p>As projects grow, certain housekeeping tasks become necessary. <a href="#tracking-path">Tracking path changes</a> ensures that Git properly records when you rename or move files, preserving their history across these operations. <a href="#ignoring">Ignoring patterns</a> through <code>.gitignore</code> files prevents unwanted files—such as temporary files, build artifacts, or sensitive credentials—from being tracked in your repository. These practices keep your repository clean and focused on source code.</p>
+
+<p>Collaboration through GitHub introduces the <a href="#share-update">share and update</a> workflow. After making local commits, you push them to a remote repository on GitHub using <code>git push</code>, making your work accessible to collaborators. Conversely, you fetch and pull changes from the remote repository to stay synchronized with others' work. Before pushing, it's often wise to fetch the latest changes and merge them locally, resolving any conflicts in your own environment. This push-pull cycle is the heartbeat of collaborative development, enabling teams to work together on shared codebases.</p>
+
+<p>Occasionally, you'll need to modify project history through <a href="#rewrite-history">rewriting history</a> commands. You might amend the most recent commit to fix a typo in the message or include a forgotten file. More advanced operations like <code>git rebase</code> can reorganize commit history to make it cleaner and more logical. However, these history-rewriting operations require caution—they should generally only be performed on commits that haven't been shared with others, as rewriting shared history can cause significant problems for collaborators.</p>
+
+<p>In day-to-day work, you'll often encounter situations where you need to temporarily set aside your current work. The <a href="#stash">stash</a> feature addresses this by allowing you to save uncommitted changes without creating a commit. This is particularly useful when you need to quickly switch branches to address an urgent bug or review someone else's work, but your current changes aren't ready to be committed. You can later retrieve these stashed changes and continue where you left off.</p>
+
+<p>Finally, GitHub's <a href="#issues">issue tracking</a> system integrates with your Git workflow to manage project tasks, bugs, and feature requests. While not part of Git itself, issues provide crucial context for your commits. By referencing issue numbers in commit messages (e.g., "Fixes #42"), you create traceability between your code changes and the problems they solve or features they implement. This connection between issues and commits creates a comprehensive record of not just what changed, but why it changed.</p>
+
+<p>This workflow isn't strictly linear—you'll move back and forth between these stages as needed. A typical day might involve pulling updates, creating a feature branch, making several commit cycles, inspecting history to understand existing code, pushing your work, and creating or updating issues to track progress. Understanding how these pieces fit together transforms Git and GitHub from a collection of commands into a powerful system for managing and collaborating on software projects.</p>
+
+<p class="separator">***</p>
+
+<p>The syntax of a <a href="https://git-scm.com/docs/git">git command</a> is as follows: </p>
+<pre><code>git [-v | --version] [-h | --help] [-C &lt;path&gt;] [-c &lt;name&gt;=&lt;value&gt;] 
+    [--exec-path[=&lt;path&gt;]] [--html-path] [--man-path] [--info-path] 
+    [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--no-lazy-fetch] 
+    [--no-optional-locks] [--no-advice] [--bare] [--git-dir=&lt;path&gt;] 
+    [--work-tree=&lt;path&gt;] [--namespace=&lt;name&gt;] [--config-env=&lt;name&gt;=&lt;envvar&gt;] 
+    &lt;command&gt; [&lt;args&gt;]
+</code></pre>
+<p>The <code>git</code> command follows a consistent structure where optional flags and configuration options precede the actual Git subcommand. You can specify global options like <code>--version</code> for checking Git's version, <code>--help</code> for documentation, <code>-C &lt;path&gt;</code> to run Git as if started in a different directory, or <code>-c &lt;name&gt;=&lt;value&gt;</code> to temporarily set configuration values for a single command. Additional options control behavior such as pagination (<code>-p</code>), specify repository paths (<code>--git-dir</code>, <code>--work-tree</code>), or modify how Git operates. After these optional global flags comes <code>&lt;command&gt;</code> (such as <code>commit</code>, <code>push</code>, <code>branch</code>, etc.) followed by any arguments specific to that command. In practice, most users only use the basic form <code>git &lt;command&gt; [&lt;args&gt;]</code>, but understanding this full syntax reveals that Git allows extensive customization of its behavior on a per-command basis through these global options. A comprehensive explanation of this syntax can be found on Git's <a href="https://git-scm.com/docs/git">documentation website</a>.</p>
+
+<p class="separator">***</p>
+
+<p>This cheat sheet provides not just commands, but explanations of when and why to use them, helping you understand the differences between similar commands and avoid common confusion. It is based on cheat sheets from <a href="https://education.github.com/git-cheat-sheet-education.pdf">GitHub Education</a> and <a href="https://git-scm.com/cheat-sheet">Git</a> and on Ken Mueller's repository of <a href="https://github.com/kenmueller/gitignore">gitignore rules</a>. More comprehensive explanations can be found in Scott Chacon and Ben Straub's (2014) <a href="https://git-scm.com/book/en/v2">Pro Git</a> book and Mariot Tsitoara's (2024) <a href="https://link.springer.com/book/10.1007/979-8-8688-0215-7">Beginning Git and GitHub</a>.</p>
 </div>
 
 <div class="section" id="installation">

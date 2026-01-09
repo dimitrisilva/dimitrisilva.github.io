@@ -172,7 +172,7 @@
           }
           const formatted = fieldValue
             .replace(/\b([A-Z]{2})\b/g, m => m.split('').join(' '))
-            .replace(/\b([A-Z]{1})\b(?![.{])/g, m => `${m}.`)
+            .replace(/\b([A-Z]{1})\b(?![.\\{])/g, m => `${m}.`)
             .replace(/\s+/g, ' ').trim();
           return [fieldName, formatted];
         })
@@ -199,7 +199,7 @@
     let link = '';
     if (bibfields['url'] || bibfields['doi']) {
       link = (bibfields['url'] || ('https://dx.doi.org/' + bibfields['doi']));
-      link = `<a class="ref-link" href="${link}">link</a>`;
+      link = `<a class="ref-link" href="${link}">${link}</a>`;
     }
     
     let title = `<span class="title">${bibfields['title']}</span>.`;
@@ -301,7 +301,8 @@
         return '';
     }
     
-    html = convertChars(`${author} ${year} ${title} ${appendix}`, 'std', 'txt')
+    html = convertChars(`${author} ${year} ${title} ${appendix}`, 'std', 'txt');
+    html = convertChars(html, 'tex', 'txt')
       .replaceAll(/\s+/g, ' ')
       .replaceAll(/\.+/g, '.')
       .replaceAll('?.', '?');
@@ -338,7 +339,7 @@
     
     let editor = (bibfields['editor'] || '');
     if (bibfields['editor']) {
-      editor = bibfields['author'].split(/\s+and\s+/)
+      editor = bibfields['editor'].split(/\s+and\s+/)
       .map(name => [name.split(/,\s+/)[1], name.split(/,\s+/)[0]].join(' '))
       .reduce((acc, cur, i, arr) => 
         i === arr.length - 1 ? acc + '; and ' + cur : acc + '; ' + cur
@@ -455,7 +456,7 @@
           i === arr.length - 1 ? acc + ' and ' + cur : acc + ', ' + cur
         );
       const filename = `${title} (${authorNames}, ${year})`;
-      return convertChars(filename, 'std', 'txt');
+      return convertChars(convertChars(filename, 'std', 'txt'), 'tex', 'txt');
     } catch (error) {
       console.error('Error generating title:', error);
       return '';
@@ -690,8 +691,10 @@
           domCache.sortEntriesCheckbox.checked = false;
           break;
         case 'title':
-          // Do (nothing to do) the same as 'open'
+          // Do (nothing to do) the same as 'ids'
         case 'open':
+          // Do (nothing to do) the same as 'ids'
+        case 'ids':
           domCache.texReplacementCheckbox.disabled = true;
           domCache.texReplacementCheckbox.checked = false;
           domCache.imputeBibIdCheckbox.disabled = true;
@@ -768,6 +771,9 @@
         case 'open': 
           modifiedContent = openLinks(bibs);
           break;
+        case 'ids':
+          modifiedContent = [...bibs.bibIds()].join(' ');
+          break;
         default:
           showError('Unknown operation mode.');
           return;
@@ -777,7 +783,7 @@
       showError('An error occurred during processing.');
       return;
     }
-
+    
     // Display results
     displayResults(modifiedContent);
   }

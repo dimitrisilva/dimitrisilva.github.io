@@ -95,7 +95,7 @@
     
     <section class="introduction">
       <p>
-        The <em>BibTeX Processing Tool</em> is a web-based application designed to facilitate the management and formatting of bibliographic references in BibTeX format. This tool provides researchers and academics with a streamlined interface for processing BibTeX entries, generating formatted citations, and managing reference materials. Users can select from multiple operation modes to accomplish different bibliographic tasks: <strong>Process BibTeX</strong> standardizes and formats entries according to conventional BibTeX specifications; <strong>HTML</strong> generates HTML-formatted citations suitable for inclusion in web pages or digital documents; <strong>LaTeX</strong> produces LaTeX-style formatted references for direct incorporation into academic manuscripts; <strong>File name</strong> creates descriptive filenames based on author, year, and title information; and <strong>Open link</strong> automatically opens available URLs and DOIs in separate browser tabs for quick access to referenced materials.
+        The <em>BibTeX Processing Tool</em> is a web-based application designed to facilitate the management and formatting of bibliographic references in BibTeX format. This tool provides researchers and academics with a streamlined interface for processing BibTeX entries, generating formatted citations, and managing reference materials. Users can select from multiple operation modes to accomplish different bibliographic tasks: <strong>Process BibTeX</strong> standardizes and formats entries according to conventional BibTeX specifications; <strong>HTML</strong> generates HTML-formatted citations suitable for inclusion in web pages or digital documents; <strong>LaTeX</strong> produces LaTeX-style formatted references for direct incorporation into academic manuscripts; <strong>File name</strong> creates descriptive filenames based on author, year, and title information; <strong>Open link</strong> automatically opens available URLs and DOIs in separate browser tabs for quick access to referenced materials; and <strong>ID</strong> returns a list of BibTeX IDs extracted from the BibTeX entries.
       </p>
       
       <p>
@@ -134,6 +134,10 @@
           <label>
             <input type="radio" name="operationMode" value="open">
             <span>Open link</span>
+          </label>
+          <label>
+            <input type="radio" name="operationMode" value="ids">
+            <span>ID</span>
           </label>
         </fieldset>
         

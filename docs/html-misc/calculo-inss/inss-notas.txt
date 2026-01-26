@@ -1,0 +1,8 @@
+### Lista de fontes necessárias para o cálculo do benefício previdenciário (INSS)
+
+- Emenda Constitucional nº 103/2019  
+- Lei nº 8.213/1991 (Lei de Benefícios)  
+- Decreto nº 3.048/1999 (Regulamento da Previdência Social)  
+- Instrução Normativa INSS nº 128/2022 (**indispensável**)  
+- Portarias e Resoluções administrativas vigentes  
+- CNIS completo e validado (histórico contributivo do segurado)

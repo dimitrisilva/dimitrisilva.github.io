@@ -18,3 +18,25 @@ Please create a study plan that satisfies the following requirements:
 - As chapters 1 through 5 of Corbae et al.'s textbook is not included in the study plan, there should be a small piece of text--made of a couple of paragraphs--indicating the minimally necessary set of sections and concepts from those chapters that students must be familiar with to be able understand the content of the study plan.
 
 I have attached the textbooks so you can precisely consult the material. Please write the study plan in the style of a course syllabus. At the end of the study plan, please include a summary table in which the first column lists the modules and the remaining columns correspond to each textbook. Each cell should indicate the chapters or sections of the relevant textbook covered in that module.
+
+---
+
+I would like to create a self-study plan on measure-theoretic probability theory and would appreciate your help in designing such a plan based on some textbooks of my choice.
+
+I intend to study Jeffrey S. Roshenthal's *A First Look at Rigorous Probability Theory* and Marek Capiński and Peter Ekkehard Kopp's *Measure, Integral and Probability*. When studying these textbooks, I would like to read overlapping material in parallel. However, since the topics covered are not identical, I would like to follow the contents of these textbooks giving priority first to Rosenthal (2006), then Capiński and Kopp (2004). However, whenever one of the textbooks presents a common topic more rigorously than the other, I want to study it first.
+
+Please create a study plan that satisfies the following requirements:
+
+- The plan must be divided into modules, where the content of modules are defined more by topic than the time it takes to study the content.
+- At the beginning of each module, include a one-paragraph overview explaining what will be learned and why the material is important for what follows.
+- For each module, indicate:
+  - the primary source (the reference providing the most detailed exposition), and
+  - the secondary source (the references providing a more concise or complementary treatment),
+  specifying the relevant sections from each reference.
+- Indicate any prerequisite material that appears earlier in the listed references content.
+- Identify concepts (e.g., definitions) and results (e.g., lemmas, propositions, theorems) that are not required for understanding subsequent modules and may be safely skipped.
+- Suggest any exercise from the specified chapters or sections whose content is not proved by any of the reference materials and whose result is used to prove results that follow.
+- Each module should be detailed enough to guide self-paced study, with specific steps or sub-tasks for each section.
+- The study plan should build logically from one module to the next, with clear connections drawn between them. If there is overlap between the three textbooks, please indicate which concepts will be emphasized in each source.
+
+I have attached the textbooks so you can precisely consult the material. Please write the study plan in the style of a course syllabus. At the end of the study plan, please include a summary table in which the first column lists the modules and the remaining columns correspond to each textbook. Each cell should indicate the chapters or sections of the relevant textbook covered in that module.

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="google-bigquery-project">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Google BigQuery Project Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Source+Code+Pro:wght@400;500&display=swap');
+
+    :root {
+      --bg: rgb(196, 196, 196);
+      --sidebar-bg: rgb(220, 220, 220);
+      --code-bg: rgb(220, 220, 220);
+      --border: rgb(180, 180, 180);
+      --text: rgb(33, 33, 33);
+      --text-muted: rgb(80, 80, 80);
+      --accent: rgb(0, 102, 204);
+      --accent-hover: rgb(0, 80, 170);
+      --active-bg: rgb(0, 102, 204);
+      --active-text: rgb(255, 255, 255);
+      --sidebar-width: 260px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg);
+      margin: 0;
+      padding: 0;
+      text-align: justify;
+      font-family: 'Source Serif 4', 'Georgia', serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: var(--sidebar-bg);
+      padding: 20px;
+      overflow-y: auto;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar h3 {
+      margin-top: 0;
+      font-size: 1.1em;
+      font-weight: 600;
+      text-align: center;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+
+    .sidebar nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar nav ul li {
+      margin-bottom: 6px;
+      text-align: left;
+    }
+
+    .sidebar nav ul li a {
+      display: block;
+      padding: 7px 12px;
+      color: var(--text);
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.88em;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .sidebar nav ul li a:hover {
+      background-color: rgb(240, 240, 240);
+      text-decoration: none;
+    }
+
+    .sidebar nav ul li a.active {
+      background-color: var(--active-bg);
+      color: var(--active-text);
+    }
+
+    .sidebar-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 10px 0;
+    }
+
+    .sidebar-label {
+      font-size: 0.72em;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding: 4px 12px 2px;
+      display: block;
+    }
+
+    /* ── Main content ── */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 10px 5% 60px 5%;
+      flex: 1;
+      max-width: 960px;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.9em;
+      font-weight: 600;
+      margin-bottom: 0.2em;
+    }
+
+    h2 {
+      font-size: 1.45em;
+      font-weight: 600;
+      margin-top: 2.2em;
+      margin-bottom: 0.6em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.3em;
+    }
+
+    h3 {
+      font-size: 1.08em;
+      font-weight: 600;
+      margin-top: 1.6em;
+      margin-bottom: 0.3em;
+    }
+
+    h4 {
+      font-size: 1em;
+      font-weight: 600;
+      margin-top: 1.2em;
+      margin-bottom: 0.2em;
+      font-style: italic;
+    }
+
+    p {
+      margin: 0.7em 0;
+    }
+
+    ul, ol {
+      margin: 0.6em 0;
+      padding-left: 1.8em;
+    }
+
+    li {
+      margin-bottom: 0.3em;
+    }
+
+    code {
+      background-color: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Source Code Pro', 'Courier New', monospace;
+      font-size: 0.88em;
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      padding: 15px 18px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin: 0.8em 0;
+      border-left: 3px solid var(--border);
+    }
+
+    pre code {
+      background-color: transparent;
+      padding: 0;
+      font-size: 0.87em;
+      line-height: 1.55;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.93em;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: var(--sidebar-bg);
+      font-weight: 600;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .separator {
+      text-align: center;
+      color: var(--text-muted);
+      margin: 1.4em 0;
+    }
+
+    .tip-box {
+      background-color: rgb(210, 225, 245);
+      border-left: 4px solid var(--accent);
+      padding: 10px 16px;
+      border-radius: 0 4px 4px 0;
+      margin: 1em 0;
+      font-size: 0.94em;
+    }
+
+    .warning-box {
+      background-color: rgb(255, 243, 210);
+      border-left: 4px solid rgb(204, 140, 0);
+      padding: 10px 16px;
+      border-radius: 0 4px 4px 0;
+      margin: 1em 0;
+      font-size: 0.94em;
+    }
+
+    .note-box {
+      background-color: rgb(235, 235, 235);
+      border-left: 4px solid rgb(130, 130, 130);
+      padding: 10px 16px;
+      border-radius: 0 4px 4px 0;
+      margin: 1em 0;
+      font-size: 0.94em;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 10px 5%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <h3>Navigation</h3>
+    <nav>
+      <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <hr class="sidebar-divider">
+        <span class="sidebar-label">Steps</span>
+        <li><a href="#step1">Step 1 — Project &amp; Billing</a></li>
+        <li><a href="#step2">Step 2 — Storage</a></li>
+        <li><a href="#step3">Step 3 — BigQuery Tables</a></li>
+        <li><a href="#step4">Step 4 — Transform &amp; Export</a></li>
+        <li><a href="#step5">Step 5 — External Access</a></li>
+        <hr class="sidebar-divider">
+        <span class="sidebar-label">Client Libraries</span>
+        <li><a href="#python">Python</a></li>
+        <li><a href="#r">R</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- ── Main content ── -->
+  <main class="main-content">
+
+    <h1>Google BigQuery Project Guide</h1>
+
+    <!-- ══ Introduction ══ -->
+    <div class="section" id="introduction">
+      <h2>Introduction</h2>
+
+      <p> <a href="https://cloud.google.com/bigquery">Google BigQuery</a> is a fully managed, serverless data warehouse that enables fast <a href="https://docs.cloud.google.com/bigquery/docs/introduction-sql">SQL</a> queries over very large datasets. Unlike a traditional database server that you provision and maintain, BigQuery abstracts away all infrastructure management: you upload data, write SQL, and pay only for the bytes scanned by your queries. This makes it particularly well-suited for researchers and analysts who need to work with gigabytes or terabytes of data without the overhead of managing a server.</p>
+
+      <p>This guide walks through the end-to-end process of building a BigQuery project, from creating a <a href="https://console.cloud.google.com/freetrial">Google Cloud account</a> and configuring billing all the way through querying, transforming, exporting results, and accessing data programmatically from <a href="https://www.python.org/">Python</a> or <a href="https://www.r-project.org/">R</a>. Each step is self-contained, but they are designed to be followed in order for a first-time setup.</p>
+
+      <p class="separator">***</p>
+
+      <p>The workflow covered in this guide consists of five major stages. The first stage, <a href="#step1">project creation and billing setup</a>, covers creating a <a href="https://cloud.google.com/">Google Cloud</a> <a href="https://developers.google.com/workspace/guides/create-project">project</a>, configuring a billing account (including Pix payments for Brazilian residents), enabling the necessary APIs, and setting a budget alert to avoid unexpected charges. These are prerequisites for everything that follows.</p>
+
+      <p>The second stage, <a href="#step2">data upload and storage</a>, covers creating a <a href="https://cloud.google.com/storage">Google Cloud Storage</a> (GCS) bucket and uploading raw data files (JSONL, CSV, and schema JSON files) from a local machine. GCS acts as an intermediate staging area: for large files it is more reliable and faster to load data into BigQuery from GCS than to stream it directly from a local machine.</p>
+
+      <p>The third stage, <a href="#step3">building and clustering tables in BigQuery</a>, covers creating a <a href="https://docs.cloud.google.com/bigquery/docs/datasets-intro">BigQuery dataset</a> (the container for tables), defining table schemas, and loading data with partitioning and clustering. Partitioning splits a table into segments by a date or integer-range column, while clustering physically sorts data within each partition by one or more columns. Together they dramatically reduce the amount of data scanned per query, which directly lowers cost and improves performance.</p>
+
+      <p>The fourth stage, <a href="#step4">data transformation and export</a>, covers running <a href="https://docs.cloud.google.com/bigquery/docs/introduction-sql">SQL</a> inside BigQuery to produce derived or analysis-ready tables and exporting the results back to GCS as JSONL files. BigQuery's <code>EXPORT DATA</code> statement bypasses the normal query-result size limits and can export petabyte-scale results into automatically sharded files, making it the correct tool for any non-trivial output.</p>
+
+      <p>The fifth and final stage, <a href="#step5">service accounts and external access</a>, covers creating a <a href="https://docs.cloud.google.com/iam/docs/service-account-overview">service account</a> (a non-human identity with specific permissions), <a href="https://docs.cloud.google.com/iam/docs/keys-create-delete">generating a JSON key file</a>, and using that key to <a href="https://docs.cloud.google.com/docs/authentication/client-libraries">authenticate</a> from Python or R. This enables programmatic access to BigQuery data without exposing personal credentials.</p>
+
+      <p class="separator">***</p>
+
+      <p>A few conventions used throughout this guide. Shell commands are shown in <code>pre</code> blocks; on Windows, commands that use the caret <code>^</code> character as a line continuation are intended for Command Prompt or PowerShell. On macOS/Linux, replace <code>^</code> with <code>\</code>. Placeholder values such as <code>[PROJECT_ID]</code> or <code>your_clustering_column</code> should be substituted with values specific to your project before running a command. Tips, warnings, and notes are highlighted in coloured boxes throughout.</p>
+
+      <p class="separator">***</p>
+
+      <p>This guide provides a step-by-step reference for building a BigQuery project. A comprehensive treatment can be found in the <a href="https://docs.cloud.google.com/bigquery/docs">Google BigQuery documentation</a>; textbook presentations are provided by Mike Khan's (2023) <a href="https://www.oreilly.com/library/view/data-exploration-and/9781805125266/">Data Exploration and Preparation with BigQuery</a> and Valliappa Lakshmanan and Jordan Tigani's (2019) <a href="https://www.oreilly.com/library/view/google-bigquery-the/9781492044451/">Google BigQuery: The Definitive Guide</a>. Google also provides an <a href="https://docs.cloud.google.com/bigquery/docs/introduction-sql">introduction to GoogleSQL</a>, a dialect used by BigQuery. Readers looking for a gentle introduction to SQL may consult Renée M. P. Teate's (2021) <a href="https://www.oreilly.com/library/view/sql-for-data/9781119669364/">SQL for Data Scientists</a> or Cathy Tanimura's (2021) <a href="https://www.oreilly.com/library/view/sql-for-data/9781492088776/">SQL for Data Analysis</a>.</p>
+
+    </div>
+
+    <!-- ══ Step 1 ══ -->
+    <div class="section" id="step1">
+      <h2>Step 1 — Project Creation and Billing Setup</h2>
+
+      <p>This step establishes the infrastructure foundation: a <a href="https://developers.google.com/workspace/guides/create-project">Google Cloud project</a>, a <a href="https://docs.cloud.google.com/billing/docs/how-to/manage-billing-account">billing account</a>, the required <a href="https://cloud.google.com/apis">APIs</a>, and a <a href="https://docs.cloud.google.com/billing/docs/how-to/budgets">budget alert</a>. None of the subsequent steps are possible without completing this one first.</p>
+
+      <h3>1.1 Create a Google Cloud Project</h3>
+
+      <p>A Google Cloud <em>project</em> is the top-level organisational unit for all resources, APIs, billing, and permissions. Every resource you create — a <a href="https://docs.cloud.google.com/bigquery/docs/datasets-intro">BigQuery dataset</a>, a <a href="https://docs.cloud.google.com/storage/docs/buckets">Cloud Storage bucket</a>, a <a href="https://docs.cloud.google.com/iam/docs/service-account-overview">service account</a> — belongs to exactly one project.</p>
+
+      <ol>
+        <li>Go to the <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> and sign in with your Google account.</li>
+        <li>In the top navigation bar, click the project selector dropdown and choose <strong>New Project</strong>.</li>
+        <li>Give the project a name (e.g., <code>us-datasets</code>). The console will auto-generate a globally unique Project ID based on this name; you can customise it if needed.</li>
+        <li>Leave the organisation field blank if you are working individually.</li>
+        <li>Click <strong>Create</strong>.</li>
+      </ol>
+
+      <div class="tip-box">
+        <strong>Region selection:</strong> The project itself has no region, but resources created inside it do. For BigQuery datasets and Cloud Storage buckets, choose <strong><code>us-central1</code> (Iowa)</strong>. This region is covered by Google Cloud's <em>Always Free</em> tier, which includes 10 GB of BigQuery storage and 1 TB of query processing per month at no cost.
+      </div>
+
+      <h3>1.2 Configure Billing with Pix (Manual Payments)</h3>
+
+      <p>If you do not have an international credit card, you can fund your account using Pix, Brazil's instant payment system, by selecting Brazil as your billing country. This enables a prepaid (manual payments) mode in which you charge the account with a specific amount before running queries.</p>
+
+      <ol>
+        <li>Go to <a href="https://console.cloud.google.com/billing" target="_blank">console.cloud.google.com/billing</a> and click <strong>Create account</strong>.</li>
+        <li>Set <strong>Country</strong> to <strong>Brazil</strong>. The currency will automatically be set to <strong>BRL (Brazilian Real)</strong>.</li>
+        <li>Under <strong>Payment type</strong>, select <strong>Manual Payments</strong>.</li>
+      </ol>
+
+      <div class="note-box">
+        If only <em>Automatic Payments</em> is shown, try registering a domestic debit card first. You may be able to switch to manual payments afterwards from the billing settings page.
+      </div>
+
+      <p>To add credit to the account via Pix:</p>
+      <ol>
+        <li>Navigate to <strong>Billing → Payment overview</strong>.</li>
+        <li>Click <strong>Make a Payment</strong>.</li>
+        <li>Select <strong>Pix</strong> as the payment method, generate a QR code, and complete the payment from your banking app.</li>
+      </ol>
+
+      <div class="tip-box">
+        <strong>Tip:</strong> Load a small amount (e.g., R$&nbsp;50) before starting work. Since the account operates as a prepaid wallet, running out of credit mid-session will halt all queries and uploads.
+      </div>
+
+      <h3>1.3 Enable Required APIs</h3>
+
+      <p>Newly created Google Cloud projects have most APIs disabled by default. You must explicitly enable BigQuery and Cloud Storage before using them. There are two ways to do this.</p>
+
+      <h4>Method A — Google Cloud Console (GUI)</h4>
+      <ol>
+        <li>Open the left navigation menu (☰) and go to <strong>APIs &amp; Services → Library</strong>.</li>
+        <li>Search for <strong>BigQuery API</strong>, select it, and click <strong>Enable</strong>.</li>
+        <li>Search for <strong>Cloud Storage</strong> (or <strong>Google Cloud Storage JSON API</strong>), select it, and click <strong>Enable</strong>.</li>
+      </ol>
+
+      <h4>Method B — Google Cloud SDK / CLI (Recommended)</h4>
+      <p>If the <a href="https://cloud.google.com/sdk/docs/install" target="_blank">Google Cloud SDK</a> is installed, run the following commands from a terminal (Anaconda Prompt, PowerShell, or Bash):</p>
+
+      <pre><code># Set the active project (replace with your actual Project ID)
+gcloud config set project [PROJECT_ID]
+
+# Enable BigQuery and Cloud Storage APIs in one command
+gcloud services enable bigquery.googleapis.com \
+    storage-api.googleapis.com \
+    storage-component.googleapis.com</code></pre>
+
+      <p>To confirm that the APIs have been enabled correctly:</p>
+
+      <pre><code>gcloud services list --enabled --filter="name:(bigquery* storage*)"</code></pre>
+
+      <p>You should see entries for <code>bigquery.googleapis.com</code>, <code>storage-api.googleapis.com</code>, and <code>storage-component.googleapis.com</code> in the output.</p>
+
+      <table>
+        <thead>
+          <tr><th>API</th><th>Why it is needed</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>bigquery.googleapis.com</code></td>
+            <td>Executing SQL queries, creating datasets and tables, clustering and partitioning operations.</td>
+          </tr>
+          <tr>
+            <td><code>storage-api.googleapis.com</code></td>
+            <td>Reading and writing objects (files) in Cloud Storage buckets, including staging data before loading into BigQuery.</td>
+          </tr>
+          <tr>
+            <td><code>storage-component.googleapis.com</code></td>
+            <td>Low-level storage operations required internally by several GCS-dependent services.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>1.4 Set a Budget Alert</h3>
+
+      <p>Even with the Always Free tier, unexpected activity (e.g., an accidentally large query or an unclosed streaming insert) can generate charges. Setting a budget alert sends an email notification before you reach a spending threshold.</p>
+
+      <ol>
+        <li>Go to <strong>Billing → Budgets &amp; alerts</strong> and click <strong>Create budget</strong>.</li>
+        <li>Scope the budget to your project.</li>
+        <li>Set a total amount (e.g., <strong>R$&nbsp;20</strong>) and enable email alerts at 50%, 90%, and 100% of the threshold.</li>
+        <li>Click <strong>Finish</strong>.</li>
+      </ol>
+
+      <div class="tip-box">
+        Budget alerts do <em>not</em> automatically stop spending — they only notify you. To cap spending automatically, you would need to configure a billing account budget with spend-based notifications and a Cloud Function to disable billing, which is beyond the scope of this guide.
+      </div>
+    </div>
+
+    <!-- ══ Step 2 ══ -->
+    <div class="section" id="step2">
+      <h2>Step 2 — Data Upload and Storage Strategy</h2>
+
+      <p>While BigQuery supports direct file uploads from a local machine for small files, the recommended approach for datasets of several gigabytes or more is to first transfer files to a <strong>Google Cloud Storage (GCS)</strong> <a href="https://docs.cloud.google.com/storage/docs/buckets">bucket</a> and then <a href="https://docs.cloud.google.com/bigquery/docs/loading-data">load</a> from there into BigQuery. This approach is faster, more reliable for large files, and avoids timeout issues associated with direct uploads over slow connections.</p>
+
+      <h3>2.1 Create a Cloud Storage Bucket</h3>
+
+      <p>A GCS <em>bucket</em> is a flat container for objects (files). <a href="https://docs.cloud.google.com/storage/docs/buckets">Buckets</a> have globally unique names, and their region should match the BigQuery dataset region to avoid inter-region data transfer fees.</p>
+
+      <ol>
+        <li>In the Console, navigate to <strong>Cloud Storage → Buckets</strong> and click <strong>Create</strong>.</li>
+        <li><strong>Bucket name:</strong> Choose a globally unique name (e.g., <code>us-datasets-analysis</code>). Names must be lowercase, 3–63 characters, and contain only letters, numbers, and hyphens.</li>
+        <li><strong>Location type:</strong> Select <strong>Region</strong> and choose the same region as your BigQuery dataset (e.g., <code>us-central1</code>).</li>
+        <li><strong>Storage class:</strong> Select <strong>Standard</strong> for data that is actively read and written.</li>
+        <li>Leave all other settings at their defaults and click <strong>Create</strong>.</li>
+      </ol>
+
+      <div class="tip-box">
+        <strong>Tip:</strong> If this bucket is only used as a staging area during a single analysis session, remember to delete it once you have finished to avoid ongoing storage charges.
+      </div>
+
+      <h3>2.2 Upload Data Files</h3>
+
+      <p>Use the <code>gsutil</code> command-line tool (bundled with the Google Cloud SDK) to transfer files from your local machine to the bucket.</p>
+
+      <h4>2.2.1 Verify the bucket exists</h4>
+      <pre><code>gsutil ls gs://us-datasets-analysis/</code></pre>
+
+      <h4>2.2.2 Upload data files</h4>
+      <p>The <code>-m</code> flag enables parallel (multi-threaded) transfers, which significantly accelerates uploads of many files or large files. The <code>-n</code> flag skips files that already exist at the destination, making the command safe to re-run.</p>
+
+      <pre><code># Upload JSONL data files
+gsutil -m cp -n "D:\input-folder\*.jsonl" gs://us-datasets-analysis/raw-data/
+
+# Upload CSV data files
+gsutil -m cp -n "D:\input-folder\*.csv" gs://us-datasets-analysis/raw-data/
+
+# Upload schema definition files
+gsutil -m cp -n "D:\input-folder\*.json" gs://us-datasets-analysis/schema/</code></pre>
+
+      <div class="note-box">
+        Replace <code>D:\input-folder\</code> with the actual path to your local data directory. On macOS/Linux, use Unix-style paths (e.g., <code>/home/user/input-folder/*.jsonl</code>).
+      </div>
+
+      <h4>2.2.3 Confirm the upload</h4>
+      <pre><code>gsutil ls gs://us-datasets-analysis/raw-data/</code></pre>
+
+      <p>The output should list all uploaded files. If a file is missing, check the source path and re-run the upload command.</p>
+    </div>
+
+    <!-- ══ Step 3 ══ -->
+    <div class="section" id="step3">
+      <h2>Step 3 — Building and Clustering Tables in BigQuery</h2>
+
+      <p>This step covers creating the BigQuery <a href="https://docs.cloud.google.com/bigquery/docs/datasets">dataset container</a>, reviewing your <a href="https://docs.cloud.google.com/bigquery/docs/schemas">schema</a> files, and <a href="https://docs.cloud.google.com/bigquery/docs/loading-data">loading data</a> into tables with <a href="https://docs.cloud.google.com/bigquery/docs/partitioned-tables">partitioning</a> and <a href="https://docs.cloud.google.com/bigquery/docs/clustered-tables">clustering</a> applied. The choices you make here directly determine query performance and cost.</p>
+
+      <h3>3.1 Create a BigQuery Dataset</h3>
+
+      <p>In BigQuery, a <em>dataset</em> is a container for tables, analogous to a schema in a traditional relational database. A dataset belongs to a single region; data loaded into it from GCS must come from a bucket in the same region.</p>
+
+      <pre><code># Create a dataset named 'us_data' in the us-central1 region
+bq --location=us-central1 mk -d us_data</code></pre>
+
+      <p>To confirm creation:</p>
+      <pre><code>bq ls -d</code></pre>
+
+      <h3>3.2 Prepare Schema Files</h3>
+
+      <p>A BigQuery <em>schema</em> is a JSON array that describes the columns in a table — their names, data types, and modes (<code>NULLABLE</code>, <code>REQUIRED</code>, or <code>REPEATED</code>). Before loading data, verify that your schema files (stored at <code>gs://us-datasets-analysis/schema/*.json</code>) are correct. Pay particular attention to the following types:</p>
+
+      <ul>
+        <li><code>INTEGER</code> — used for numeric IDs and range-partitioning keys.</li>
+        <li><code>DATE</code> / <code>TIMESTAMP</code> — used for time-based partitioning fields.</li>
+        <li><code>GEOGRAPHY</code> — used for geospatial columns loaded from GeoJSON; requires the <code>--json_extension=GEOJSON</code> flag during load.</li>
+      </ul>
+
+      <h3>3.3 Load Data into Tables</h3>
+
+      <p>BigQuery supports several optimisation strategies at load time. The three most common are described below.</p>
+
+      <h4>Case A — Clustering only</h4>
+      <p>Clustering physically sorts the data in storage by the values of one or more columns. Queries that filter on a clustered column skip blocks of data that cannot match, reducing bytes scanned and therefore cost.</p>
+
+      <pre><code>bq load ^
+  --source_format=NEWLINE_DELIMITED_JSON ^
+  --json_extension=GEOJSON ^
+  --clustering_fields=your_clustering_column ^
+  --schema=D:\schema\schema_clustered_data.json ^
+  us_data.clustered_table ^
+  "gs://us-datasets-analysis/raw-data/*.jsonl"</code></pre>
+
+      <h4>Case B — Partitioning by date column</h4>
+      <p>Partitioning splits a table into segments by the values of a date or timestamp column. A query that filters on the partition column only reads the relevant partitions rather than the entire table.</p>
+
+      <pre><code>bq load ^
+  --source_format=NEWLINE_DELIMITED_JSON ^
+  --json_extension=GEOJSON ^
+  --time_partitioning_field=your_datetime_column ^
+  --schema=D:\schema\schema_partitioned_data.json ^
+  us_data.partitioned_table ^
+  "gs://us-datasets-analysis/raw-data/*.jsonl"</code></pre>
+
+      <h4>Case C — Partitioning by integer range</h4>
+      <p>When no date column exists but data can be segmented by a numeric ID range, integer-range partitioning divides the table into equal-width buckets.</p>
+
+      <pre><code>bq load ^
+  --source_format=NEWLINE_DELIMITED_JSON ^
+  --json_extension=GEOJSON ^
+  --range_partitioning_field=id ^
+  --range_partitioning_start=0 ^
+  --range_partitioning_end=100000 ^
+  --range_partitioning_interval=1000 ^
+  --schema=D:\schema\schema_partitioned_data.json ^
+  us_data.partitioned_table ^
+  "gs://us-datasets-analysis/raw-data/*.jsonl"</code></pre>
+
+      <h3>3.4 Combining Partitioning and Clustering (Recommended)</h3>
+
+      <p>Using partitioning and clustering together is the most cost-effective strategy for large tables that are queried by both a time dimension and a categorical or numeric dimension. BigQuery first partitions the data (e.g., by date), then sorts each partition by the clustering columns (e.g., an integer ID). A query that filters on both dimensions can skip entire partitions <em>and</em> irrelevant blocks within each partition.</p>
+
+      <p>Example for JSONL/GeoJSON files:</p>
+      <pre><code>bq load \
+  --source_format=NEWLINE_DELIMITED_JSON \
+  --json_extension=GEOJSON \
+  --time_partitioning_field=your_datetime_column \
+  --clustering_fields=your_clustering_column \
+  --schema=D:\schema\schema_data.json \
+  us_data.optimized_table \
+  "gs://us-datasets-analysis/raw-data/*.jsonl"</code></pre>
+
+      <p>Example for CSV files:</p>
+      <pre><code>bq load ^
+  --source_format=CSV ^
+  --skip_leading_rows=1 ^
+  --time_partitioning_field=your_datetime_column ^
+  --clustering_fields=your_clustering_column ^
+  --schema=D:\schema\schema.json ^
+  us_data.optimized_table ^
+  "gs://us-datasets-analysis/raw-data/*.csv"</code></pre>
+
+      <h3>3.5 Verify the Table Structure</h3>
+
+      <p>After loading, inspect the table to confirm that partitioning and clustering were applied as expected:</p>
+
+      <pre><code># List all tables in the dataset
+bq ls us_data
+
+# Show full metadata for a specific table (including partition and cluster info)
+bq show us_data.optimized_table</code></pre>
+
+      <table>
+        <thead>
+          <tr><th>Strategy</th><th>Best suited for</th><th>Mechanism</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Clustering</td>
+            <td>Filters on categorical or numeric columns (e.g., region, ID)</td>
+            <td>Physically sorts blocks within storage; query skips irrelevant blocks</td>
+          </tr>
+          <tr>
+            <td>Time partitioning</td>
+            <td>Filters on date or timestamp columns</td>
+            <td>Splits table into daily/monthly/yearly segments; query reads only matching partitions</td>
+          </tr>
+          <tr>
+            <td>Integer-range partitioning</td>
+            <td>Filters on a numeric ID with a known range</td>
+            <td>Splits table into equal-width numeric buckets; query reads only matching buckets</td>
+          </tr>
+          <tr>
+            <td>Partitioning + clustering</td>
+            <td>Filters on both a time dimension and a categorical/numeric dimension</td>
+            <td>Combines both mechanisms for maximum data-skip at query time</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══ Step 4 ══ -->
+    <div class="section" id="step4">
+      <h2>Step 4 — Data Transformation and Export</h2>
+
+      <p>With data loaded into BigQuery, you can now run SQL to <a href="https://docs.cloud.google.com/bigquery/docs/transform-intro">transform</a>, <a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#join_types">join</a>, or <a href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/aggregate_functions">aggregate</a> it, <a href="https://docs.cloud.google.com/bigquery/docs/tables">materialise</a> the results as new tables, and <a href="https://docs.cloud.google.com/bigquery/docs/exporting-data">export</a> those tables back to Cloud Storage for downstream use (e.g., in Python with <code>geopandas</code> or in R with <code>sf</code>).</p>
+
+      <h3>4.1 Create an Export Folder in GCS</h3>
+
+      <p>GCS does not have true directories — all objects live in a flat namespace — but you can simulate a folder hierarchy by using path-like prefixes in object names (e.g., <code>treated-data/county/</code>). The simplest way to create an empty "folder" is to upload a placeholder object and immediately delete it:</p>
+
+      <pre><code>echo . > empty.txt
+gsutil cp empty.txt gs://us-datasets-analysis/treated-data/county/
+gsutil rm gs://us-datasets-analysis/treated-data/county/empty.txt</code></pre>
+
+      <div class="note-box">
+        In practice, running an <code>EXPORT DATA</code> statement with a GCS URI automatically creates the necessary prefix, so this step is optional. It is useful mainly for visual organisation in the Console.
+      </div>
+
+      <h3>4.2 Transform Data and Export Results as JSONL</h3>
+
+      <p>The recommended workflow is to first create a derived table with <code>CREATE OR REPLACE TABLE</code>, then export it with <code>EXPORT DATA</code>. Run the following SQL in the BigQuery Console or via <code>bq query</code>:</p>
+
+      <pre><code>-- 1. Create (or replace) the result table
+CREATE OR REPLACE TABLE `us_data.county_map_meet`
+AS
+-- Optionally include a WITH clause for intermediate transformations
+SELECT *
+FROM `us_data.optimized_table`
+WHERE your_filter_condition;
+
+-- 2. Export the result table to GCS as JSONL
+EXPORT DATA OPTIONS(
+  uri='gs://us-datasets-analysis/treated-data/county/county_map_meet_1960-2020*.jsonl',
+  format='JSON',
+  overwrite=true
+) AS
+SELECT
+  'Feature'               AS type,
+  STRUCT(* EXCEPT(geometry)) AS properties,
+  geometry
+FROM `us_data.county_map_meet`;</code></pre>
+
+      <p>The <code>*</code> wildcard in the output URI instructs BigQuery to automatically shard the output into multiple files when the result set exceeds a single file's size limit. This is essential for large exports.</p>
+
+      <div class="tip-box">
+        <strong>GeoJSON compatibility:</strong> The <code>EXPORT DATA</code> statement serialises <code>GEOGRAPHY</code> columns as GeoJSON-compatible strings. The output JSONL files can be read directly in Python with <code>geopandas.read_file()</code> or converted to an <code>sf</code> object in R, without any additional post-processing.
+      </div>
+
+      <h3>4.3 Export the Table Schema</h3>
+
+      <p>Saving the schema of a result table alongside the data is important for reproducibility: it allows you to reload or validate the data later without guessing column types. The following commands extract the schema locally and upload it to GCS:</p>
+
+      <pre><code># Extract schema to a local file
+bq show --schema --format=prettyjson us_data.county_map_meet ^
+  > D:\Downloads\schema_county_map_meet.json
+
+# Upload the schema file to the GCS schema folder
+gsutil -m cp -n D:\Downloads\schema_county_map_meet.json ^
+  gs://us-datasets-analysis/schema/</code></pre>
+
+      <h3>4.4 Download Results and Clean Up</h3>
+
+      <p>After exporting, download the result files to your local machine and remove intermediate cloud resources to avoid ongoing storage charges.</p>
+
+      <pre><code># Download exported JSONL files
+gsutil -m cp ^
+  "gs://us-datasets-analysis/treated-data/county/county_map_meet_1960-2020*.jsonl" ^
+  D:\Downloads\</code></pre>
+
+      <pre><code># Delete intermediate BigQuery tables
+bq rm -f us_data.optimized_table
+bq rm -f us_data.county_map_meet
+
+# Delete raw data from GCS
+gsutil rm "gs://us-datasets-analysis/raw-data/*.jsonl"</code></pre>
+
+      <div class="warning-box">
+        <strong>Warning:</strong> <code>bq rm -f</code> and <code>gsutil rm</code> are irreversible. Confirm that you have downloaded all files you need before running cleanup commands.
+      </div>
+
+      <h3>Key Notes for Step 4</h3>
+
+      <ul>
+        <li><strong>Large result sets:</strong> The <code>EXPORT DATA</code> statement bypasses BigQuery's interactive query result size limits (typically capped at a few GB in the Console) and can export results of any size by sharding output across multiple files.</li>
+        <li><strong>GeoJSON affinity:</strong> Exported JSONL files containing <code>GEOGRAPHY</code> columns are GeoJSON-compatible, making them immediately usable with spatial libraries such as Python's <code>geopandas</code> or R's <code>sf</code>.</li>
+        <li><strong>Cost awareness:</strong> BigQuery charges for data scanned, not data stored (beyond the free tier). Exporting results does not incur additional query charges, but storing large files in GCS does accrue storage fees over time.</li>
+      </ul>
+    </div>
+
+    <!-- ══ Step 5 ══ -->
+    <div class="section" id="step5">
+      <h2>Step 5 — Service Accounts and External Access</h2>
+
+      <p>To <a href="https://docs.cloud.google.com/bigquery/docs/reference/libraries">query BigQuery programmatically</a> from Python or R, you need to authenticate your scripts against Google Cloud. The recommended approach is to create a <em>service account</em> — an identity associated with your project rather than your personal Google account — and use a JSON key file to authenticate.</p>
+
+      <h3>5.1 Create a Service Account</h3>
+
+      <p>A <a href="https://docs.cloud.google.com/iam/docs/service-account-overview">service account</a> is a special type of Google account intended for non-human use. Scripts, pipelines, and applications authenticate as a service account rather than as a person.</p>
+
+      <ol>
+        <li>In the Console, navigate to <strong>IAM &amp; Admin → Service Accounts</strong>.</li>
+        <li>Click <strong>+ Create Service Account</strong>.</li>
+        <li>Enter a name (e.g., <code>analysis-bot</code>) and an optional description, then click <strong>Create and Continue</strong>.</li>
+      </ol>
+
+      <h3>5.2 Assign Roles</h3>
+
+      <p>Grant the service account only the permissions it needs. The following five roles cover typical research workloads:</p>
+
+      <table>
+        <thead>
+          <tr><th>Role</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>BigQuery Job User</td><td>Required to execute queries (jobs) against the project.</td></tr>
+          <tr><td>BigQuery Data Editor</td><td>Create, update, and delete BigQuery tables and datasets.</td></tr>
+          <tr><td>BigQuery Read Session User</td><td>Required for high-throughput data reads from Python/R via the BigQuery Storage API.</td></tr>
+          <tr><td>Storage Object Admin</td><td>Create and delete objects (files) in Cloud Storage buckets.</td></tr>
+          <tr><td>Storage Object Viewer</td><td>List and read objects in Cloud Storage buckets.</td></tr>
+        </tbody>
+      </table>
+
+      <p>After adding each role, click <strong>Continue</strong> and then <strong>Done</strong>.</p>
+
+      <h3>5.3 Generate and Download a JSON Key File</h3>
+
+      <p>The <a href="https://docs.cloud.google.com/iam/docs/keys-create-delete">JSON key file</a> is the credential that your scripts will use. Treat it like a password.</p>
+
+      <ol>
+        <li>On the Service Accounts list page, click the email address of the account you just created.</li>
+        <li>Go to the <strong>Keys</strong> tab and click <strong>Add Key → Create new key</strong>.</li>
+        <li>Select <strong>JSON</strong> and click <strong>Create</strong>. A file is downloaded automatically.</li>
+        <li>Move the file to a secure local directory, e.g., <code>D:\Keys\google-auth.json</code>.</li>
+      </ol>
+
+      <div class="warning-box">
+        <strong>Security:</strong> Never commit the JSON key file to a public repository (GitHub, GitLab, etc.). Add it to your <code>.gitignore</code>. If it is accidentally exposed, revoke it immediately from the Keys tab and generate a new one.
+      </div>
+    </div>
+
+    <!-- ══ Python ══ -->
+    <div class="section" id="python">
+      <h2>Python — Accessing BigQuery with <code>google-cloud-bigquery</code></h2>
+
+      <p>The official <a href="https://pypi.org/project/google-cloud-bigquery/">Python client library</a> provides a convenient interface for running queries, loading data, and downloading results as Pandas DataFrames.</p>
+
+      <h3>Installation</h3>
+      <pre><code>pip install google-cloud-bigquery pandas pyarrow</code></pre>
+
+      <h3>Connection template</h3>
+      <p>The following functions provide a reusable template for authenticating and querying BigQuery from Python:</p>
+
+      <pre><code>import os
+from google.cloud import bigquery
+import pandas as pd
+
+
+def get_bq_client(json_path: str) -> bigquery.Client:
+    """Initialise a BigQuery client using a service account JSON key."""
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = json_path
+    return bigquery.Client()
+
+
+def query_to_df(sql: str, json_path: str) -> pd.DataFrame:
+    """Run a SQL query and return the results as a Pandas DataFrame."""
+    client = get_bq_client(json_path)
+    query_job = client.query(sql)
+    return query_job.to_dataframe()
+
+
+# ── Usage ──────────────────────────────────────────────────────────────────
+key_path = "D:/Keys/google-auth.json"
+
+sql_query = """
+    SELECT *
+    FROM `us_data.county_map_meet`
+    LIMIT 100
+"""
+
+df = query_to_df(sql_query, key_path)
+print(df.head())</code></pre>
+
+      <div class="tip-box">
+        For geospatial work, consider using the <code>google-cloud-bigquery-storage</code> package together with <code>geopandas</code>. The BigQuery Storage API reads data in parallel using Arrow or Avro serialisation, which is substantially faster than the default REST-based download for large tables.
+      </div>
+    </div>
+
+    <!-- ══ R ══ -->
+    <div class="section" id="r">
+      <h2>R — Accessing BigQuery with <code>bigrquery</code></h2>
+
+      <p>The <code><a href="https://cran.r-project.org/web/packages/bigrquery/index.html">bigrquery</a></code> package provides a tidyverse-compatible interface to BigQuery. It integrates with <code>dplyr</code>, allowing you to write database queries using familiar R syntax.</p>
+
+      <h3>Installation</h3>
+      <pre><code>install.packages("bigrquery")</code></pre>
+
+      <h3>Connection template</h3>
+      <p>The following function authenticates with a service account JSON key and returns query results as a tibble:</p>
+
+      <pre><code>library(bigrquery)
+library(dplyr)
+
+
+get_bq_data <- function(sql, project_id, json_path) {
+  # Authenticate using the service account key
+  bq_auth(path = json_path)
+
+  # Execute the query and download results
+  tb <- bq_project_query(project_id, sql)
+  bq_table_download(tb)
+}
+
+
+# ── Usage ──────────────────────────────────────────────────────────────────
+key_path    <- "D:/Keys/google-auth.json"
+project_id  <- "your-project-id"   # The Project ID from Step 1.1
+
+sql_query <- "
+  SELECT *
+  FROM `us_data.county_map_meet`
+  LIMIT 100
+"
+
+df <- get_bq_data(sql_query, project_id, key_path)
+head(df)</code></pre>
+
+      <div class="tip-box">
+        <code>bigrquery</code> also supports a <code>dplyr</code>-based interface via <code>DBI</code> and <code>dbplyr</code>. You can connect with <code>DBI::dbConnect(bigrquery::bigquery(), project = project_id, dataset = "us_data")</code> and then use <code>tbl()</code>, <code>filter()</code>, <code>mutate()</code>, and other <code>dplyr</code> verbs, which are translated to SQL and executed server-side.
+      </div>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

@@ -208,6 +208,7 @@
       .reduce((acc, cur, i, arr) => 
         i === arr.length - 1 ? acc + '; and ' + cur : acc + '; ' + cur
       );
+    author = `<span class="author">${author}</span>`;
     
     let journal = (bibfields['journal'] || '');
     
@@ -251,7 +252,7 @@
     let pages = bibfields['pages'] ? `pp. ${bibfields['pages']}` : '';
     if (chapter || pages) chapter = ([chapter, pages].join(', ') + '.');
     
-    let year = `(${bibfields['year']}).`;
+    let year = `(<span class="year">${bibfields['year']}</span>).`;
     
     let publisher = bibfields['publisher'] ? `${bibfields['publisher']}.` : '';
     if (['mastersthesis', 'phdthesis', 'techreport'].includes(entryType)) {
@@ -307,7 +308,6 @@
       .replaceAll(/\.+/g, '.')
       .replaceAll('?.', '?');
     html = `${html} ${link}`.trim();
-    html = `<span id="${bibId}" class="unread" data-field="${entryType}">${html}</span>`;
     
     return html;
   }
@@ -537,7 +537,8 @@
     for (let bibId of bibs.bibIds()) {
       const html = bibs[bibId].filehtml;
       if (html) {
-        htmls = [htmls, `<p>\n  ${html}\n</p>`].join('\n\n').trim();
+        let p = `id="${bibId}" class="unread" data-field="${bibs[bibId].type}`;
+        htmls = [htmls, `<p ${p}">\n  ${html}\n</p>`].join('\n\n').trim();
       }
     }
     if (!htmls) {

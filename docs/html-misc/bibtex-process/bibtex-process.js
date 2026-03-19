@@ -87,7 +87,7 @@
     toggleCheckboxAvailability();
   });
   
-  // Event listner
+  // Event listener
   function setupEventListeners() {
     // Submit button
     document.getElementById('submitButton').addEventListener('click', processPastedText);
@@ -537,7 +537,8 @@
     for (let bibId of bibs.bibIds()) {
       const html = bibs[bibId].filehtml;
       if (html) {
-        let p = `id="${bibId}" class="unread" data-field="${bibs[bibId].type}`;
+        let p = `id="${bibId}" class="unread"`;
+        p = `${p} data-type="${bibs[bibId].type} data-sequence="000"`;
         htmls = [htmls, `<p ${p}">\n  ${html}\n</p>`].join('\n\n').trim();
       }
     }

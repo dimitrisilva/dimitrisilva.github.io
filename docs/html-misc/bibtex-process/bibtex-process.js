@@ -197,6 +197,7 @@
     }
     
     let link = '';
+    let url  = '';
     if (bibfields['url'] || bibfields['doi']) {
       link = (bibfields['url'] || ('https://dx.doi.org/' + bibfields['doi']));
       url  = link.replace(/(\/(?!\/)|\.|-)/g, '$1<wbr>');

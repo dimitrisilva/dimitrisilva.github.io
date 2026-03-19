@@ -197,9 +197,11 @@
     }
     
     let link = '';
+    let url  = link;
     if (bibfields['url'] || bibfields['doi']) {
       link = (bibfields['url'] || ('https://dx.doi.org/' + bibfields['doi']));
-      link = `<a class="ref-link" href="${link}">${link}</a>`;
+      url  = url.replace(/(\/(?!\/)|\.|-)/g, '$1<wbr>');
+      link = `<a class="ref-link" href="${link}">${url}</a>`;
     }
     
     let title = `<span class="title">${bibfields['title']}</span>.`;
@@ -539,7 +541,7 @@
       if (html) {
         let p = `id="${bibId}" class="unread"`;
         p = `${p} data-type="${bibs[bibId].type}" data-sequence="000"`;
-        htmls = [htmls, `<p ${p}">\n  ${html}\n</p>`].join('\n\n').trim();
+        htmls = [htmls, `<p ${p}>\n  ${html}\n</p>`].join('\n\n').trim();
       }
     }
     if (!htmls) {

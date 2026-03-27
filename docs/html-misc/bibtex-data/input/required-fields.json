@@ -1,0 +1,113 @@
+{
+  "article": {
+    "mandatory": ["title", "author", "journal", "year"],
+    "optional": [
+      "volume", "number", "pages", "month", "publisher",
+      "crossref", "annote", "note", "url", "doi", "issn",
+      "keywords", "abstract"
+    ]
+  },
+  "book": {
+    "mandatory": ["title", "author", "year", "publisher"],
+    "optional": [
+      "series", "edition", "volume", "number", "chapter", "pages",
+      "month", "address", "crossref", "annote", "note", "url",
+      "doi", "isbn", "keywords", "abstract"
+    ]
+  },
+  "inbook": {
+    "mandatory": [
+      "title", "author", "booktitle", "editor", "chapter", "pages",
+      "year", "publisher"
+    ],
+    "optional": [
+      "type", "series", "edition", "volume", "number", "month",
+      "address", "crossref", "annote", "note", "url", "doi", "isbn",
+      "keywords", "abstract"
+    ]
+  },
+  "booklet": {
+    "mandatory": ["title"],
+    "optional": [
+      "author", "year", "month", "address", "crossref", "annote",
+      "note", "url", "doi", "howpublished", "keywords", "abstract"
+    ]
+  },
+  "incollection": {
+    "mandatory": [
+      "title", "author", "booktitle", "editor", "year", "publisher"
+    ],
+    "optional": [
+      "series", "volume", "number", "chapter", "pages", "month",
+      "address", "crossref", "annote", "note", "url", "doi", "isbn",
+      "keywords", "abstract"
+    ]
+  },
+  "conference": {
+    "mandatory": ["title", "author", "booktitle", "editor", "year"],
+    "optional": [
+      "series", "volume", "number", "pages", "month", "publisher",
+      "address", "organization", "crossref", "annote", "note",
+      "url", "doi", "isbn", "keywords", "abstract"
+    ]
+  },
+  "inproceedings": {
+    "mandatory": ["title", "author", "booktitle", "editor", "year"],
+    "optional": [
+      "series", "volume", "number", "pages", "month", "publisher",
+      "address", "organization", "crossref", "annote", "note",
+      "url", "doi", "isbn", "keywords", "abstract"
+    ]
+  },
+  "proceedings": {
+    "mandatory": ["title", "year"],
+    "optional": [
+      "editor", "series", "volume", "number", "month", "publisher",
+      "address", "crossref", "annote", "note", "url", "doi", "isbn",
+      "keywords", "abstract"
+    ]
+  },
+  "manual": {
+    "mandatory": ["title"],
+    "optional": [
+      "author", "edition", "year", "month", "publisher", "address",
+      "organization", "crossref", "annote", "note", "url", "doi",
+      "isbn", "keywords", "abstract"
+    ]
+  },
+  "mastersthesis": {
+    "mandatory": ["title", "author", "year", "school"],
+    "optional": [
+      "type", "month", "address", "crossref", "annote", "note",
+      "url", "doi", "keywords", "abstract"
+    ]
+  },
+  "phdthesis": {
+    "mandatory": ["title", "author", "year", "school"],
+    "optional": [
+      "type", "month", "address", "crossref", "annote", "note",
+      "url", "doi", "keywords", "abstract"
+    ]
+  },
+  "techreport": {
+    "mandatory": ["title", "author", "year", "institution"],
+    "optional": [
+      "type", "number", "month", "address", "crossref", "annote",
+      "note", "url", "doi", "keywords", "abstract"
+    ]
+  },
+  "unpublished": {
+    "mandatory": ["title", "author"],
+    "optional": [
+      "year", "month", "crossref", "annote", "note", "url", "doi",
+      "keywords", "abstract"
+    ]
+  },
+  "misc": {
+    "mandatory": [],
+    "optional": [
+      "title", "author", "year", "month", "crossref", "annote",
+      "note", "url", "doi", "howpublished", "keywords", "abstract"
+    ]
+  }
+}

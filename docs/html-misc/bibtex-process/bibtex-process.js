@@ -498,7 +498,7 @@
       let links = bibs[bibId].links.split('\n').filter(link => link.trim());
       if (links.length == 2) {
         const doi = links[1];
-        links = [links[0], `https://doi.org/${doi}`, `https://sci-hub.se/${doi}`];
+        links = [links[0], `https://doi.org/${doi}`, `https://sci-hub.in/${doi}`];
       }
       allLinks.push(...links);
     }
@@ -574,10 +574,18 @@
     const linksToOpen = bibLinks.filter(url => !url.includes('sci'));
     if (linksToOpen.length > 0) {
       const confirmOpen = confirm(
-        `About to open ${linksToOpen.length} link(s) in new tabs. Continue?`
+        `About to open ${linksToOpen.length} link(s) in new tab(s). Continue?`
       );
       if (confirmOpen) {
-        linksToOpen.forEach(url => window.open(url, '_blank'));
+        linksToOpen.forEach((url, index) => {
+          setTimeout(() => {
+            try {
+              window.open(url, '_blank');
+            } catch (e) {
+              console.warn('Failed to open:', url, e);
+            }
+          }, index * 200);
+        });
       }
     }
     return bibLinks.join('\n\n');

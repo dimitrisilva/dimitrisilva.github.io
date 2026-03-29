@@ -536,11 +536,14 @@
   // Generate HTMLs
   function generateHTML(bibs) {
     let htmls = '';
+    let counter = 0;
     for (let bibId of bibs.bibIds()) {
       const html = bibs[bibId].filehtml;
       if (html) {
+        counter++;
+        const seq = String(counter).padStart(5, '0');
         let p = `id="${bibId}" class="unread"`;
-        p = `${p} data-type="${bibs[bibId].type}" data-sequence="000"`;
+        p = `${p} data-type="${bibs[bibId].type}" data-sequence="${seq}0"`;
         htmls = [htmls, `<p ${p}>\n  ${html}\n</p>`].join('\n\n').trim();
       }
     }

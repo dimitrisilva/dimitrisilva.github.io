@@ -221,6 +221,19 @@
   abstract = {Many causal models make assumptions of "no difference" or "no effect." For example, difference-in-differences (DID) assumes that there is no trend difference between treatment and comparison groups' untreated potential outcomes ("parallel trends"). Tests of these assumptions typically assume a null hypothesis that there is no violation. When researchers fail to reject the null, they consider the assumption to hold. We argue this approach is incorrect and frequently misleading. These tests reverse the roles of Type I and Type II error and have a high probability of missing assumption violations. Even when power is high, they may detect statistically significant violations too small to be of practical importance. We present test reformulations in a non-inferiority framework that rule out violations of model assumptions that exceed some threshold. We then focus on the parallel trends assumption, for which we propose a "one step up" method: 1) reporting treatment effect estimates from a model with a more complex trend difference than is believed to be the case and 2) testing that that the estimated treatment effect falls within a specified distance of the treatment effect from the simpler model. We show that this reduces bias while also considering power, controlling mean-squared error. Our base model also aligns power to detect a treatment effect with power to rule out meaningful violations of parallel trends. We apply our approach to 4 data sets used to analyze the Affordable Care Act's dependent coverage mandate and demonstrate that coverage gains may have been smaller than previously estimated.}
 }
 
+@article{blackwell2025estimating,
+  title = {Estimating controlled direct effects with panel data: An application to reducing support for discriminatory policies},
+  author = {Blackwell, Matthew and Glynn, Adam N. and Hilbig, Hanno and Phillips, Connor Halloran},
+  journal = {Journal of the Royal Statistical Society Series A: Statistics in Society},
+  number = {},
+  pages = {},
+  year = {2025},
+  publisher = {Oxford University Press},
+  url = {https://academic.oup.com/jrsssa/advance-article-abstract/doi/10.1093/jrsssa/qnaf042/8124953},
+  doi = {10.1093/jrsssa/qnaf042/8124953},
+  abstract = {Recent experimental studies in the social sciences have demonstrated that perspective-taking conversations are effective at reducing prejudicial attitudes and support for discriminatory policies. We ask if such interventions can directly affect policy views without changing prejudice. Unfortunately, the identification of the controlled direct effect--the natural causal quantity of interest for this question--has required strong selection-on-observables assumptions for any mediator. We leverage a recent experimental study with multiple survey waves of follow-up to identify and estimate the controlled direct effect using the changes in the outcome and mediator over time assuming parallel trends in the potential outcomes. This design allows us to weaken the identification assumptions to allow for linear and time-constant unmeasured confounding between the mediator and the outcome. We develop a semiparametrically efficient and doubly robust estimator for these quantities along with a sensitivity analysis for the key identifying assumption of parallel trends. Contrary to what traditional methods find, our approach estimates a controlled direct effect of perspective-taking conversations when subjective feelings are neutral but not positive or negative, and this result is robust to moderate departures from parallel trends.}
+}
+
 @techreport{blonski2008communicating,
   title = {Communicating Trustworthiness},
   author = {Blonski, Matthias and Probst, Daniel A.},
@@ -304,6 +317,16 @@
 
 
 % Cc
+@techreport{caetano2024difference,
+  title = {Difference-in-Differences when parallel trends holds conditional on covariates},
+  author = {Caetano, Carolina and Callaway, Brantly},
+  year = {2024},
+  publisher = {arXiv preprint},
+  url = {https://arxiv.org/abs/2406.15288},
+  doi = {10.48550/arXiv.2406.15288},
+  abstract = {In this paper, we study difference-in-differences identification and estimation strategies when the parallel trends assumption holds after conditioning on covariates. We consider empirically relevant settings where the covariates can be time-varying, time-invariant, or both. We uncover a number of weaknesses of commonly used two-way fixed effects (TWFE) regressions in this context, even in applications with only two time periods. In addition to some weaknesses due to estimating linear regression models that are similar to cases with cross-sectional data, we also point out a collection of additional issues that we refer to as \textit{hidden linearity bias} that arise because the transformations used to eliminate the unit fixed effect also transform the covariates (e.g., taking first differences can result in the estimating equation only including the change in covariates over time, not their level, and also drop time-invariant covariates altogether). We provide simple diagnostics for assessing how susceptible a TWFE regression is to hidden linearity bias based on reformulating the TWFE regression as a weighting estimator. Finally, we propose simple alternative estimation strategies that can circumvent these issues.}
+}
+
 @techreport{caetano2024robust,
   title = {Robust Identification in Regression Discontinuity Designs with Covariates},
   author = {Caetano, Carolina and Caetano, Gregorio and Escanciano, Juan Carlos},
@@ -489,6 +512,16 @@
   doi = {10.3386/w30302},
   publisher = {National Bureau of Economic Research},
   abstract = {We derive general, yet simple, sharp bounds on the size of the omitted variable bias for a broad class of causal parameters that can be identified as linear functionals of the conditional expectation function of the outcome. Such functionals encompass many of the traditional targets of investigation in causal inference studies, such as, for example, (weighted) average of potential outcomes, average treatment effects (including subgroup effects, such as the effect on the treated), (weighted) average derivatives, and policy effects from shifts in covariate distribution -- all for general, nonparametric causal models. Our construction relies on the Riesz-Frechet representation of the target functional. Specifically, we show how the bound on the bias depends only on the additional variation that the latent variables create both in the outcome and in the Riesz representer for the parameter of interest. Moreover, in many important cases (e.g, average treatment effects and avearage derivatives) the bound is shown to depend on easily interpretable quantities that measure the explanatory power of the omitted variables. Therefore, simple plausibility judgments on the maximum explanatory power of omitted variables (in explaining treatment and outcome variation) are sufficient to place overall bounds on the size of the bias. Furthermore, we use debiased machine learning to provide flexible and efficient statistical inference on learnable components of the bounds. Finally, empirical examples demonstrate the usefulness of the approach.}
+}
+
+@techreport{chernozhukov2026applied,
+  title = {Applied causal inference powered by ML and AI},
+  author = {Chernozhukov, Victor and Hansen, Christian and Kallus, Nathan and Spindler, Martin and Syrgkanis, Vasilis},
+  year = {2026},
+  publisher = {arXiv preprint},
+  url = {https://causalml-book.org/},
+  doi = {10.48550/arXiv.2403.02467},
+  abstract = {The book introduces ideas from classical structural equation models (SEMs) and their modern AI equivalent, directed acyclical graphs (DAGs) and structural causal models (SCMs), and presents Debiased Machine Learning methods to do inference in such models using modern predictive tools.}
 }
 
 @techreport{chiplunkar2022employment,
@@ -726,20 +759,6 @@
   abstract = {In a seminal paper Abadie et al (2010) develop the synthetic control procedure for estimating the effect of a treatment, in the presence of a single treated unit and a number of control units, with pre-treatment outcomes observed for all units. The method constructs a set of weights such that covariates and pre-treatment outcomes of the treated unit are approximately matched by a weighted average of control units. The weights are restricted to be nonnegative and sum to one, which allows the procedure to obtain the weights even when the number of lagged outcomes is modest relative to the number of control units, a setting that is not uncommon in applications. In the current paper we propose a more general class of synthetic control estimators that allows researchers to relax some of the restrictions in the ADH method. We allow the weights to be negative, do not necessarily restrict the sum of the weights, and allow for a permanent additive difference between the treated unit and the controls, similar to difference-in-difference procedures. The weights directly minimize the distance between the lagged outcomes for the treated and the control units, using regularization methods to deal with a potentially large number of possible control units.}
 }
 
-@article{dube2025local,
-  title = {A local projections approach to difference-in-differences event studies},
-  author = {Dube, Arindrajit and Girardi, Daniele and Jorda, Oscar and Taylor, Alan M.},
-  journal = {Journal of Applied Econometrics},
-  volume = {},
-  number = {},
-  pages = {},
-  year = {2025},
-  url = {https://onlinelibrary.wiley.com/doi/10.1002/jae.70000},
-  doi = {10.1002/jae.70000},
-  publisher = {Wiley Online Library},
-  abstract = {We propose a local projections (LPs)-based difference-in-differences (DiD) approach that subsumes many of the recent solutions proposed in the literature to address possible biases arising from negative weighting. We combine LPs with a flexible "clean control" condition to define appropriate sets of treated and control units. Our proposed LP-DiD estimator can be implemented with various weighting and normalization schemes for different target estimands, can be extended to include covariates or accommodate nonabsorbing treatment, and is simple and fast to implement. A simulation and two empirical applications demonstrate that the LP-DiD estimator performs well in common applied settings.}
-}
-
 @article{duker2024vector,
   title = {Vector AutoRegressive Moving Average Models: A Review},
   author = {D\"{u}ker, Marie-Christine and Matteson, David S. and Tsay, Ruey S. and Wilms, Ines},
@@ -761,15 +780,6 @@
   doi = {},
   publisher = {Oxford University Press},
   abstract = {}
-}
-
-@techreport{dziewulski2016supermodular,
-  title = {Supermodular correspondences},
-  author = {Dziewulski, Pawel and Quah, John K.-H.},
-  year = {2016},
-  url = {https://ora.ox.ac.uk/objects/uuid:7df83f35-7e3b-4c2b-87c3-5aff072d0ac6},
-  publisher = {University of Oxford},
-  abstract = {Supermodular functions are widely used in economics to model complementarity. For example, a firm's production function is supermodular if the marginal productivity of each factor increases with the usage of other factors. This in turn guarantees that when the price of a factor falls, the firm's demand for all factors increase. We generalise the notion of supermodular functions so the concept is also applicable to correspondences. Supermodular correspondences arise naturally in a variety of settings. To illustrate the use of the concept and our results, we apply them to study, amongst other things, the optimising behaviour of firms producing multiple output goods and of agents with ambiguity aversion.}
 }
 
 
@@ -1050,11 +1060,11 @@
   abstract = {We consider a panel data analysis to examine the heterogeneity in treatment effects with respect to a pre-treatment covariate of interest in the staggered difference-in-differences setting of Callaway and Sant'Anna (2021). Under standard identification conditions, a doubly robust estimand conditional on the covariate identifies the group-time conditional average treatment effect given the covariate. Focusing on the case of a continuous covariate, we propose a three-step estimation procedure based on nonparametric local polynomial regressions and parametric estimation methods. Using uniformly valid distributional approximation results for empirical processes and multiplier bootstrapping, we develop doubly robust inference methods to construct uniform confidence bands for the group-time conditional average treatment effect function.}
 }
 
-@article{ishimaru2024we,
+@article{ishimaru2026we,
   title = {What Do We Get from Two-Way Fixed Effects Regressions? Implications from Numerical Equivalence},
   author = {Ishimaru, Shoya},
   journal = {arXiv preprint arXiv:2103.12374},
-  year = {2024},
+  year = {2026},
   url = {https://arxiv.org/abs/2103.12374},
   doi = {10.48550/arXiv.2103.12374},
   abstract = {In any multiperiod panel, a two-way fixed effects (TWFE) regression is numerically equivalent to a first-difference (FD) regression that pools all possible between-period gaps. Building on this observation, this paper develops numerical and causal interpretations of the TWFE coefficient. At the sample level, the TWFE coefficient is a weighted average of FD coefficients with different between-period gaps. This decomposition is useful for assessing the source of identifying variation for the TWFE coefficient. At the population level, a causal interpretation of the TWFE coefficient requires a common trends assumption for any between-period gap, and the assumption has to be conditional on changes in time-varying covariates. I show that these requirements can be naturally relaxed by modifying the estimator using a pooled FD regression.}
@@ -1621,14 +1631,17 @@
   abstract = {In this paper, we introduce the nonparametric, direct potential outcome system as a foundational framework for analyzing dynamic causal effects of assignments on outcomes in observational time series settings. Using this framework, we provide conditions under which common predictive time series estimands, such as the impulse response function, generalized impulse response function, local projection, and local projection instrument variables, have a nonparametric causal interpretation in terms of such dynamic causal effects.}
 }
 
-@article{rambachan2024design,
+@article{rambachan2025design,
   title = {Design-based uncertainty for quasi-experiments},
   author = {Rambachan, Ashesh and Roth, Jonathan},
-  journal = {arXiv preprint arXiv:2008.00602},
-  year = {2024},
-  url = {https://arxiv.org/abs/2008.00602},
-  doi = {10.48550/arXiv.2008.00602},
-  abstract = {This paper develops a finite-population, design-based theory of uncertainty for studying quasi-experimental settings in the social sciences. In our framework, treatment is determined by stochastic idiosyncratic factors, but individuals may differ in their probability of receiving treatment in ways unknown to the researcher, thus allowing for rich selection into treatment. We derive formulas for the bias of common estimators (including difference-in-means and difference-in-differences), and provide conditions under which they are unbiased for an interpretable causal estimand (e.g. analogs to the ATE or ATT). We further show that when the finite population is large, conventional standard errors are valid but typically conservative for the variance of the estimator over the randomization distribution. An interesting feature of our framework is that conventional standard errors tend to become more conservative when treatment probabilities vary more across units, i.e. when there is more selection into treatment. This conservativeness can (at least partially) mitigate undercoverage of conventional confidence intervals when the estimator is biased because of selection. Our results also have implications for the appropriate level to cluster standard errors, and for the analysis of linear covariate adjustment and instrumental variables in quasi-experimental settings.}
+  journal = {Journal of the American Statistical Association},
+  number = {},
+  pages = {},
+  year = {2025},
+  publisher = {Taylor \& Francis},
+  url = {https://www.tandfonline.com/doi/full/10.1080/01621459.2025.2526700},
+  doi = {10.1080/01621459.2025.2526700},
+  abstract = {Design-based frameworks of uncertainty are frequently used in settings where the treatment is (conditionally) randomly assigned. This article develops a design-based framework suitable for analyzing quasi-experimental settings in the social sciences, in which the treatment assignment can be viewed as the realization of some stochastic process but there is concern about unobserved selection into treatment. In our framework, treatments are stochastic, but units may differ in their probabilities of receiving treatment, thereby allowing for rich forms of selection. We provide conditions under which the estimands of popular quasi-experimental estimators correspond to interpretable finite-population causal parameters. We characterize the biases and distortions to inference that arise when these conditions are violated. These results can be used to conduct sensitivity analyses when there are concerns about selection into treatment. Taken together, our results establish a rigorous foundation for quasi-experimental analyses that more closely aligns with the way empirical researchers discuss the variation in the data. Supplementary materials for this article are available online, including a standardized description of the materials available for reproducing the work.}
 }
 
 @article{ritzwoller2024randomization,

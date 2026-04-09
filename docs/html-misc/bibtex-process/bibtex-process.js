@@ -200,7 +200,7 @@
     let url  = '';
     if (bibfields['url'] || bibfields['doi']) {
       link = (bibfields['url'] || ('https://dx.doi.org/' + bibfields['doi']));
-      url  = link.replace(/(\/(?!\/)|\.|-)/g, '$1<wbr>');
+      url  = link.replace(/(\/(?!\/)|\.|-|_| |%20)/g, '$1<wbr>');
       link = `<a class="ref-link" href="${link}">${url}</a>`;
     }
     

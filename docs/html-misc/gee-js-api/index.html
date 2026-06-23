@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="gee-js-api">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Google Earth Engine JavaScript API</title>
+  <style>
+    /* Main CSS Structure */
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.7;
+      color: #222;
+      background: #a4a4a4;
+    }
+    /* Content Width */
+    .container {
+      max-width: 1400px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 40px;
+      padding: 20px;
+    }
+    /* Header */
+    header {
+      padding: 40px;
+      border-bottom: 1px solid #ddd;
+    }
+    /* Sticky TOC */
+    #toc {
+      position: sticky;
+      top: 1rem;
+      align-self: start;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding-right: 24px;
+    }
+    #toc ul {
+      text-align: left;
+      list-style: none;
+      padding-left: 0;
+    }
+    #toc a {
+      text-align: left;
+      text-decoration: none;
+      color: #202020;
+    }
+    #toc a.active {
+      color: #cecece;
+      font-weight: 600;
+    }
+    #toc h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    #toc li {
+      text-align: left;
+      margin-bottom: 0.5rem;
+    }
+    #toc a:hover {
+      /* color: #3f51b5; */
+      transition: color 0.2s ease;
+    }
+    #toc ul ul {
+      margin-top: 0.4rem;
+      margin-left: 1rem;
+      padding-left: 1rem;
+      border-left: 1px solid #ddd;
+    }
+    #toc ul ul a {
+      font-size: 0.95rem;
+    }
+    #toc ul ul ul {
+      margin-left: 1rem;
+      padding-left: 0.75rem;
+      border-left: 1px dashed #d0d0d0;
+    }
+    #toc ul ul li {
+      margin-bottom: 0.25rem;
+    }
+    #toc ul ul ul a {
+      font-size: 0.90rem;
+    }
+    .toc-submenu {
+      display: none;
+    }
+    .toc-submenu.open {
+      display: block;
+    }
+    .toc-parent:hover > .toc-submenu, .toc-parent.active-parent > .toc-submenu {
+        display: block;
+    }
+    #toc > ul > li > a {
+      font-size: 0.85rem;
+    }
+    #toc > ul > li > ul > li > a {
+      font-size: 0.80rem;
+    }
+    #toc > ul > li > ul > li > ul > li > a {
+      font-size: 0.75rem;
+    }
+    /* Content Area */
+    main {
+      max-width: 900px;
+      min-width: 0;
+      background: #c4c4c4;
+      padding: 40px;
+      border-radius: 8px;
+    }
+    /* Typography */
+    h1 {
+      font-size: 2.4rem;
+    }
+    h2 {
+      margin-top: 2.5rem;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 0.4rem;
+    }
+    h3 {
+      margin-top: 2rem;
+    }
+    h4 {
+      margin-top: 1.5rem;
+    }
+    /* Sections */
+    section {
+      margin-bottom: 4rem;
+    }
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+    }
+    th {
+      background: #f0f0f0;
+    }
+    td {
+      background: #d9d9d9;
+    }
+    /* Paragraphs */
+    p {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    p, li {
+      text-align: justify;
+    }
+    /* List items */
+    ol, ul {
+      margin-bottom: 1.25rem;
+    }
+    /* Code Blocks */
+    pre[class*="language-"] {
+      background-color: #ececec !important;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.50);
+      margin: 20px 0;
+      font-size: 0.95rem;
+      overflow-x: auto;
+    }
+    code {
+      font-family: Consolas, Monaco, monospace;
+    }
+    /* Illustration Script */
+    details {
+      margin: 1rem 0;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      padding: 0.5rem;
+      background: #ececec;
+      border-radius: 6px;
+    }
+    summary:hover {
+      background: #f4f4f4;
+    }
+    /* Links */
+    .code-link {
+      text-decoration: none;
+      color: inherit;
+    }
+    .code-link:hover {
+      text-decoration: underline;
+      opacity: 0.80;
+    }
+    /* Subtitle Styling */
+    .subtitle {
+      font-size: 1.1rem;
+      color: #202020;
+    }
+    /* Callout Boxes */
+    .note {
+      background: #f8f9fa;
+      border-left: 4px solid #3f51b5;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    /* Object Diagrams */
+    .diagram {
+      background: #fafafa;
+      border: 1px solid #ddd;
+      padding: 20px;
+      font-family: monospace;
+    }
+    /*Earth Engine Example Map */
+    .map-container {
+      margin: 30px 0;
+    }
+    .map-container iframe {
+      width: 100%;
+      height: 700px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    /* Responsive Layout */
+    @media (max-width: 1000px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      #toc {
+        position: static;
+        max-height: none;
+      }
+    }
+  </style>
+  <!-- Prism.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"/>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js">
+  </script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js">
+  </script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js">
+  </script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js">
+  </script>
+  <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css"/>
+</head>
+<body>
+  <header>
+    <h1>A Guide to Google Earth Engine JavaScript API</h1>
+    <p class="subtitle">
+      Practical concepts, workflows, and commands for developing Earth Engine applications.
+    </p>
+  </header>
+  <div class="container">
+    <nav id="toc">
+      <h2>Contents</h2>
+      <ul>
+        <li class="toc-parent"><a href="#introduction">Introduction</a></li>
+        <li class="toc-parent"><a href="#gee">Google Earth Engine</a>
+          <ul class="toc-submenu">
+            <li><a href="#what-is-gee">What is Google Earth Engine?</a></li>
+            <li><a href="#accessing-gee">Accessing Earth Engine</a></li>
+            <li><a href="#code-editor">Earth Engine Code Editor</a></li>
+            <li><a href="#interface-components">Main Interface Components</a></li>
+          </ul>
+        </li>
+        <li class="toc-parent"><a href="#workflow">Earth Engine Workflow</a>
+          <ul class="toc-submenu">
+            <li><a href="#loading-data">Loading Data</a></li>
+            <li><a href="#filtering-data">Filtering Data</a></li>
+            <li><a href="#manipulating-data">Manipulating Data</a></li>
+            <li><a href="#derived-products">Creating Derived Products</a></li>
+            <li><a href="#summarizing-data">Summarizing Data</a></li>
+          </ul>
+        </li>
+        <li class="toc-parent"><a href="#server-client">Server-side and Client-side Objects</a></li>
+        <li class="toc-parent"><a href="#object-model">The Earth Engine Object Model</a>
+          <ul class="toc-submenu">
+            <li><a href="#ee-image">ee.Image</a></li>
+            <li><a href="#ee-imagecollection">ee.ImageCollection</a></li>
+            <li><a href="#ee-geometry">ee.Geometry</a></li>
+            <li><a href="#ee-feature">ee.Feature</a></li>
+            <li><a href="#ee-featurecollection">ee.FeatureCollection</a>
+            </li>
+          </ul>
+        </li>
+        <li class="toc-parent"><a href="#visualization">Visualization</a>
+          <ul class="toc-submenu">
+            <li><a href="#map-addlayer">Map.addLayer()</a></li>
+            <li><a href="#map-centerobject">Map.centerObject()</a></li>
+            <li><a href="#visualization-parameters">Visualization Parameters</a></li>
+          </ul>
+        </li>
+        <li class="toc-parent"><a href="#ui">Building Interactive Interfaces</a>
+          <ul class="toc-submenu">
+            <li><a href="#ui-panel">ui.Panel</a></li>
+            <li><a href="#ui-label">ui.Label</a></li>
+            <li><a href="#ui-select">ui.Select</a></li>
+          </ul>
+        </li>
+        <li class="toc-parent"><a href="#export">Exporting Results</a>
+          <ul class="toc-submenu">
+            <li><a href="#export-image-drive">Export.image.toDrive()</a></li>
+            <li><a href="#export-table-drive">Export.table.toDrive()</a></li>
+            <li><a href="#export-image-asset">Export.image.toAsset()</a></li>
+          </ul>
+        </li>
+        <li class="toc-parent"><a href="#illustration">Illustration</a>
+          <ul class="toc-submenu">
+            <li><a href="#source-code">Source Code</a></li>
+            <li><a href="#understanding-the-script">Understanding the script</a></li>
+            <li><a href="#interactive-map">Interactive Map</a></li>
+            <li><a href="#discussion">Discussion</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <section id="introduction">
+        <h2>Introduction</h2>
+          <p>
+            <a href="https://earthengine.google.com/">Google Earth Engine</a> (GEE) is a <a href="https://cloud.google.com/">cloud-based platform</a> designed for large-scale geospatial analysis. By combining a vast <a href="https://developers.google.com/earth-engine/datasets">catalog of geospatial datasets</a> with a distributed computing infrastructure, <a href="https://earthengine.google.com/">Earth Engine</a> allows users to process satellite imagery, climate records, elevation models, land-cover products, and many other forms of geographic data without downloading them to a local machine.
+          </p>
+          <p>
+            One of the main strengths of <a href="https://earthengine.google.com/">Earth Engine</a> is that it allows users to focus on analysis rather than data management. Instead of worrying about storage, preprocessing, or computational limitations, users can write concise scripts that execute on Google's servers and take advantage of datasets that would otherwise require substantial computational resources to handle.
+          </p>
+          <p>
+            This guide introduces the <a href="https://developers.google.com/earth-engine/tutorials/tutorial_api_01">Google Earth Engine JavaScript API</a> from a practical perspective. Rather than attempting to <a href="https://developers.google.com/earth-engine/guides">document</a> every available class and method, it focuses on the concepts, object types, workflows, and commands that are most commonly used when developing <a href="https://earthengine.google.com/">Earth Engine</a> projects.
+          </p>
+          <p>
+            The guide is organized around the way <a href="https://earthengine.google.com/">Earth Engine</a> projects are typically built. It begins with an introduction to the platform itself, followed by an explanation of Earth Engine's <a href="https://developers.google.com/earth-engine/guides/objects_methods_overview">object model</a>, common workflows, visualization techniques, user-interface components, and export mechanisms. The guide concludes with a complete example illustrating how these concepts come together in a practical application.
+          </p>
+      </section>
+      <section id="gee">
+        <h2>Google Earth Engine</h2>
+          <h3 id="what-is-gee">What is Google Earth Engine?</h3>
+            <p>
+              <a href="https://earthengine.google.com/">Google Earth Engine</a> is a platform for storing, processing, visualizing, and analyzing geospatial data at scale.
+            </p>
+            <p>
+              The platform was originally developed to support environmental monitoring and Earth observation applications, but it has since been adopted in many fields, including remote sensing, environmental science, agriculture, forestry, urban studies, hydrology, climate science, public policy, and disaster management.
+            </p>
+            <p>
+              A defining characteristic of <a href="https://earthengine.google.com/">Earth Engine</a> is that computations are executed on Google's infrastructure rather than on the user's computer. This allows analyses involving terabytes or petabytes of data to be performed using relatively simple scripts.
+            </p>
+            <p>
+              <a href="https://earthengine.google.com/">Earth Engine</a> combines three major components:
+            </p>
+            <ol>
+              <li>A <a href="https://developers.google.com/earth-engine/datasets">catalog</a> containing thousands of geospatial datasets.</li>
+              <li>A <a href="https://cloud.google.com/">cloud-computing infrastructure</a> for large-scale processing.</li>
+              <li><a href="https://code.earthengine.google.com/">Programming interfaces</a> that allow users to interact with data and computational resources.</li>
+            </ol>
+              <p>
+                Most users interact with <a href="https://earthengine.google.com/">Earth Engine</a> through either the <a href="https://developers.google.com/earth-engine/tutorials/tutorial_api_01">JavaScript API</a> or the <a href="https://developers.google.com/earth-engine/tutorials/community/intro-to-python-api">Python API</a>. This guide focuses on the <a href="https://developers.google.com/earth-engine/tutorials/tutorial_api_01">JavaScript API</a>.
+              </p>
+          <h3 id="accessing-gee">Accessing Earth Engine</h3>
+            <p>
+              <a href="https://earthengine.google.com/">Google Earth Engine</a> can be accessed through <a href="https://earthengine.google.com/platform/">several interfaces</a>, each designed for a different type of workflow.
+            </p>
+            <p>
+              The easiest way to begin using <a href="https://earthengine.google.com/">Earth Engine</a> is through the <a href="https://developers.google.com/earth-engine/guides/playground">Earth Engine Code Editor</a>, a browser-based integrated development environment (IDE) provided by Google. After creating a Google account and registering for <a href="https://earthengine.google.com/">Earth Engine</a>, users can access the <a href="https://developers.google.com/earth-engine/guides/playground">Code Editor</a> directly from a web browser without installing any software. The <a href="https://developers.google.com/earth-engine/guides/playground">Code Editor</a> allows users to write JavaScript code, visualize results on an interactive map, inspect datasets, <a href="https://developers.google.com/earth-engine/guides/manage_assets">manage assets</a>, and launch <a href="https://developers.google.com/earth-engine/guides/exporting">export tasks</a>.
+            </p>
+            <p>
+              For users who prefer working locally, <a href="https://earthengine.google.com/">Earth Engine</a> also provides client libraries for Python and JavaScript. The <a href="https://developers.google.com/earth-engine/tutorials/community/intro-to-python-api">Python API</a> is commonly used in Jupyter notebooks, Google Colab notebooks, and automated workflows that integrate <a href="https://earthengine.google.com/">Earth Engine</a> with data-science libraries such as NumPy, pandas, and GeoPandas. The <a href="https://developers.google.com/earth-engine/tutorials/tutorial_api_01">JavaScript API</a> can be used outside the <a href="https://developers.google.com/earth-engine/guides/playground">Code Editor</a> in custom web applications.
+            </p>
+            <p>
+              A typical path for new users is:
+            </p>
+            <ol>
+              <li>Create a Google account.</li>
+              <li>Register for <a href="https://earthengine.google.com/">Earth Engine</a> access.</li>
+              <li>Open the <a href="https://developers.google.com/earth-engine/guides/playground">Earth Engine Code Editor</a>.</li>
+              <li>Explore public datasets and run example scripts.</li>
+              <li>Gradually move to Python notebooks or custom applications when more advanced workflows are required.</li>
+            </ol>
+            <p>
+              For most readers of this guide, the <a href="https://developers.google.com/earth-engine/guides/playground">Earth Engine Code Editor</a> is the recommended starting point because it provides immediate access to the full functionality of the platform with minimal setup.
+            </p>
+            <h4>Earth Engine Code Editor</h4>
+              <p>
+                The <a href="https://developers.google.com/earth-engine/guides/playground">Earth Engine Code Editor</a> is a web-based integrated development environment specifically designed for the <a href="https://developers.google.com/earth-engine/tutorials/tutorial_api_01">JavaScript API</a>. It allows users to write scripts, execute analyses, visualize outputs, inspect geographic features, manage assets, and export results.
+              </p>
+              <p>
+                For many users, the <a href="https://developers.google.com/earth-engine/guides/playground">Code Editor</a> serves as the primary environment for <a href="https://earthengine.google.com/">Earth Engine</a> development and experimentation.
+              </p>
+            <h4>Python API</h4>
+              <p>
+                <a href="https://earthengine.google.com/">Earth Engine</a> also provides a <a href="https://developers.google.com/earth-engine/tutorials/community/intro-to-python-api">Python API</a> that can be used from environments such as Jupyter Notebook, Google Colab, and Visual Studio Code. The <a href="https://developers.google.com/earth-engine/tutorials/community/intro-to-python-api">Python API</a> is particularly useful when <a href="https://earthengine.google.com/">Earth Engine</a> must be integrated with data science, machine learning, or statistical workflows.
+              </p>
+            <h4>Earth Engine Applications</h4>
+              <p>
+                Users can also <a href="https://developers.google.com/earth-engine/tutorials/community/creating-web-apps">publish interactive web applications</a> based on <a href="https://earthengine.google.com/">Earth Engine</a> analyses. These applications allow non-programmers to explore maps, visualizations, and results through a <a href="https://code.earthengine.google.com/">graphical interface</a>.
+              </p>
+          <h3 id="code-editor">The Earth Engine Code Editor</h3>
+            <p>
+              The <a href="https://developers.google.com/earth-engine/guides/playground">Code Editor</a> consists of several interconnected components that facilitate the development and execution of <a href="https://earthengine.google.com/">Earth Engine</a> scripts.
+            </p>
+            <h4>Script Editor</h4>
+              <p>
+                The <a href="https://developers.google.com/earth-engine/guides/playground#script_manager_scripts_tab">script editor</a> is where JavaScript code is written, edited, and executed. It supports syntax highlighting, code organization, and script management.
+              </p>
+            <h4>Map Panel</h4>
+              <p>
+                The <a href="https://developers.google.com/earth-engine/guides/playground#map">map panel</a> displays geographic layers added through commands such as <a class="code-lin" href="https://developers.google.com/earth-engine/apidocs/map-addlayer"><code>Map.addLayer()</code></a>. Most visual outputs generated during an analysis appear in this panel.
+              </p>
+            <h4>Console</h4>
+              <p>
+                The <a href="https://developers.google.com/earth-engine/guides/playground#console_tab">console</a> displays printed objects, messages, debugging information, and the results of exploratory analyses.
+              </p>
+            <h4>Inspector</h4>
+              <p>
+                The <a href="https://developers.google.com/earth-engine/guides/playground#inspector_tab">inspector</a> allows users to click on map locations and examine underlying pixel values, feature attributes, and other information associated with geographic objects.
+              </p>
+            <h4>Tasks Panel</h4>
+              <p>
+                The <a href="https://developers.google.com/earth-engine/guides/playground#tasks_tab">tasks panel</a> displays <a href="https://developers.google.com/earth-engine/guides/exporting">export operations</a> initiated through <a href="https://earthengine.google.com/">Earth Engine</a>. Users can monitor the progress of exports and manage pending tasks.
+              </p>
+            <h4>Assets Panel</h4>
+              <p>
+                The <a href="https://developers.google.com/earth-engine/guides/playground#asset_manager_assets_tab">assets panel</a> provides access to datasets and resources managed by the user, including uploaded files and custom collections.
+              </p>
+          <h3 id="interface-components">Main Interface Components</h3>
+            <p>
+              A typical <a href="https://earthengine.google.com/">Earth Engine</a> workflow involves constant interaction among the <a href="https://developers.google.com/earth-engine/guides/playground">editor</a>, <a href="https://developers.google.com/earth-engine/guides/playground#map">map</a>, <a href="https://developers.google.com/earth-engine/guides/playground#console_tab">console</a>, and <a href="https://developers.google.com/earth-engine/guides/playground#tasks_tab">tasks panel</a>.
+            </p>
+            <p>
+              For example, a user may load a satellite dataset, filter it to a specific region and time period, visualize the result on the map, inspect individual pixel values, and ultimately export the final product for further analysis.
+            </p>
+            <p>
+              Understanding how these <a href="https://earthengine.google.com/static/images/annotated_playground.png">interface components</a> interact helps streamline the development process and facilitates debugging.
+            </p>
+      </section>
+      <section id="workflow">
+        <h2>Earth Engine Workflow</h2>
+          <p>
+            Most <a href="https://earthengine.google.com/">Earth Engine</a> projects follow a broadly similar workflow. While the specific datasets and analyses vary, the overall process usually consists of loading data, filtering observations, performing transformations, generating derived products, summarizing results, visualizing outputs, and exporting final datasets.
+          </p>
+        <h3 id="loading-data">Loading Data</h3>
+          <p>
+            The first step is typically to load raster or vector datasets from the <a href="https://developers.google.com/earth-engine/datasets">Earth Engine catalog</a> or from user-managed assets.
+          </p>
+          <pre class="language-javascript"><code>
+            var s2 = ee.ImageCollection('COPERNICUS/S2_SR');
+          </code></pre>
+        <h3 id="filtering-data">Filtering Data</h3>
+          <p>
+          Datasets are often filtered according to time, location, cloud coverage, or attribute values.
+          </p>
+          <pre class="language-javascript"><code>
+            var filtered = s2.filterDate('2024-01-01', '2024-12-31')
+              .filterBounds(region);
+          </code></pre>
+        <h3 id="manipulating-data">Manipulating Data</h3>
+          <p>
+            <a href="https://earthengine.google.com/">Earth Engine</a> provides a large collection of methods for band selection, mathematical transformations, masking, reprojection, aggregation, and feature processing.
+          </p>
+          <pre class="language-javascript"><code>
+            var ndvi = image.normalizedDifference(['B8', 'B4']);
+          </code></pre>
+        <h3 id="derived-products">Creating Derived Products</h3>
+          <p>
+            Many analyses involve generating new datasets from existing ones, such as vegetation indices, terrain products, classifications, change-detection maps, or temporal composites.
+          </p>
+          <pre class="language-javascript"><code>
+            var medianImage = filtered.median();
+          </code></pre>
+        <h3 id="summarizing-data">Summarizing Data</h3>
+          <p>
+          Statistical summaries can be computed over regions, collections, or individual datasets.
+          </p>
+          <pre class="language-javascript"><code>
+          var stats =
+            image.reduceRegion({
+              reducer: ee.Reducer.mean(),
+              geometry: region,
+              scale: 30
+            });
+          </code></pre>
+          <p>
+            The sections that follow describe how results can be visualized, incorporated into <a href="https://earthengine.google.com/static/images/annotated_playground.png">interactive interfaces</a>, and exported for use in other applications.
+          </p>
+      </section>
+      <section id="server-client">
+        <h2>Server-side and Client-side Objects</h2>
+          <p>
+            One of the most important concepts in <a href="https://earthengine.google.com/">Google Earth Engine</a> is the distinction between <a href="https://developers.google.com/earth-engine/guides/client_server"><em>server-side</em> and <em>client-side</em> objects</a>. Understanding this distinction is essential for writing correct and efficient <a href="https://earthengine.google.com/">Earth Engine</a> programs.
+          </p>
+          <p>
+            Unlike conventional JavaScript applications, <a href="https://earthengine.google.com/">Earth Engine</a> does not immediately retrieve datasets and perform calculations within the  browser. Instead, most objects represent instructions that are sent to Google's servers, where the actual computation takes place.
+          </p>
+          <p>
+            Objects such as:
+          </p>
+          <pre class="language-javascript"><code>
+            ee.Image
+            ee.ImageCollection
+            ee.Feature
+            ee.FeatureCollection
+            ee.Geometry
+            ee.Number
+            ee.Dictionary
+            ee.List
+          </code></pre>
+          <p>
+            are server-side objects. These objects do not contain the underlying data itself. Rather, they describe datasets and operations that will eventually be executed by Earth Engine.
+          </p>
+          <p>
+            By contrast, ordinary JavaScript objects are client-side objects. Examples include:
+          </p>
+          <pre class="language-javascript"><code>
+            var city = 'Campinas';
+            var years = [2020, 2021, 2022];
+            var settings = {scale: 30};
+          </code></pre>
+          <p>
+            These objects exist only within the browser and are immediately available to JavaScript.
+          </p>
+          <p>
+            The distinction becomes important because <a href="https://developers.google.com/earth-engine/guides/objects_methods_overview">Earth Engine objects</a> cannot be manipulated in the same way as ordinary JavaScript objects. For example, the following code does not download the image itself:
+          </p>
+          <pre class="language-javascript"><code>
+            var dem = ee.Image('USGS/SRTMGL1_003');
+          </code></pre>
+          <p>
+            Instead, the variable <code>dem</code> stores a reference to a dataset and a description of how <a href="https://earthengine.google.com/">Earth Engine</a> should access it.
+          </p>
+          <p>
+            When information must be transferred from the server to the client, methods such as <code>evaluate()</code> and <code>getInfo()</code> are used.
+          </p>
+          <pre class="language-javascript"><code>
+            feature.get('NAME').evaluate(function(name) {print(name);});
+          </code></pre>
+          <div class="note">
+          <strong>Important:</strong>
+            Whenever possible, computations should remain on the server. Moving large amounts of data to the client can significantly reduce performance and eliminate many of the advantages provided by Earth Engine's distributed computing infrastructure.
+          </div>
+          <p>
+            Many difficulties encountered by new <a href="https://earthengine.google.com/">Earth Engine</a> users can be traced to confusion between <a href="https://developers.google.com/earth-engine/guides/client_server">server-side and client-side objects</a>. Developing an intuitive understanding of where data and computations reside is therefore one of the most valuable skills for working effectively with the platform.
+          </p>
+      </section>
+      <section id="object-model">
+        <h2>The Earth Engine Object Model</h2>
+          <p>
+            <a href="https://earthengine.google.com/">Earth Engine</a> organizes geospatial information through a relatively small set of <a href="https://developers.google.com/earth-engine/guides/objects_methods_overview">fundamental object types</a>. Most analyses involve creating, filtering, transforming, visualizing, and exporting one or more of these <a href="https://developers.google.com/earth-engine/guides/objects_methods_overview">objects</a>.
+          </p>
+          <p>
+            At a high level, <a href="https://earthengine.google.com/">Earth Engine</a> distinguishes between raster data and vector data.
+          </p>
+          <div class="diagram">
+            Raster Data
+            <br>
+            │
+            <br>
+            ├── ee.Image
+            <br>
+            └── ee.ImageCollection
+            <br><br>
+            Vector Data
+            <br>
+            │
+            <br>
+            ├── ee.Geometry
+            <br>
+            ├── ee.Feature
+            <br>
+            └── ee.FeatureCollection
+          </div>
+          <p>
+            Raster objects represent information as a grid of cells or pixels. Examples include satellite imagery, elevation models, land-cover products, and climate datasets.
+          </p>
+          <p>
+            Vector objects represent information using points, lines, polygons, and associated attributes. Administrative boundaries, roads, watersheds, and census units are common examples.
+          </p>
+          <p>
+            The following sections describe the <a href="https://developers.google.com/earth-engine/guides/objects_methods_overview">object types</a> that form the foundation of most <a href="https://earthengine.google.com/">Earth Engine</a> workflows.
+          </p>
+          <h3 id="ee-image">ee.Image</h3>
+            <p>
+              An <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/ee-image"><code>ee.Image</code></a> is <a href="https://earthengine.google.com/">Earth Engine</a>'s fundamental raster object. It represents a single raster dataset consisting of one or more bands.
+            </p>
+            <p>
+              Examples include:
+            </p>
+              <ul>
+                <li>A <a href="https://developers.google.com/earth-engine/datasets/catalog/sentinel-2">Sentinel-2</a> image acquired on a specific date;</li>
+                <li>A digital elevation model;</li>
+                <li>A land-cover classification map;</li>
+                <li>A vegetation-index layer.</li>
+              </ul>
+            <h4>Constructor</h4>
+              <pre class="language-javascript"><code>
+                ee.Image(assetId)
+              </code></pre>
+            <h4>Main Arguments</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Argument</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>assetId</td>
+                    <td>Identifier of a raster dataset available in Earth Engine.</td>
+                  </tr>
+                </tbody>
+              </table>
+            <h4>Other Arguments and Options</h4>
+              <p>
+                Images may also be created from constants, mathematical expressions, or operations involving other images. In practice, however, many workflows begin by loading an existing image from the <a href="https://developers.google.com/earth-engine/datasets">Earth Engine catalog</a>.
+              </p>
+            <h4>Common Methods</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>Purpose</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>select()</td>
+                    <td>Selects one or more bands.</td>
+                  </tr>
+                  <tr>
+                    <td>clip()</td>
+                    <td>Restricts an image to a geometry.</td>
+                  </tr>
+                  <tr>
+                    <td>addBands()</td>
+                    <td>Adds bands to an image.</td>
+                  </tr>
+                  <tr>
+                    <td>rename()</td>
+                    <td>Renames bands.</td>
+                  </tr>
+                  <tr>
+                    <td>expression()</td>
+                    <td>Evaluates mathematical expressions.</td>
+                  </tr>
+                </tbody>
+                </table>
+            <h4>Example</h4>
+              <pre class="language-javascript"><code>
+                var dem = ee.Image('USGS/SRTMGL1_003');
+              </code></pre>
+          <h3 id="ee-imagecollection">ee.ImageCollection</h3>
+            <p>
+              An <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/ee-imagecollection"><code>ee.ImageCollection</code></a> is <a href="https://earthengine.google.com/">Earth Engine</a>'s primary abstraction for handling temporal and multi-scene raster datasets. Rather than representing a single image, it represents an ordered collection of images that can be filtered, transformed, and summarized.
+            </p>
+            <p>
+              Many Earth observation datasets are distributed as image collections because they contain repeated observations acquired over time.
+            </p>
+            <h4>Constructor</h4>
+              <pre class="language-javascript"><code>
+                ee.ImageCollection(assetId)
+              </code></pre>
+            <h4>Main Arguments</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Argument</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>assetId</td>
+                    <td>Identifier of an image collection.</td>
+                  </tr>
+                </tbody>
+              </table>
+            <h4>Common Methods</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>Purpose</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>filterDate()</td>
+                    <td>Filters images by date.</td>
+                  </tr>
+                  <tr>
+                    <td>filterBounds()</td>
+                    <td>Filters images by location.</td>
+                  </tr>
+                  <tr>
+                    <td>filter()</td>
+                    <td>Applies custom filtering conditions.</td>
+                  </tr>
+                  <tr>
+                    <td>map()</td>
+                    <td>Applies a function to each image.</td>
+                  </tr>
+                  <tr>
+                    <td>sort()</td>
+                    <td>Sorts images.</td>
+                  </tr>
+                  <tr>
+                    <td>median()</td>
+                    <td>Creates a median composite.</td>
+                  </tr>
+                </tbody>
+              </table>
+            <h4>Example</h4>
+              <pre class="language-javascript"><code>
+                var collection = ee.ImageCollection('COPERNICUS/S2_SR')
+                  .filterDate('2024-01-01', '2024-12-31');
+              </code></pre>
+          <h3 id="ee-geometry">ee.Geometry</h3>
+            <p>
+              An <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/ee-geometry"><code>ee.Geometry</code></a> represents a geometric object such as a point, line, polygon, or collection of geometries. Geometries are frequently used to define study areas, clipping boundaries, spatial filters, and regions over which statistics should be computed.
+            </p>
+            <h4>Common Constructors</h4>
+              <pre class="language-javascript"><code>
+                ee.Geometry.Point([lon, lat])
+                ee.Geometry.LineString([...])
+                ee.Geometry.Polygon([...])
+              </code></pre>
+            <h4>Main Uses</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Purpose</th>
+                    <th>Example</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Define study areas</td>
+                    <td>filterBounds()</td>
+                  </tr>
+                  <tr>
+                    <td>Clip rasters</td>
+                    <td>clip()</td>
+                  </tr>
+                  <tr>
+                    <td>Compute statistics</td>
+                    <td>reduceRegion()</td>
+                  </tr>
+                  <tr>
+                    <td>Create vector objects</td>
+                    <td>ee.Feature()</td>
+                  </tr>
+                </tbody>
+              </table>
+            <h4>Example</h4>
+              <pre class="language-javascript"><code>
+                var region =
+                  ee.Geometry.Polygon([
+                    [
+                      [-47.5, -23.0],
+                      [-47.5, -22.5],
+                      [-46.8, -22.5],
+                      [-46.8, -23.0]
+                    ]
+                  ]);
+              </code></pre>
+          <h3 id="ee-feature">ee.Feature</h3>
+            <p>
+              An <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/ee-feature"><code>ee.Feature</code></a> combines a geometry with a set of attributes. Conceptually, a feature is similar to a row in a geographic database table.
+            </p>
+            <p>
+              For example, a municipality may be represented by a polygon geometry and attributes such as its name, population, and administrative code.
+            </p>
+            <h4>Constructor</h4>
+              <pre class="language-javascript"><code>
+                ee.Feature(geometry, properties)
+              </code></pre>
+            <h4>Main Arguments</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Argument</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>geometry</td>
+                    <td>The associated geometry.</td>
+                  </tr>
+                  <tr>
+                    <td>properties</td>
+                    <td>Dictionary of attributes.</td>
+                  </tr>
+                </tbody>
+              </table>
+            <h4>Example</h4>
+              <pre class="language-javascript"><code>
+                var city = ee.Feature(ee.Geometry.Point([-47.06, -22.90]), {name: 'Campinas'});
+              </code></pre>
+          <h3 id="ee-featurecollection">ee.FeatureCollection</h3>
+            <p>
+              An <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/ee-featurecollection"><code>ee.FeatureCollection</code></a> represents a collection of features. It is <a href="https://earthengine.google.com/">Earth Engine</a>'s primary vector-data container and is widely used for administrative boundaries, road networks, hydrographic systems, and user-uploaded datasets.
+            </p>
+            <h4>Constructor</h4>
+              <pre class="language-javascript"><code>
+                ee.FeatureCollection(assetId)
+              </code></pre>
+            <h4>Common Methods</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>Purpose</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>filter()</td>
+                    <td>Applies attribute filters.</td>
+                  </tr>
+                  <tr>
+                    <td>filterBounds()</td>
+                    <td>Applies spatial filters.</td>
+                  </tr>
+                  <tr>
+                    <td>map()</td>
+                    <td>Processes each feature.</td>
+                  </tr>
+                  <tr>
+                    <td>merge()</td>
+                    <td>Combines collections.</td>
+                  </tr>
+                  <tr>
+                    <td>size()</td>
+                    <td>Counts features.</td>
+                  </tr>
+                </tbody>
+              </table>
+            <h4>Example</h4>
+              <pre class="language-javascript"><code>
+                var municipalities = ee.FeatureCollection('FAO/GAUL_SIMPLIFIED_500m/2015/level2');
+              </code></pre>
+      </section>
+      <section id="visualization">
+        <h2>Visualization</h2>
+          <p>
+            Visualization is one of the most important components of an <a href="https://earthengine.google.com/">Earth Engine</a> workflow. Although <a href="https://earthengine.google.com/">Earth Engine</a> supports sophisticated geospatial analysis, most projects eventually require results to be displayed on a map so that they can be interpreted, validated, and communicated.
+          </p>
+          <p>
+            Map visualization in <a href="https://earthengine.google.com/">Earth Engine</a> is primarily performed through the <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/ui-map"><code>Map</code></a> object. Two of the most commonly used methods are <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/map-addlayer"><code>Map.addLayer()</code></a> and <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/map-centerobject"><code>Map.centerObject()</code></a>.
+          </p>
+          <h3 id="map-addlayer">Map.addLayer()</h3>
+            <p>
+              The <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/map-addlayer"><code>Map.addLayer()</code></a> method adds a layer to the map display. Layers may represent images, image collections, feature collections, geometries, or other spatial objects.
+            </p>
+            <h4>Syntax</h4>
+              <pre class="language-javascript"><code>
+                Map.addLayer(object, visParams, name, shown, opacity);
+              </code></pre>
+            <h4>Main Arguments</h4>
+              <table>
+                <thead>
+                  <tr>
+                  <th>Argument</th>
+                  <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>object</td>
+                    <td>Object to be displayed.</td>
+                  </tr>
+                  <tr>
+                    <td>visParams</td>
+                    <td>Visualization parameters.</td>
+                  </tr>
+                  <tr>
+                    <td>name</td>
+                    <td>Layer name shown in the layer manager.</td>
+                  </tr>
+                  <tr>
+                    <td>shown</td>
+                    <td>Whether the layer is initially visible.</td>
+                  </tr>
+                  <tr>
+                    <td>opacity</td>
+                    <td>Layer transparency.</td>
+                  </tr>
+                </tbody>
+              </table>
+            <h4>Example</h4>
+              <pre class="language-javascript"><code>
+                Map.addLayer(
+                  ndvi,
+                  {min: 0, max: 1, palette: ['white', 'green']},
+                  'NDVI'
+                );
+              </code></pre>
+          <h3 id="map-centerobject">Map.centerObject()</h3>
+            <p>
+              The <code>Map.centerObject()</code> method automatically centers the map on a specified <a href="https://developers.google.com/earth-engine/guides/objects_methods_overview">object</a> and optionally applies a zoom level.
+            </p>
+            <h4>Syntax</h4>
+              <pre class="language-javascript"><code>
+                Map.centerObject(object, zoom);
+              </code></pre>
+            <h4>Main Arguments</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Argument</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>object</td>
+                    <td>Object used as reference.</td>
+                  </tr>
+                  <tr>
+                    <td>zoom</td>
+                    <td>Optional zoom level.</td>
+                  </tr>
+                </tbody>
+              </table>
+            <h4>Example</h4>
+              <pre class="language-javascript"><code>
+                Map.centerObject(region, 10);
+              </code></pre>
+          <h3 id="visualization-parameters">Visualization Parameters</h3>
+            <p>
+              Visualization parameters control how raster data are rendered on the screen. They do not modify the underlying data; they merely affect its appearance.
+            </p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>min</td>
+                  <td>Minimum display value.</td>
+                </tr>
+                <tr>
+                  <td>max</td>
+                  <td>Maximum display value.</td>
+                </tr>
+                <tr>
+                  <td>palette</td>
+                  <td>Color palette.</td>
+                </tr>
+                <tr>
+                  <td>bands</td>
+                  <td>Bands used for visualization.</td>
+                </tr>
+                <tr>
+                  <td>gamma</td>
+                  <td>Gamma correction.</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              For multiband imagery, visualization often involves selecting three bands corresponding to red, green, and blue channels.
+            </p>
+            <pre class="language-javascript"><code>
+              Map.addLayer(
+                image,
+                {bands: ['B4', 'B3', 'B2'], min: 0, max: 3000},
+                'True Color'
+              );
+            </code></pre>
+      </section>
+      <section id="ui">
+        <h2>Building Interactive Interfaces</h2>
+          <p>
+            <a href="https://earthengine.google.com/">Earth Engine</a> includes a lightweight user-interface library that can be used to create interactive applications directly within the <a href="https://developers.google.com/earth-engine/guides/playground">Code Editor</a>. These interfaces allow users to select datasets, adjust parameters, display text, and interact with maps.
+          </p>
+          <h3 id="ui-panel">ui.Panel</h3>
+            <p>
+              A <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/ui-panel"><code>ui.Panel</code></a> is a container that organizes user-interface elements.
+            </p>
+            <h4>Common Uses</h4>
+              <ul>
+                <li>Sidebars</li>
+                <li>Control panels</li>
+                <li>Information panels</li>
+                <li>Legend containers</li>
+              </ul>
+            <h4>Example</h4>
+              <pre class="language-javascript"><code>
+                var panel = ui.Panel({style: {width: '300px'}});
+              </code></pre>
+          <h3 id="ui-label">ui.Label</h3>
+            <p>
+              A <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/ui-label"><code>ui.Label</code></a> displays text within the interface.
+            </p>
+            <h4>Example</h4>
+              <pre class="language-javascript"><code>
+                var title = ui.Label('Land Cover Explorer');
+              </code></pre>
+              <p>
+                Labels are commonly used for titles, descriptions, instructions, and dynamic outputs.
+              </p>
+          <h3 id="ui-select">ui.Select</h3>
+            <p>
+              A <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/ui-select"><code>ui.Select</code></a> creates a drop-down menu that allows users to choose among multiple options.
+            </p>
+            <h4>Main Arguments</h4>
+              <table>
+                <thead>
+                  <tr>
+                  <th>Argument</th>
+                  <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>items</td>
+                    <td>Available options.</td>
+                  </tr>
+                  <tr>
+                    <td>value</td>
+                    <td>Default value.</td>
+                  </tr>
+                  <tr>
+                    <td>onChange</td>
+                    <td>Function executed after selection.</td>
+                  </tr>
+                </tbody>
+              </table>
+            <h4>Example</h4>
+              <pre class="language-javascript"><code>
+                var selector =
+                  ui.Select({
+                    items: [
+                      'NDVI',
+                      'Elevation',
+                      'Land Cover'
+                    ]
+                  });
+              </code></pre>
+              <p>
+                When combined with panels, labels, maps, and event handlers, selection widgets can be used to build sophisticated interactive applications.
+              </p>
+      </section>
+      <section id="export">
+        <h2>Exporting Results</h2>
+          <p>
+            Although <a href="https://earthengine.google.com/">Earth Engine</a> provides extensive visualization and analysis capabilities, many workflows ultimately require results to be exported for use in GIS software, statistical environments, machine learning pipelines, or <a href="https://developers.google.com/earth-engine/tutorials/community/creating-web-apps">web applications</a>.
+          </p>
+          <p>
+            <a href="https://developers.google.com/earth-engine/guides/exporting">Export operations</a> are submitted as tasks that appear in the <a href="https://developers.google.com/earth-engine/guides/playground#tasks_tab">Tasks panel</a> of the <a href="https://developers.google.com/earth-engine/guides/playground">Code Editor</a>.
+          </p>
+          <h3 id="export-image-drive">Export.image.toDrive()</h3>
+            <p>
+              <a href="https://developers.google.com/earth-engine/apidocs/export-image-todrive">Exports a raster</a> image to Google Drive.
+            </p>
+            <pre class="language-javascript"><code>
+              Export.image.toDrive({
+                image: image,
+                description: 'output',
+                scale: 30,
+                region: region
+              });
+            </code></pre>
+          <h3 id="export-table-drive">Export.table.toDrive()</h3>
+            <p>
+              <a href="https://developers.google.com/earth-engine/apidocs/export-table-todrive">Exports vector data or tabular results</a> to Google Drive.
+            </p>
+            <pre class="language-javascript"><code>
+              Export.table.toDrive({
+                collection: features,
+                description: 'features'
+              });
+            </code></pre>
+          <h3 id="export-image-asset">Export.image.toAsset()</h3>
+            <p>
+              <a href="https://developers.google.com/earth-engine/apidocs/export-image-toasset">Exports a raster image</a> to the user's <a href="https://developers.google.com/earth-engine/guides/manage_assets">Earth Engine assets</a>.
+            </p>
+            <pre class="language-javascript"><code>
+              Export.image.toAsset({
+                image: image,
+                description: 'assetExport',
+                assetId: 'users/user/output'
+              });
+            </code></pre>
+            <div class="note">
+              <strong>Note:</strong>
+              <a href="https://developers.google.com/earth-engine/guides/exporting">Export operations</a> are not executed immediately. After a task is created, it must usually be started manually from the <a href="https://developers.google.com/earth-engine/guides/playground#tasks_tab">Tasks panel</a>.
+            </div>
+      </section>
+      <section id="illustration">
+        <h2>Illustration</h2>
+          <p>
+            The following example demonstrates how several of the concepts presented throughout this guide can be combined within a complete <a href="https://earthengine.google.com/">Earth Engine</a> application.
+          </p>
+          <p>
+            The script loads geospatial datasets, performs filtering and processing operations, visualizes the resulting layers, and creates an <a href="https://earthengine.google.com/static/images/annotated_playground.png">interactive interface</a> for exploration.
+          </p>
+          <h3 id="source-code">Source Code</h3>
+            <p>
+              The complete source code is reproduced below.
+            </p>
+            <details>
+            <summary>
+              Show Source Code
+            </summary>
+            <pre class="language-javascript"><code>
+              // Global Administrative Unit Layers - Vector datasets 
+              var municipalities = ee.FeatureCollection('FAO/GAUL/2015/level2')
+                .filter(ee.Filter.and(
+                  ee.Filter.eq('ADM0_NAME', 'Brazil'), 
+                  ee.Filter.eq('ADM1_NAME', 'Sao Paulo')
+              ));
+
+              // Municipalities of Campinas mesoregion
+              var campinasMicroregions = {
+                'Campinas': [
+                  'Campinas', 'Americana', 'Cosmopolis', 'Elias Fausto', 'Holambra', 
+                  'Hortolandia', 'Indaiatuba', 'Itatiba', 'Jaguariuna', 'Monte Mor', 
+                  'Morungaba', 'Nova Odessa', 'Paulinia', 'Santo Antonio De Posse', 
+                  'Sumare', 'Valinhos', 'Vinhedo'
+                ],
+                'Amparo': [
+                  'Amparo', 'Aguas De Lindoia', 'Lindoia', 'Monte Alegre Do Sul', 
+                  'Pedreira', 'Serra Negra', 'Socorro'
+                ],
+                'Moji-mirim': [
+                  'Moji-mirim', 'Artur Nogueira', 'Conchal', 'Engenheiro Coelho',
+                  'Estiva Gerbi', 'Itapira', 'Moji-guacu'
+                ],
+                'Pirassununga': [
+                  'Pirassununga', 'Aguai', 'Analandia', 'Descalvado',
+                  'Santa Cruz Da Conceicao', 'Santa Cruz Das Palmeiras', 'Tambau'
+                ],
+                'Sao Joao Da Boa Vista': [
+                  'Sao Joao Da Boa Vista', 'Aguas Da Prata', 'Caconde', 'Casa Branca', 
+                  'Divinolandia', 'Espirito Santo Do Pinhal', 'Itobi', 'Mococa', 
+                  'Santo Antonio Do Jardim', 'Sao Jose Do Rio Pardo', 
+                  'Sao Sebastiao Da Grama', 'Vargem Grande Do Sul'
+                ]
+              };
+
+              // All municipality names across all microregions of Campinas mesoregion
+              var allMuns = Object.keys(campinasMicroregions).reduce(
+                function(acc, key) {return acc.concat(campinasMicroregions[key]);}, []
+              );
+
+              // Filter municipalities in vector data
+              var campinasMesoregion = municipalities.filter(
+                ee.Filter.inList('ADM2_NAME', allMuns)
+              );
+
+              print(campinasMesoregion.aggregate_array('ADM2_NAME').sort());
+
+              // Build mesoregion boundaries by dissolving municipality boundaries
+              var mesoregion = municipalities
+                .filter(ee.Filter.inList('ADM2_NAME', allMuns))
+                .union(1)
+                .set('mesoregion', 'Campinas');
+
+              // Build microregion boundaries by dissolving municipality boundaries
+              var microregionFeatures = Object.keys(campinasMicroregions).map(function(key) {
+                var names = campinasMicroregions[key];
+                var dissolved = municipalities
+                  .filter(ee.Filter.inList('ADM2_NAME', names))
+                  .union(1) // ee.FeatureCollection.union(maxError) -> FeatureCollection
+                  .first() // FeatureCollection to Feature
+                  .set('microregion', key); // Adding property 'microregion' for feature
+                return dissolved;
+              });
+              var microregions = ee.FeatureCollection(microregionFeatures);
+
+              // Features of main microregion municipalities
+              var mainMuns = municipalities
+                .filter(ee.Filter.inList('ADM2_NAME', Object.keys(campinasMicroregions)));
+
+              // Mesoregion raster
+              var mesoGeom = mesoregion.geometry();
+
+              var dem = ee.Image('USGS/SRTMGL1_003').clip(mesoGeom);
+
+              var hillshade = ee.Terrain.hillshade(dem); // Hillshade derived from DEM
+
+              // Styled features
+              var munFeatures = campinasMesoregion.style(
+                {lineType: 'dashed', color: '000000ff', fillColor: 'd3d3d377', width: 0.50}
+              );
+
+              var mainFeatures = mainMuns.style(
+                {lineType: 'solid', color: 'ff0000ff', fillColor: 'ff000077', width: 1.00}
+              );
+
+              var microFeatures = microregions.style(
+                {lineType: 'solid', color: '000000ff', fillColor: 'd3d3d300', width: 1.25}
+              );
+
+              var mesoFeature = mesoregion.style(
+                {lineType: 'solid', color: '000000ff', fillColor: 'd3d3d300', width: 1.25}
+              );
+
+              var demVis = {
+                min: 500,
+                max: 1800,
+                palette: [
+                  '0b3d0b', // dark green (lowest)
+                  '2e8b57', // green
+                  '7fbf7f', // light green
+                  'd9c27f', // tan
+                  'a67c52', // brown
+                  'ffffff'  // white (highest)
+                ]
+              };
+
+              // Converting DEM and hillshade to RGB images
+              var elevationRgb = dem.visualize(demVis); // Colored terrain image
+
+              // Center map
+              Map.centerObject(campinasMesoregion, 8);
+
+              // Add layers
+              Map.addLayer(dem, demVis, 'Elevation');
+              //Map.addLayer(hillshade, {min: 0, max: 255}, 'Hillshade', false);
+
+              Map.addLayer(munFeatures, {opacity: 1.00}, 'Municipalities');
+              Map.addLayer(mainFeatures, {opacity: 1.00}, 'Main municipalities');
+              Map.addLayer(microFeatures, {opacity: 1.00}, 'Microregions of Campinas Mesoregion');
+              Map.addLayer(mesoFeature, {opacity: 1.00}, 'Campinas Mesoregion');
+
+              // Geometry information panel
+              var municipalityLabel = ui.Label(
+                'Click on a municipality', {fontSize: '14px', fontWeight: 'bold'}
+              );
+
+              var infoPanel = ui.Panel({
+                widgets: [municipalityLabel],
+                style: {position: 'bottom-left', padding: '8px'}
+              });
+
+              Map.add(infoPanel);
+
+              // Elevation information panel
+              var demLegend = ui.Panel({
+                style: {
+                  position: 'bottom-right',
+                  padding: '8px',
+                  backgroundColor: 'ffffffcc'
+                }
+              });
+
+              demLegend.add(ui.Label('Elevation (m)', {fontWeight: 'bold'}));
+
+              function addLegendRow(color, label) {
+                var colorBox = ui.Label('', {
+                  backgroundColor: '#' + color,
+                  padding: '8px',
+                  margin: '0 4px 0 0'
+                });
+
+                var text = ui.Label(label);
+
+                demLegend.add(ui.Panel([colorBox, text], ui.Panel.Layout.flow('horizontal')));
+              }
+
+              addLegendRow('0b3d0b', '500 m');
+              addLegendRow('2e8b57', '680 m');
+              addLegendRow('7fbf7f', '860 m');
+              addLegendRow('d9c27f', '1040 m');
+              addLegendRow('a67c52', '1220 m');
+              addLegendRow('ffffff', '1400 m');
+
+              Map.add(demLegend);
+
+              // Click handler
+              var highlightLayer;
+
+              Map.onClick(function(coords) {
+
+                var point = ee.Geometry.Point([coords.lon, coords.lat]);
+
+                var municipality = campinasMesoregion.filterBounds(point);
+
+                municipality.first().get('ADM2_NAME').evaluate(function(name) {
+                  municipalityLabel.setValue(
+                    name ? 'Municipality: ' + name : 'No municipality selected'
+                  );
+                });
+
+                var highlighted = municipality.style(
+                  {lineType: 'solid', color: 'ffff00ff', fillColor: 'ffff0033', width: 1.50}
+                );
+
+                if (highlightLayer) {
+                  Map.layers().remove(highlightLayer);
+                }
+
+                highlightLayer = ui.Map.Layer(highlighted, {}, 'Selected municipality');
+
+                Map.layers().add(highlightLayer);
+
+              });
+            </code></pre>
+            </details>
+          <h3 id="understanding-the-script">Understanding the Script</h3>
+            <p>
+              The example script follows a typical <a href="https://earthengine.google.com/">Earth Engine</a> workflow and can be understood as a sequence of five steps.
+            </p>
+            <h4>Step 1 – Define the Study Area</h4>
+              <p>
+                The script begins by defining the geographic region that will be analysed. This is typically accomplished using an <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/ee-geometry"><code>ee.Geometry</code></a> object or a feature collection containing administrative boundaries. The study area is subsequently used to filter datasets and limit computations to the region of interest.
+              </p>
+            <h4>Step 2 – Load a Dataset</h4>
+              <p>
+                The script then loads one or more datasets from the <a href="https://developers.google.com/earth-engine/datasets">Earth Engine Data Catalog</a>. Depending on the application, these datasets may consist of satellite imagery (<a class="code-link" href="https://developers.google.com/earth-engine/apidocs/ee-imagecollection"><code>ee.ImageCollection</code></a>), vector boundaries (<a class="code-link" href="https://developers.google.com/earth-engine/apidocs/ee-featurecollection"><code>ee.FeatureCollection</code></a>), elevation models, climate data, or other geospatial resources.
+              </p>
+            <h4>Step 3 – Filter and Prepare the Data</h4>
+              <p>
+                The loaded dataset is filtered according to criteria such as date range, geographic extent, cloud cover, or metadata attributes. Additional preprocessing operations may also be applied, including band selection, masking, clipping, or image transformations.
+              </p>
+            <h4>Step 4 – Produce a Derived Result</h4>
+              <p>
+                Once the data have been prepared, the script computes a derived product. Examples include vegetation indices, land-cover classifications, temporal composites, summary statistics, or spatial aggregations. This stage typically involves applying functions to images or collections and generating new <a href="https://developers.google.com/earth-engine/guides/objects_methods_overview">Earth Engine objects</a>.
+              </p>
+            <h4>Step 5 – Visualize the Result</h4>
+              <p>
+                Finally, the result is displayed on the interactive map using <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/map-addlayer"><code>Map.addLayer()</code></a>. Visualization parameters determine how values are represented through colours and stretching. The map is then centred on the study area using <a class="code-link" href="https://developers.google.com/earth-engine/apidocs/map-centerobject"><code>Map.centerObject()</code></a>, allowing the user to inspect the output interactively.
+              </p>
+          <h3 id="interactive-map">Interactive Map</h3>
+            <p>
+              The map below corresponds to the output generated by the script.
+            </p>
+            <div class="map-container">
+              <iframe
+                src="https://silvadimitri.users.earthengine.app/view/gee-illustration-map"
+                title="Google Earth Engine Illustration">
+              </iframe>
+            </div>
+          <h3 id="discussion">Discussion</h3>
+            <p>
+              This example illustrates a typical <a href="https://earthengine.google.com/">Earth Engine</a> workflow involving data acquisition, filtering, transformation, visualization, and user interaction. It also demonstrates how <a href="https://earthengine.google.com/">Earth Engine</a> scripts can be published as <a href="https://developers.google.com/earth-engine/tutorials/community/creating-web-apps">web applications</a> that can be embedded within external webpages through standard HTML components such as the <code>&lt;iframe&gt;</code> element.
+            </p>
+            <p>
+              Readers are encouraged to experiment with the script, modify parameters, substitute datasets, and extend the <a href="https://earthengine.google.com/static/images/annotated_playground.png"></a>interface in order to become familiar with the <a href="https://earthengine.google.com/">Earth Engine</a> programming model.
+            </p>
+      </section>
+    </main>
+  </div>
+</body>
+<script>
+  const headings = document.querySelectorAll('[id]');
+  const navLinks = document.querySelectorAll('#toc a');
+  
+  window.addEventListener('scroll', updateTOC);
+  
+  updateTOC();
+  
+  function updateTOC() {
+    let currentId = '';
+    headings.forEach(section => {
+      const top = section.offsetTop - 120;
+      if (window.scrollY >= top) {currentId = section.id;}
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+    });
+
+    document.querySelectorAll('.toc-parent')
+      .forEach(parent => {parent.classList.remove('active-parent');});
+    
+    const activeLink = document.querySelector(`#toc a[href="#${currentId}"]`);
+    if (!activeLink) return;
+    activeLink.classList.add('active');
+    let parent = activeLink.closest('.toc-parent');
+    while (parent) {
+      parent.classList.add('active-parent');
+      parent = parent.parentElement?.closest('.toc-parent');
+    }
+  }
+</script>
+</html>

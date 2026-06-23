@@ -270,7 +270,23 @@
   </style>
 </head>
 <body>
+<!--
+from google.cloud import bigquery
+from google.oauth2 import service_account
 
+KEY_PATH = r'D:\Dropbox\Notes\sql-practice-465123-28ae4e62a23f.json'
+PROJECT_ID = 'sql-practice-465123'
+DATASET_ID = 'us_counties'
+TABLE_ID = 'nhgis-pop_county_1790-2020_long'
+
+credentials = service_account.Credentials.from_service_account_file(KEY_PATH)
+client = bigquery.Client(credentials = credentials, project = PROJECT_ID)
+
+query = f"""
+SELECT * 
+FROM `{PROJECT_ID}.{DATASET_ID}.{TABLE_ID}` 
+LIMIT 5
+-->
 <div class="container">
 
   <!-- ── Sidebar ── -->

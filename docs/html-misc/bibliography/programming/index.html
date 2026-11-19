@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="reading">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Programming</title>
+  <style>
+    :root {
+      /* Color pallette */
+      --color-bg-body: rgb(191, 191, 191);
+      --color-border: rgb(127, 127, 127);
+      --color-border: rgb(127, 127, 127);
+      --color-text-primary: rgb(0, 0, 0);
+      --color-p-text: rgb(15, 15, 15);
+      --color-p-read: rgb(95, 95, 95);
+      
+      /* Fonts */
+      --font-serif: 'Latin Modern Roman', serif;
+      --font-size-base: 1.00em;
+      --font-size-small: 0.85em;
+      --font-size-large: 2.00em;
+      --font-weight-normal: 400;
+      --font-weight-semibold: 600;
+      
+      /* Spacing */
+      --spacing-large: 60px;
+      --spacing-p-normal: 12px;
+      --spacing-p-line: 1.15;
+      
+      /* Borders */
+      --border-radius: 6px;
+      --border-width: 1px;
+      
+      /* Layout */
+      --padding-horizontal: 20%;
+      --padding-vertical: 10px;
+      
+      /* Indentation */
+      --indent-size: 15px;
+    }
+    
+    @font-face {
+      font-family: 'Latin Modern Roman';
+      src: format('woff2'), format('woff');
+      font-weight: var(--font-weight-normal);
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    body {
+      background-color: var(--color-bg-body);
+      padding: var(--padding-vertical) var(--padding-horizontal);
+      font-family: var(--font-serif);
+      color: var(--color-text-primary);
+      line-height: 1.6;
+    }
+    
+    h1 {
+      font-size: var(--font-size-large);
+      margin-bottom: var(--spacing-large);
+      text-align: center;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+    }
+    
+    h2 {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+    }
+    
+    /* Sort buttons */
+    fieldset {
+      border: var(--border-width) solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    legend {
+      font-weight: var(--font-weight-semibold);
+      padding: 0 10px;
+      color: var(--color-text-primary);
+    }
+    
+    label {
+      display: inline-block;
+      margin-right: 20px;
+      margin-bottom: 10px;
+      font-size: var(--font-size-small);
+      color: var(--color-text-primary);
+      cursor: pointer;
+    }
+    
+    input[type='radio'] {
+      margin-right: 5px;
+      cursor: pointer;
+    }
+    
+    /* Listing */
+    details.level-0 { padding-left: calc(0 * var(--indent-size)); }
+    details.level-1 { padding-left: calc(1 * var(--indent-size)); }
+    details.level-2 { padding-left: calc(2 * var(--indent-size)); }
+    
+    p {
+      font-size: 85%;
+      text-align: justify;
+      color: var(--color-p-text);
+      padding-left: 2.25%;
+      line-height: var(--spacing-p-line);
+      margin-top: var(--spacing-p-normal);
+      margin-bottom: var(--spacing-p-normal);
+    }
+    
+    p.read {
+      color: var(--color-p-read);
+    }
+    
+    span.author {
+      font-weight: bold;
+    }
+    
+    span.title {
+      font-style: italic;
+    }
+    
+    a {
+      overflow-wrap: break-word;
+      color: inherit;
+      /* text-decoration: none; */
+    }
+  </style>
+  <script>
+    (function() {
+      'use strict';
+      
+      // Cache objects
+      const domCache = {};
+      
+      // Initialization
+      document.addEventListener('DOMContentLoaded', function() {
+            // Cache DOM elements
+            domCache.sortOptionRadio = document.querySelectorAll('input[name="sortOption"]');
+            // Set event listener
+            setupEventListeners();
+      });
+      
+      // Event listener
+      function setupEventListeners() {
+        // Sort option radion buttons
+        domCache.sortOptionRadio.forEach(radio => {
+          radio.addEventListener('change', sortItems);
+        })
+      }
+      
+      // Sort items
+      function sortItems() {
+        const sortBy = document.querySelector('input[name="sortOption"]:checked')?.value;
+        const allDetails = document.querySelectorAll('details');
+        
+        const listing = document.getElementById('listing');
+        const topItems = Array.from(listing.children)
+          .filter(elem => elem.tagName === 'P');
+        
+        const getValue = (elem) => {
+          switch (sortBy) {
+            case 'id': 
+              return elem.id || '';
+            case 'sequence': 
+              return elem.dataset.sequence || '';
+            case 'title': 
+              return elem.querySelector('.title')?.textContent || '';
+            case 'authors': 
+              return elem.querySelector('.author')?.textContent || '';
+            case 'year': 
+              return elem.querySelector('.year')?.textContent || '';
+            default: 
+              return '';
+          }
+        };
+        
+        allDetails.forEach(details => {
+          // Get only direct <p> children
+          const items = Array.from(details.children)
+            .filter(elem => elem.tagName === 'P');
+          
+          if (items.length === 0) return;
+          
+          // Sort elements
+          items.sort((a, b) => {
+            let valA = getValue(a);
+            let valB = getValue(b);
+            if (sortBy === 'year' || sortBy == 'sequence') {
+              return Number(valA) - Number(valB);
+            }
+            return valA.localeCompare(valB);
+          });
+          
+          // Reinsert in sorted 
+          topItems.sort((a, b) => {
+            let valA = getValue(a);
+            let valB = getValue(b);
+            if (sortBy === 'year' || sortBy == 'sequence') {
+              return Number(valA) - Number(valB);
+            }
+            return valA.localeCompare(valB);
+          });
+          topItems.forEach(elem => listing.appendChild(elem));
+          
+          items.forEach(elem => details.appendChild(elem));
+        });
+      }
+    })(); // IIFE
+  </script>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Programming</h1>
+    </header>
+    <section id="sorting">
+      <div class="controls">
+        <fieldset>
+          <legend>Sorting</legend>
+          <label>
+            <input type="radio" name="sortOption" value="title">
+            <span>Title</span>
+          </label>
+          <label>
+            <input type="radio" name="sortOption" value="authors">
+            <span>Authors</span>
+          </label>
+          <label>
+            <input type="radio" name="sortOption" value="year">
+            <span>Year</span>
+          </label>
+          <label>
+            <input type="radio" name="sortOption" value="id">
+            <span>ID</span>
+          </label>
+          <label>
+            <input type="radio" name="sortOption" value="sequence" checked>
+            <span>Sequence</span>
+          </label>
+        </fieldset>
+      </div>
+    </section>
+    <section id="listing">
+      <!--
+      <details data-topic="[SUMMARY-TEXT]" class="level-0">
+        <summary>[SUMMARY-TEXT]</summary>
+        
+      </details>
+      -->
+      <details data-topic="linux" class="level-0">
+        <summary>Linux</summary>
+          <!--
+          keys = ["shotts2026linux", "barrett2022efficient", "dougherty1997sed", "campesato2023working", "mecklenburg2004managing", "tange2018gnu", "janssens2021data"]
+          -->
+          <p id="shotts2026linux" class="unread" data-type="book" data-sequence="000010">
+            &#x272A; <span class="author">Shotts, William</span> (<span class="year">2026</span>). <span class="title">The Linux Command Line: A Complete Introduction</span>. No Starch Press. <a class="ref-link" href="https://nostarch.com/linux-command-line-3e">https://<wbr>nostarch.<wbr>com/<wbr>linux-<wbr>command-<wbr>line-<wbr>3e</a>
+          </p>
+
+          <p id="barrett2022efficient" class="unread" data-type="book" data-sequence="000020">
+            <span class="author">Barrett, Daniel J.</span> (<span class="year">2022</span>). <span class="title">Efficient Linux at the Command Line</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/efficient-linux-at/9781098113391/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>efficient-<wbr>linux-<wbr>at/<wbr>9781098113391/<wbr></a>
+          </p>
+
+          <p id="dougherty1997sed" class="unread" data-type="book" data-sequence="000030">
+            <span class="author">Dougherty, Dale; and Robbins, Arnold</span> (<span class="year">1997</span>). <span class="title">sed & awk</span>. 2nd Edition. O'Reilly & Associates. <a class="ref-link" href="https://www.oreilly.com/library/view/sed-awk/1565922255/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>sed-<wbr>awk/<wbr>1565922255/<wbr></a>
+          </p>
+
+          <p id="campesato2023working" class="unread" data-type="book" data-sequence="000040">
+            <span class="author">Campesato, Oswald</span> (<span class="year">2023</span>). <span class="title">Working with grep, sed, and awk Pocket Primer</span>. De Gruyter. <a class="ref-link" href="https://www.degruyterbrill.com/document/doi/10.1515/9781501518232/html">https://<wbr>www.<wbr>degruyterbrill.<wbr>com/<wbr>document/<wbr>doi/<wbr>10.<wbr>1515/<wbr>9781501518232/<wbr>html</a>
+          </p>
+
+          <p id="mecklenburg2004managing" class="unread" data-type="book" data-sequence="000050">
+            <span class="author">Mecklenburg, Robert</span> (<span class="year">2004</span>). <span class="title">Managing Projects with GNU Make</span>. 3rd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/managing-projects-with/0596006101/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>managing-<wbr>projects-<wbr>with/<wbr>0596006101/<wbr></a>
+          </p>
+
+          <p id="tange2018gnu" class="unread" data-type="book" data-sequence="000060">
+            <span class="author">Tange, Ole</span> (<span class="year">2018</span>). <span class="title">GNU Parallel</span>. Independent Publishing. <a class="ref-link" href="https://zenodo.org/records/1146014">https://<wbr>zenodo.<wbr>org/<wbr>records/<wbr>1146014</a>
+          </p>
+
+          <p id="janssens2021data" class="read" data-type="book" data-sequence="000070">
+            <span class="author">Janssens, Jeroen</span> (<span class="year">2021</span>). <span class="title">Data Science at the Command Line</span>. 2nd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/data-science-at/9781492087908/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>data-<wbr>science-<wbr>at/<wbr>9781492087908/<wbr></a>
+          </p>
+      </details>
+      <details data-topic="git" class="level-0">
+        <summary>Git</summary>
+        <!--
+        keys = ["skoulikari2023learning", "ponuthorai2022version", "laster2023learning", "kaufmann2024github", "heller2021automating", "ogrady2018gitlab", "cowell2023automating"]
+        -->
+        <p id="skoulikari2023learning" class="unread" data-type="book" data-sequence="000010">
+          &#x272A; <span class="author">Skoulikari, Anna</span> (<span class="year">2023</span>). <span class="title">Learning Git: A Hands-On and Visual Guide to the Basics of Git</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/learning-git/9781098133900/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>learning-<wbr>git/<wbr>9781098133900/<wbr></a>
+        </p>
+
+        <p id="ponuthorai2022version" class="unread" data-type="book" data-sequence="000020">
+          <span class="author">Ponuthorai, Pradeep; and Loeliger, Jon</span> (<span class="year">2022</span>). <span class="title">Version Control with Git</span>. 3rd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/version-control-with/9781492091189/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>version-<wbr>control-<wbr>with/<wbr>9781492091189/<wbr></a>
+        </p>
+
+        <p id="laster2023learning" class="unread" data-type="book" data-sequence="000040">
+          <span class="author">Laster, Brent</span> (<span class="year">2023</span>). <span class="title">Learning GitHub Actions</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/learning-github-actions/9781098131067/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>learning-<wbr>github-<wbr>actions/<wbr>9781098131067/<wbr></a>
+        </p>
+
+        <p id="kaufmann2024github" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Kaufmann, Michael; Bos, Rob; and de Vries, Marcel</span> (<span class="year">2024</span>). <span class="title">GitHub Actions in Action: Continuous Integration and Delivery for Everyone</span>. Manning Publications. <a class="ref-link" href="https://www.oreilly.com/library/view/github-actions-in/9781633437302/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>github-<wbr>actions-<wbr>in/<wbr>9781633437302/<wbr></a>
+        </p>
+
+        <p id="heller2021automating" class="unread" data-type="book" data-sequence="000060">
+          <span class="author">Heller, Priscila</span> (<span class="year">2021</span>). <span class="title">Automating Workflows with GitHub Actions</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/automating-workflows-with/9781800560406/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>automating-<wbr>workflows-<wbr>with/<wbr>9781800560406/<wbr></a>
+        </p>
+
+        <p id="ogrady2018gitlab" class="unread" data-type="book" data-sequence="000070">
+          <span class="author">O.'Grady, Adam</span> (<span class="year">2018</span>). <span class="title">GitLab Quick Start Guide</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/gitlab-quick-start/9781789534344/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>gitlab-<wbr>quick-<wbr>start/<wbr>9781789534344/<wbr></a>
+        </p>
+
+        <p id="cowell2023automating" class="unread" data-type="book" data-sequence="000080">
+          <span class="author">Cowell, Christopher; Lotz, Nicholas; and Timberlake, Chris</span> (<span class="year">2023</span>). <span class="title">Automating DevOps with GitLab CI/CD Pipelines: Build Efficient CI/CD Pipelines to Verify, Secure, and Deploy Your Code Using Real-Life Examples</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/automating-devops-with/9781803233000/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>automating-<wbr>devops-<wbr>with/<wbr>9781803233000/<wbr></a>
+        </p>
+      </details>
+      <details data-topic="vscode" class="level-0">
+        <summary>Visual Studio Code</summary>
+        <!--
+        ids = ["delsole2023visual", "speight2021visual", "uzayr2021optimizing"]
+        -->
+        <p id="delsole2023visual" class="read" data-type="book" data-sequence="000010">
+          <span class="author">Del Sole, Alessandro</span> (<span class="year">2023</span>). <span class="title">Visual Studio Code Distilled: Evolved Code Editing for Windows, macOS, and Linux</span>. 3rd Edition. Apress. <a class="ref-link" href="https://link.springer.com/book/10.1007/978-1-4842-9484-0">https://<wbr>link.<wbr>springer.<wbr>com/<wbr>book/<wbr>10.<wbr>1007/<wbr>978-<wbr>1-<wbr>4842-<wbr>9484-<wbr>0</a>
+        </p>
+
+        <p id="speight2021visual" class="unread" data-type="book" data-sequence="000020">
+          &#x272A; <span class="author">Speight, April</span> (<span class="year">2021</span>). <span class="title">Visual Studio Code for Python Programmers</span>. John Wiley & Sons. <a class="ref-link" href="https://www.wiley.com/en-cn/shop/general-introductory-computer-science/visual-studio-code-for-python-programmers-p-9781119773368">https://<wbr>www.<wbr>wiley.<wbr>com/<wbr>en-<wbr>cn/<wbr>shop/<wbr>general-<wbr>introductory-<wbr>computer-<wbr>science/<wbr>visual-<wbr>studio-<wbr>code-<wbr>for-<wbr>python-<wbr>programmers-<wbr>p-<wbr>9781119773368</a>
+        </p>
+
+        <p id="uzayr2021optimizing" class="unread" data-type="book" data-sequence="000030">
+          <span class="author">Uzayr, Sufyan bin</span> (<span class="year">2021</span>). <span class="title">Optimizing Visual Studio Code for Python Development: Developing More Efficient and Effective Programs in Python</span>. Apress. <a class="ref-link" href="https://link.springer.com/book/10.1007/978-1-4842-7344-9">https://<wbr>link.<wbr>springer.<wbr>com/<wbr>book/<wbr>10.<wbr>1007/<wbr>978-<wbr>1-<wbr>4842-<wbr>7344-<wbr>9</a>
+        </p>
+      </details>
+      <details data-topic="ai-assistants" class="level-0">
+        <summary>AI Assistants</summary>
+        <!--
+        keys = ["phoenix2024prompt", "laster2025learning", "dowswell2024programming", "kousen2027claude", "marco2026agentic", "huang2026claude", "vaughan2026agentic", "kurni2026ai"]
+        -->
+        <p id="phoenix2024prompt" class="unread" data-type="book" data-sequence="000010">
+          &#x272A; <span class="author">Phoenix, James; and Taylor, Mike</span> (<span class="year">2024</span>). <span class="title">Prompt Engineering for Generative AI</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/prompt-engineering-for/9781098153427/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>prompt-<wbr>engineering-<wbr>for/<wbr>9781098153427/<wbr></a>
+        </p>
+
+        <p id="laster2025learning" class="read" data-type="book" data-sequence="000020">
+          <span class="author">Laster, Brent</span> (<span class="year">2025</span>). <span class="title">Learning GitHub Copilot: Multiplying Your Coding Productivity Using AI</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/learning-github-copilot/9781098164645/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>learning-<wbr>github-<wbr>copilot/<wbr>9781098164645/<wbr></a>
+        </p>
+
+        <p id="dowswell2024programming" class="unread" data-type="book" data-sequence="000030">
+          &#x272A; <span class="author">Dowswell, Kurt</span> (<span class="year">2024</span>). <span class="title">Programming with GitHub Copilot: Write Better Code--Faster!</span>. John Wiley & Sons. <a class="ref-link" href="https://www.wiley.com/en-us/shop/general-introductory-computer-science/programming-with-github-copilot-write-better-code-faster!-p-9781394263387">https://<wbr>www.<wbr>wiley.<wbr>com/<wbr>en-<wbr>us/<wbr>shop/<wbr>general-<wbr>introductory-<wbr>computer-<wbr>science/<wbr>programming-<wbr>with-<wbr>github-<wbr>copilot-<wbr>write-<wbr>better-<wbr>code-<wbr>faster!-<wbr>p-<wbr>9781394263387</a>
+        </p>
+
+        <p id="kousen2027claude" class="unread" data-type="book" data-sequence="000035">
+          &#x272A; <span class="author">Kousen, Ken</span> (<span class="year">2027</span>). <span class="title">Claude Code: Up and Running</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/claude-code-up/0642572388782/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>claude-<wbr>code-<wbr>up/<wbr>0642572388782/<wbr></a>
+        </p>
+
+        <p id="marco2026agentic" class="unread" data-type="book" data-sequence="000040">
+          &#x272A; <span class="author">Marco, Eden</span> (<span class="year">2026</span>). <span class="title">Agentic Coding with Claude Code</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/agentic-coding-with/9781806022595/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>agentic-<wbr>coding-<wbr>with/<wbr>9781806022595/<wbr></a>
+        </p>
+
+        <p id="huang2026claude" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Huang, Jia</span> (<span class="year">2026</span>). <span class="title">The Claude Code Operating Model</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/the-claude-code/9781808082719/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>the-<wbr>claude-<wbr>code/<wbr>9781808082719/<wbr></a>
+        </p>
+
+        <p id="vaughan2026agentic" class="unread" data-type="book" data-sequence="000060">
+          <span class="author">Vaughan, Daniel</span> (<span class="year">2026</span>). <span class="title">Agentic Coding with OpenAI Codex CLI: Build Intelligent Agent Workflows Using Agentic Engineering, MCP, Hooks, and Delivery Automation</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/agentic-coding-with/9781808348891/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>agentic-<wbr>coding-<wbr>with/<wbr>9781808348891/<wbr></a>
+        </p>
+
+        <p id="kurni2026ai" class="unread" data-type="book" data-sequence="000070">
+          <span class="author">Noring, Christoffer; Jain, Anjali; Fernandez, Marina; Mutlu, Ayşe; and Jaokar, Ajit</span> (<span class="year">2024</span>). <span class="title">AI-Assisted Programming for Web and Machine Learning</span>. BPB Publications. <a class="ref-link" href="https://www.oreilly.com/library/view/ai-assisted-programming-for/9781835086056/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>ai-<wbr>assisted-<wbr>programming-<wbr>for/<wbr>9781835086056/<wbr></a>
+        </p>
+      </details>
+      <details data-topic="api" class="level-0">
+        <summary>API</summary>
+        <!--
+        keys = ["richardson2013restful", "doglio2018rest", "peralta2023microservice", "lubanovic2023fastapi", "voron2021building", "parandeh2025building", "day2024hands"]
+        -->
+        <p id="richardson2013restful" class="unread" data-type="book" data-sequence="000010">
+          <span class="author">Richardson, Leonard; Amundsen, Mike; and Ruby, Sam</span> (<span class="year">2013</span>). <span class="title">RESTful Web APIs</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/restful-web-apis/9781449359713/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>restful-<wbr>web-<wbr>apis/<wbr>9781449359713/<wbr></a>
+        </p>
+
+        <p id="doglio2018rest" class="unread" data-type="book" data-sequence="000020">
+          <span class="author">Doglio, Fernando</span> (<span class="year">2018</span>). <span class="title">REST API Development with Node.js: Manage and Understand the Full Capabilities of Successful REST Development</span>. 2nd Edition. Apress. <a class="ref-link" href="https://link.springer.com/book/10.1007/978-1-4842-3715-1">https://<wbr>link.<wbr>springer.<wbr>com/<wbr>book/<wbr>10.<wbr>1007/<wbr>978-<wbr>1-<wbr>4842-<wbr>3715-<wbr>1</a>
+        </p>
+
+        <p id="peralta2023microservice" class="unread" data-type="book" data-sequence="000030">
+          <span class="author">Peralta, José Haro</span> (<span class="year">2023</span>). <span class="title">Microservice APIs</span>. Manning Publications. <a class="ref-link" href="https://www.oreilly.com/library/view/microservice-apis/9781617298417/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>microservice-<wbr>apis/<wbr>9781617298417/<wbr></a>
+        </p>
+
+        <p id="lubanovic2023fastapi" class="unread" data-type="book" data-sequence="000040">
+          <span class="author">Lubanovic, Bill</span> (<span class="year">2023</span>). <span class="title">FastAPI</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/fastapi/9781098135492/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>fastapi/<wbr>9781098135492/<wbr></a>
+        </p>
+
+        <p id="voron2021building" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Voron, François</span> (<span class="year">2021</span>). <span class="title">Building Data Science Applications with FastAPI: Develop, Manage, and Deploy Efficient Machine Learning Applications with Python</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/building-data-science/9781801079211/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>building-<wbr>data-<wbr>science/<wbr>9781801079211/<wbr></a>
+        </p>
+
+        <p id="parandeh2025building" class="unread" data-type="book" data-sequence="000060">
+          <span class="author">Parandeh, Alireza</span> (<span class="year">2025</span>). <span class="title">Building Generative AI Services with FastAPI</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/building-generative-ai/9781098160296/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>building-<wbr>generative-<wbr>ai/<wbr>9781098160296/<wbr></a>
+        </p>
+
+        <p id="day2024hands" class="unread" data-type="book" data-sequence="000070">
+          <span class="author">Day, Ryan</span> (<span class="year">2024</span>). <span class="title">Hands-On APIs for AI and Data Science</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/hands-on-apis-for/9781098164409/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>hands-<wbr>on-<wbr>apis-<wbr>for/<wbr>9781098164409/<wbr></a>
+        </p>
+      </details>
+      <details data-topic="software-development" class="level-0">
+        <summary>Software Development</summary>
+        <!--
+        keys = ["nwokwu2025data", "dejaegere2026data", "reis2022fundamentals", "kleppmann2026designing", "nelson2024software", "richards2025fundamentals", "kane2023docker", "davis2023bootstrapping", "greffier2026practical", "kelhini2026hands", "pathak2026web", "irvine2023svelte"]
+        -->
+        <p id="nwokwu2025data" class="unread" data-type="book" data-sequence="000010">
+          &#x272A; <span class="author">Nwokwu, Chisom</span> (<span class="year">2025</span>). <span class="title">Data Engineering for Beginners</span>. John Wiley and Sons. <a class="ref-link" href="https://www.wiley.com/en-us/shop/general-introductory-computer-science/data-engineering-for-beginners-p-9781394325429">https://<wbr>www.<wbr>wiley.<wbr>com/<wbr>en-<wbr>us/<wbr>shop/<wbr>general-<wbr>introductory-<wbr>computer-<wbr>science/<wbr>data-<wbr>engineering-<wbr>for-<wbr>beginners-<wbr>p-<wbr>9781394325429</a>
+        </p>
+
+        <p id="dejaegere2026data" class="unread" data-type="book" data-sequence="000020">
+          <span class="author">Dejaegere, Gilles; Abelló, Alberto; Torp, Kristian; and Simitsis, Alkis</span> (<span class="year">2026</span>). <span class="title">Data Engineering for Data Science</span>. Springer. <a class="ref-link" href="https://link.springer.com/book/10.1007/978-3-032-18765-9">https://<wbr>link.<wbr>springer.<wbr>com/<wbr>book/<wbr>10.<wbr>1007/<wbr>978-<wbr>3-<wbr>032-<wbr>18765-<wbr>9</a>
+        </p>
+
+        <p id="reis2022fundamentals" class="unread" data-type="book" data-sequence="000030">
+          <span class="author">Reis, Joe; and Housley, Matt</span> (<span class="year">2022</span>). <span class="title">Fundamentals of Data Engineering</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>fundamentals-<wbr>of-<wbr>data/<wbr>9781098108298/<wbr></a>
+        </p>
+
+        <p id="kleppmann2026designing" class="unread" data-type="book" data-sequence="000035">
+          <span class="author">Kleppmann, Martin; and Riccomini, Chris</span> (<span class="year">2026</span>). <span class="title">Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems</span>. 2nd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781098119058/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>designing-<wbr>data-<wbr>intensive-<wbr>applications/<wbr>9781098119058/<wbr></a>
+        </p>
+
+        <p id="nelson2024software" class="unread" data-type="book" data-sequence="000040">
+          <span class="author">Nelson, Catherine</span> (<span class="year">2024</span>). <span class="title">Software Engineering for Data Scientists: From Notebooks to Scalable Scripts</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/software-engineering-for/9781098136192/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>software-<wbr>engineering-<wbr>for/<wbr>9781098136192/<wbr></a>
+        </p>
+
+        <p id="richards2025fundamentals" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Richards, Mark; and Ford, Neal</span> (<span class="year">2025</span>). <span class="title">Fundamentals of Software Architecture: An Engineering Approach</span>. 2nd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/fundamentals-of-software/9781098175504/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>fundamentals-<wbr>of-<wbr>software/<wbr>9781098175504/<wbr></a>
+        </p>
+
+        <p id="kane2023docker" class="unread" data-type="book" data-sequence="000060">
+          <span class="author">Kane, Sean P.; and Matthias, Karl</span> (<span class="year">2023</span>). <span class="title">Docker: Up and Running</span>. 3rdth Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/docker-up/9781098131814/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>docker-<wbr>up/<wbr>9781098131814/<wbr></a>
+        </p>
+
+        <p id="davis2023bootstrapping" class="unread" data-type="book" data-sequence="000070">
+          <span class="author">Davis, Ashley</span> (<span class="year">2023</span>). <span class="title">Bootstrapping Microservices with Docker, Kubernetes, GitHub Actions, and Terraform</span>. 2nd Edition. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/bootstrapping-microservices-second-edition">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>bootstrapping-<wbr>microservices-<wbr>second-<wbr>edition</a>
+        </p>
+
+        <p id="greffier2026practical" class="unread" data-type="book" data-sequence="000080">
+          <span class="author">Greffier, Jean-François</span> (<span class="year">2026</span>). <span class="title">Practical Playwright Test: Next-Generation Web Testing</span>. Apress. <a class="ref-link" href="https://link.springer.com/book/10.1007/979-8-8688-2160-8">https://<wbr>link.<wbr>springer.<wbr>com/<wbr>book/<wbr>10.<wbr>1007/<wbr>979-<wbr>8-<wbr>8688-<wbr>2160-<wbr>8</a>
+        </p>
+
+        <p id="kelhini2026hands" class="unread" data-type="book" data-sequence="000090">
+          <span class="author">Kelhini, Faraz K.; and Mayhew, Butch</span> (<span class="year">2026</span>). <span class="title">Hands-On Automated Testing with Playwright</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/hands-on-automated-testing/9781806106479/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>hands-<wbr>on-<wbr>automated-<wbr>testing/<wbr>9781806106479/<wbr></a>
+        </p>
+
+        <p id="pathak2026web" class="unread" data-type="book" data-sequence="000100">
+          <span class="author">Pathak, Kailash</span> (<span class="year">2026</span>). <span class="title">Web Automation with Playwright and Python Using AI and MCP: Playwright and Python With AI for End-to-End, API, Visual, and Accessibility Testing</span>. BPB Publications. <a class="ref-link" href="https://bpbonline.com/products/web-automation-with-playwright-and-python-using-ai-and-mcp">https://<wbr>bpbonline.<wbr>com/<wbr>products/<wbr>web-<wbr>automation-<wbr>with-<wbr>playwright-<wbr>and-<wbr>python-<wbr>using-<wbr>ai-<wbr>and-<wbr>mcp</a>
+        </p>
+
+        <p id="irvine2023svelte" class="unread" data-type="book" data-sequence="000110">
+          <span class="author">Irvine, Daniel</span> (<span class="year">2023</span>). <span class="title">Svelte with Test-Driven Development: Advance Your Skills and Write Effective Automated Tests with Vitest, Playwright, and Cucumber.js</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/svelte-with-test-driven/9781837638338/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>svelte-<wbr>with-<wbr>test-<wbr>driven/<wbr>9781837638338/<wbr></a>
+        </p>
+      </details>
+      <details data-topic="nlp" class="level-0">
+        <summary>Natural Language Processing</summary>
+        <!--
+        keys = ["nunez2017elegant", "kochmar2022getting", "lane2025natural", "nugues2024python", "thomas2020natural", "grimmer2022text", "liu2020sentiment", "farzindar2020natural", "lei2021conducting", "cohen2019bayesian", "raaijmakers2022deep", "borwankar2026vector"]
+        -->
+        <p id="nunez2017elegant" class="unread" data-type="book" data-sequence="000010">
+          &#x272A; <span class="author">Nunez-Iglesias, Juan; van der Walt, Stéfan; and Dashnow, Harriet</span> (<span class="year">2017</span>). <span class="title">Elegant SciPy: The Art of Scientific Python</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/elegant-scipy/9781491922927/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>elegant-<wbr>scipy/<wbr>9781491922927/<wbr></a>
+        </p>
+
+        <p id="kochmar2022getting" class="unread" data-type="book" data-sequence="000020">
+          &#x272A; <span class="author">Kochmar, Ekaterina</span> (<span class="year">2022</span>). <span class="title">Getting Started with Natural Language Processing</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/getting-started-with-natural-language-processing">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>getting-<wbr>started-<wbr>with-<wbr>natural-<wbr>language-<wbr>processing</a>
+        </p>
+
+        <p id="lane2025natural" class="unread" data-type="book" data-sequence="000030">
+          &#x272A; <span class="author">Lane, Hobson; and Dyshel, Maria</span> (<span class="year">2025</span>). <span class="title">Natural Language Processing in Action</span>. 2nd Edition. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/natural-language-processing-in-action-second-edition">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>natural-<wbr>language-<wbr>processing-<wbr>in-<wbr>action-<wbr>second-<wbr>edition</a>
+        </p>
+
+        <p id="nugues2024python" class="unread" data-type="book" data-sequence="000040">
+          <span class="author">Nugues, Pierre M.</span> (<span class="year">2024</span>). <span class="title">Python for Natural Language Processing: Programming with NumPy, scikit-learn, Keras, and PyTorch</span>. 3rd Edition. Springer Nature Switzerland. <a class="ref-link" href="https://www.springerprofessional.de/en/python-for-natural-language-processing/27327852">https://<wbr>www.<wbr>springerprofessional.<wbr>de/<wbr>en/<wbr>python-<wbr>for-<wbr>natural-<wbr>language-<wbr>processing/<wbr>27327852</a>
+        </p>
+
+        <p id="thomas2020natural" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Thomas, Alex</span> (<span class="year">2020</span>). <span class="title">Natural Language Processing with Spark NLP</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/natural-language-processing/9781492047759/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>natural-<wbr>language-<wbr>processing/<wbr>9781492047759/<wbr></a>
+        </p>
+
+        <p id="grimmer2022text" class="unread" data-type="book" data-sequence="000060">
+          <span class="author">Grimmer, Justin; Roberts, Margaret E.; and Stewart, Brandon M.</span> (<span class="year">2022</span>). <span class="title">Text as Data: A New Framework for Machine Learning and the Social Sciences</span>. Princeton University Press. <a class="ref-link" href="https://press.princeton.edu/books/paperback/9780691207551/text-as-data">https://<wbr>press.<wbr>princeton.<wbr>edu/<wbr>books/<wbr>paperback/<wbr>9780691207551/<wbr>text-<wbr>as-<wbr>data</a>
+        </p>
+
+        <p id="liu2020sentiment" class="unread" data-type="book" data-sequence="000070">
+          <span class="author">Liu, Bing</span> (<span class="year">2020</span>). <span class="title">Sentiment Analysis: Mining Opinions, Sentiments, and Emotions</span>. Cambridge University Press. <a class="ref-link" href="https://www.cambridge.org/br/universitypress/subjects/computer-science/artificial-intelligence-and-natural-language-processing/sentiment-analysis-mining-opinions-sentiments-and-emotions-2nd-edition?format=HB">https://<wbr>www.<wbr>cambridge.<wbr>org/<wbr>br/<wbr>universitypress/<wbr>subjects/<wbr>computer-<wbr>science/<wbr>artificial-<wbr>intelligence-<wbr>and-<wbr>natural-<wbr>language-<wbr>processing/<wbr>sentiment-<wbr>analysis-<wbr>mining-<wbr>opinions-<wbr>sentiments-<wbr>and-<wbr>emotions-<wbr>2nd-<wbr>edition</a>
+        </p>
+
+        <p id="farzindar2020natural" class="unread" data-type="book" data-sequence="000080">
+          <span class="author">Farzindar, Anna Atefeh; and Inkpen, Diana</span> (<span class="year">2020</span>). <span class="title">Natural Language Processing for Social Media</span>. 3rd Edition. Springer. <a class="ref-link" href="https://link.springer.com/book/10.1007/978-3-031-02175-6">https://<wbr>link.<wbr>springer.<wbr>com/<wbr>book/<wbr>10.<wbr>1007/<wbr>978-<wbr>3-<wbr>031-<wbr>02175-<wbr>6</a>
+        </p>
+
+        <p id="lei2021conducting" class="unread" data-type="article" data-sequence="000090">
+          <span class="author">Lei, Lei; and Liu, Dilin</span> (<span class="year">2021</span>). <span class="title">Conducting Sentiment Analysis</span>. Elements in Corpus Linguistics. <a class="ref-link" href="https://www.cambridge.org/core/elements/conducting-sentiment-analysis/B00BACADE638BF1AD5F61972FEE4183D">https://<wbr>www.<wbr>cambridge.<wbr>org/<wbr>core/<wbr>elements/<wbr>conducting-<wbr>sentiment-<wbr>analysis/<wbr>B00BACADE638BF1AD5F61972FEE4183D</a>
+        </p>
+
+        <p id="cohen2019bayesian" class="unread" data-type="book" data-sequence="000100">
+          <span class="author">Cohen, Shay</span> (<span class="year">2019</span>). <span class="title">Bayesian Analysis in Natural Language Processing</span>. 2nd Edition. Springer. <a class="ref-link" href="https://link.springer.com/book/10.1007/978-3-031-02170-1">https://<wbr>link.<wbr>springer.<wbr>com/<wbr>book/<wbr>10.<wbr>1007/<wbr>978-<wbr>3-<wbr>031-<wbr>02170-<wbr>1</a>
+        </p>
+
+        <p id="raaijmakers2022deep" class="unread" data-type="book" data-sequence="000110">
+          <span class="author">Raaijmakers, Stephan</span> (<span class="year">2022</span>). <span class="title">Deep Learning for Natural Language Processing</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/deep-learning-for-natural-language-processing">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>deep-<wbr>learning-<wbr>for-<wbr>natural-<wbr>language-<wbr>processing</a>
+        </p>
+
+        <p id="borwankar2026vector" class="unread" data-type="book" data-sequence="000120">
+          &#x272A; <span class="author">Borwankar, Nitin</span> (<span class="year">2026</span>). <span class="title">Vector Databases: Transitioning Data to Vector Spaces for Semantic Search, Recommendation Systems, and LLM Applications</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/vector-databases/9781098177584/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>vector-<wbr>databases/<wbr>9781098177584/<wbr></a>
+        </p>
+      </details>
+      <details data-topic="ai-agents" class="level-0">
+        <summary>AI Agents</summary>
+        <!--
+        keys = ["oshin2025learning", "infante2026ai", "koenigstein2026ai", "albada2025building", "ozdemir2026building", "auffarth2025generative", "noring2025learn", "lakshmanan2025generative", "biswas2025building", "anthapu2025building"]
+        -->
+        <p id="oshin2025learning" class="read" data-type="book" data-sequence="000010">
+          <span class="author">Oshin, Mayo; and Campos, Nuno</span> (<span class="year">2025</span>). <span class="title">Learning LangChain</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/learning-langchain/9781098167271/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>learning-<wbr>langchain/<wbr>9781098167271/<wbr></a>
+        </p>
+
+        <p id="infante2026ai" class="read" data-type="book" data-sequence="000020">
+          <span class="author">Infante, Roberto</span> (<span class="year">2026</span>). <span class="title">AI Agents and Applications: With LangChain, LangGraph, and MCP</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/ai-agents-and-applications">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>ai-<wbr>agents-<wbr>and-<wbr>applications</a>
+        </p>
+
+        <p id="koenigstein2026ai" class="unread" data-type="book" data-sequence="000030">
+          &#x272A; <span class="author">Koenigstein, Nicole</span> (<span class="year">2026</span>). <span class="title">AI Agents: The Definitive Guide</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/ai-agents-the/0642572247775/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>ai-<wbr>agents-<wbr>the/<wbr>0642572247775/<wbr></a>
+        </p>
+
+        <p id="albada2025building" class="unread" data-type="book" data-sequence="000040">
+          &#x272A; <span class="author">Albada, Michael</span> (<span class="year">2025</span>). <span class="title">Building Applications with AI Agents</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/building-applications-with/9781098176495/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>building-<wbr>applications-<wbr>with/<wbr>9781098176495/<wbr></a>
+        </p>
+
+        <p id="ozdemir2026building" class="unread" data-type="book" data-sequence="000045">
+          <span class="author">Ozdemir, Sinan</span> (<span class="year">2026</span>). <span class="title">Building Agentic AI: Workflows, Fine-Tuning, Optimization, and Deployment</span>. Addison-Wesley Professional. <a class="ref-link" href="https://www.pearson.com/en-us/subject-catalog/p/building-agentic-ai-workflows-fine-tuning-optimization-and-deployment/P200000014597/9780135489680">https://<wbr>www.<wbr>pearson.<wbr>com/<wbr>en-<wbr>us/<wbr>subject-<wbr>catalog/<wbr>p/<wbr>building-<wbr>agentic-<wbr>ai-<wbr>workflows-<wbr>fine-<wbr>tuning-<wbr>optimization-<wbr>and-<wbr>deployment/<wbr>P200000014597/<wbr>9780135489680</a>
+        </p>
+
+        <p id="auffarth2025generative" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Auffarth, Ben; and Kuligin, Leonid</span> (<span class="year">2025</span>). <span class="title">Generative AI with LangChain: Build Production-Ready AI Systems Using LangChain, LangGraph, and Modern LLM Technologies</span>. 2nd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/generative-ai-with/9781837022014/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>generative-<wbr>ai-<wbr>with/<wbr>9781837022014/<wbr></a>
+        </p>
+
+        <p id="noring2025learn" class="unread" data-type="book" data-sequence="000055">
+          &#x272A; <span class="author">Noring, Christoffer</span> (<span class="year">2025</span>). <span class="title">Learn Model Context Protocol with Python</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/learn-model-context/9781806103232/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>learn-<wbr>model-<wbr>context/<wbr>9781806103232/<wbr></a>
+        </p>
+
+        <p id="lakshmanan2025generative" class="unread" data-type="book" data-sequence="000060">
+          <span class="author">Lakshmanan, Valliappa; and Hapke, Hannes</span> (<span class="year">2025</span>). <span class="title">Generative AI Design Patterns: Solutions to Common Challenges When Building GenAI Agents and Applications</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/generative-ai-design/9798341622654/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>generative-<wbr>ai-<wbr>design/<wbr>9798341622654/<wbr></a>
+        </p>
+
+        <p id="biswas2025building" class="unread" data-type="book" data-sequence="000065">
+          <span class="author">Biswas, Anjanava; and Talukdar, Wrick</span> (<span class="year">2025</span>). <span class="title">Building Agentic AI Systems</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/building-agentic-ai/9781803238753/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>building-<wbr>agentic-<wbr>ai/<wbr>9781803238753/<wbr></a>
+        </p>
+
+        <p id="anthapu2025building" class="unread" data-type="book" data-sequence="000070">
+          <span class="author">Anthapu, Ravindranatha; and Agarwal, Siddhant</span> (<span class="year">2025</span>). <span class="title">Building Neo4j-Powered Applications with LLMs: Create LLM-Driven Search and Recommendations Applications with Haystack, LangChain4j, and Spring AI</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/building-neo4j-powered-applications/9781836206231/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>building-<wbr>neo4j-<wbr>powered-<wbr>applications/<wbr>9781836206231/<wbr></a>
+        </p>
+      </details>
+      <details data-topic="llm-application" class="level-0">
+        <summary>LLM Application</summary>
+        <!--
+        keys = ["raschka2024build", "raschka2026build", "brousseau2025llms", "kamath2024large", "funderburk2025building", "bratanic2025essential"]
+        -->
+        <p id="raschka2024build" class="unread" data-type="book" data-sequence="000010">
+          <span class="author">Raschka, Sebastian</span> (<span class="year">2024</span>). <span class="title">Build a Large Language Model (From Scratch)</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/build-a-large-language-model-from-scratch">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>build-<wbr>a-<wbr>large-<wbr>language-<wbr>model-<wbr>from-<wbr>scratch</a>
+        </p>
+
+        <p id="raschka2026build" class="unread" data-type="book" data-sequence="000020">
+          <span class="author">Raschka, Sebastian</span> (<span class="year">2026</span>). <span class="title">Build a Reasoning Model (From Scratch)</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/build-a-reasoning-model-from-scratch">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>build-<wbr>a-<wbr>reasoning-<wbr>model-<wbr>from-<wbr>scratch</a>
+        </p>
+
+        <p id="brousseau2025llms" class="unread" data-type="book" data-sequence="000030">
+          <span class="author">Brousseau, Christopher; and Sharp, Matt</span> (<span class="year">2025</span>). <span class="title">LLMs in Production: From Language Models to Successful Products</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/llms-in-production">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>llms-<wbr>in-<wbr>production</a>
+        </p>
+
+        <p id="kamath2024large" class="unread" data-type="book" data-sequence="000040">
+          <span class="author">Kamath, Uday; Keenan, Kevin; Somers, Garrett; and Sorenson, Sarah</span> (<span class="year">2024</span>). <span class="title">Large Language Models: A Deep Dive</span>. Springer. <a class="ref-link" href="https://www.springerprofessional.de/en/large-language-models-a-deep-dive/27490720">https://<wbr>www.<wbr>springerprofessional.<wbr>de/<wbr>en/<wbr>large-<wbr>language-<wbr>models-<wbr>a-<wbr>deep-<wbr>dive/<wbr>27490720</a>
+        </p>
+
+        <p id="funderburk2025building" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Funderburk, Laura</span> (<span class="year">2025</span>). <span class="title">Building Natural Language and LLM Pipelines</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/building-natural-language/9781835467992/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>building-<wbr>natural-<wbr>language/<wbr>9781835467992/<wbr></a>
+        </p>
+
+        <p id="bratanic2025essential" class="unread" data-type="book" data-sequence="000060">
+          <span class="author">Bratanič, Tomaž; and Hane, Oskar</span> (<span class="year">2025</span>). <span class="title">Essential GraphRAG: Knowledge Graph-Enhanced RAG</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/essential-graphrag">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>essential-<wbr>graphrag</a>
+        </p>
+      </details>
+      <details data-topic="feature-engineering" class="level-0">
+        <summary>Feature Engineering</summary>
+        <!--
+        keys = ["zheng2018feature", "duboue2020art", "kuhn2019feature", "brownlee2020data"]
+        -->
+        <p id="zheng2018feature" class="unread" data-type="book" data-sequence="000010">
+          &#x272A; <span class="author">Zheng, Alice; and Casari, Amanda</span> (<span class="year">2018</span>). <span class="title">Feature Engineering for Machine Learning: Principles and Techniques for Data Scientists</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/feature-engineering-for/9781491953235/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>feature-<wbr>engineering-<wbr>for/<wbr>9781491953235/<wbr></a>
+        </p>
+
+        <p id="duboue2020art" class="unread" data-type="book" data-sequence="000020">
+          <span class="author">Duboue, Pablo</span> (<span class="year">2020</span>). <span class="title">The Art of Feature Engineering: Essentials for Machine Learning</span>. Cambridge University Press. <a class="ref-link" href="https://www.cambridge.org/core/books/art-of-feature-engineering/ABCC84474D629206F6FCA64AFAAA7A1A">https://<wbr>www.<wbr>cambridge.<wbr>org/<wbr>core/<wbr>books/<wbr>art-<wbr>of-<wbr>feature-<wbr>engineering/<wbr>ABCC84474D629206F6FCA64AFAAA7A1A</a>
+        </p>
+
+        <p id="kuhn2019feature" class="unread" data-type="book" data-sequence="000030">
+          <span class="author">Kuhn, Max; and Johnson, Kjell</span> (<span class="year">2019</span>). <span class="title">Feature Engineering and Selection: A Practical Approach for Predictive Models</span>. Chapman and Hall/CRC. <a class="ref-link" href="https://www.taylorfrancis.com/books/mono/10.1201/9781315108230/feature-engineering-selection-max-kuhn-kjell-johnson">https://<wbr>www.<wbr>taylorfrancis.<wbr>com/<wbr>books/<wbr>mono/<wbr>10.<wbr>1201/<wbr>9781315108230/<wbr>feature-<wbr>engineering-<wbr>selection-<wbr>max-<wbr>kuhn-<wbr>kjell-<wbr>johnson</a>
+        </p>
+
+        <p id="brownlee2020data" class="unread" data-type="book" data-sequence="000040">
+          <span class="author">Brownlee, Jason</span> (<span class="year">2020</span>). <span class="title">Data Preparation for Machine Learning: Data Cleaning, Feature Selection, and Data Transforms in Python</span>. Machine Learning Mastery. <a class="ref-link" href="https://machinelearningmastery.com/data-preparation-for-machine-learning/">https://<wbr>machinelearningmastery.<wbr>com/<wbr>data-<wbr>preparation-<wbr>for-<wbr>machine-<wbr>learning/<wbr></a>
+        </p>
+      </details>
+      <details data-topic="data-scaling" class="level-0">
+        <summary>Data Analysis Scaling</summary>
+        <!--
+        keys = ["damji2020learning", "nudurupati2021essential", "rioux2022data", "polak2023scaling", "tandon2022advanced", "karau2023scaling"]
+        -->
+        <p id="damji2020learning" class="unread" data-type="book" data-sequence="000010">
+          &#x272A; <span class="author">Damji, Jules S.; Wenig, Brooke; Das, Tathagata; and Lee, Denny</span> (<span class="year">2020</span>). <span class="title">Learning Spark: Lightning-Fast Data Analytics</span>. 2nd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/learning-spark-2nd/9781492050032/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>learning-<wbr>spark-<wbr>2nd/<wbr>9781492050032/<wbr></a>
+        </p>
+
+        <p id="nudurupati2021essential" class="unread" data-type="book" data-sequence="000020">
+          <span class="author">Nudurupati, Sreeram</span> (<span class="year">2021</span>). <span class="title">Essential PySpark for Scalable Data Analytics: A Beginner's Guide to Harnessing the Power and Ease of PySpark 3</span>. Packt Publishing. <a class="ref-link" href="https://www.packtpub.com/en-us/product/essential-pyspark-for-scalable-data-analytics-9781800568877">https://<wbr>www.<wbr>packtpub.<wbr>com/<wbr>en-<wbr>us/<wbr>product/<wbr>essential-<wbr>pyspark-<wbr>for-<wbr>scalable-<wbr>data-<wbr>analytics-<wbr>9781800568877</a>
+        </p>
+
+        <p id="rioux2022data" class="unread" data-type="book" data-sequence="000030">
+          <span class="author">Rioux, Jonathan</span> (<span class="year">2022</span>). <span class="title">Data Analysis with Python and PySpark</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/data-analysis-with-python-and-pyspark">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>data-<wbr>analysis-<wbr>with-<wbr>python-<wbr>and-<wbr>pyspark</a>
+        </p>
+
+        <p id="polak2023scaling" class="unread" data-type="book" data-sequence="000040">
+          <span class="author">Polak, Adi</span> (<span class="year">2023</span>). <span class="title">Scaling Machine Learning with Spark</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/scaling-machine-learning/9781098106812/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>scaling-<wbr>machine-<wbr>learning/<wbr>9781098106812/<wbr></a>
+        </p>
+
+        <p id="tandon2022advanced" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Tandon, Akash; Ryza, Sandy; Laserson, Uri; Owen, Sean; and Wills, Josh</span> (<span class="year">2022</span>). <span class="title">Advanced Analytics with PySpark</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/advanced-analytics-with/9781098103644/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>advanced-<wbr>analytics-<wbr>with/<wbr>9781098103644/<wbr></a>
+        </p>
+
+        <p id="karau2023scaling" class="unread" data-type="book" data-sequence="000060">
+          &#x272A; <span class="author">Karau, Holden; and Kimmins, Mika</span> (<span class="year">2023</span>). <span class="title">Scaling Python with Dask</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/scaling-python-with/9781098119867/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>scaling-<wbr>python-<wbr>with/<wbr>9781098119867/<wbr></a>
+        </p>
+      </details>
+      <details data-topic="ml" class="level-0">
+        <summary>Applied Machine Learning</summary>
+        <!--
+        keys = ["geron2019hands", "geron2025hands", "patel2019hands", "thampi2022interpretable", "masis2023interpretable", "broadwater2025graph", "negro2021graph", "villa2025causal", "ness2025causal", "benatan2023enhancing", "nguyen2023bayesian", "hapke2020building", "huyen2022designing", "treveil2020introducing", "croll2013lean", "kohavi2020trustworthy"]
+        -->
+        <p id="geron2019hands" class="unread" data-type="book" data-sequence="000010">
+          &#x272A; <span class="author">Géron, Aurélien</span> (<span class="year">2019</span>). <span class="title">Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow</span>. 2nd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/hands-on-machine-learning/9781492032632/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>hands-<wbr>on-<wbr>machine-<wbr>learning/<wbr>9781492032632/<wbr></a>
+        </p>
+
+        <p id="geron2025hands" class="unread" data-type="book" data-sequence="000020">
+          &#x272A; <span class="author">Géron, Aurélien</span> (<span class="year">2025</span>). <span class="title">Hands-On Machine Learning with Scikit-Learn and PyTorch</span>. 3rd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/hands-on-machine-learning/9798341607972/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>hands-<wbr>on-<wbr>machine-<wbr>learning/<wbr>9798341607972/<wbr></a>
+        </p>
+
+        <p id="patel2019hands" class="unread" data-type="book" data-sequence="000030">
+          &#x272A; <span class="author">Patel, Ankur A.</span> (<span class="year">2019</span>). <span class="title">Hands-On Unsupervised Learning Using Python: How to Build Applied Machine Learning Solutions from Unlabeled Data</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/hands-on-unsupervised-learning/9781492035633/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>hands-<wbr>on-<wbr>unsupervised-<wbr>learning/<wbr>9781492035633/<wbr></a>
+        </p>
+
+        <p id="thampi2022interpretable" class="unread" data-type="book" data-sequence="000040">
+          <span class="author">Thampi, Ajay</span> (<span class="year">2022</span>). <span class="title">Interpretable AI</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/interpretable-ai">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>interpretable-<wbr>ai</a>
+        </p>
+
+        <p id="masis2023interpretable" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Masís, Serg</span> (<span class="year">2023</span>). <span class="title">Interpretable Machine Learning with Python</span>. 2nd Edition. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/interpretable-machine-learning/9781803235424/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>interpretable-<wbr>machine-<wbr>learning/<wbr>9781803235424/<wbr></a>
+        </p>
+
+        <p id="broadwater2025graph" class="unread" data-type="book" data-sequence="000060">
+          <span class="author">Broadwater, Keita; and Stillman, Namid</span> (<span class="year">2025</span>). <span class="title">Graph Neural Networks in Action</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/graph-neural-networks-in-action">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>graph-<wbr>neural-<wbr>networks-<wbr>in-<wbr>action</a>
+        </p>
+
+        <p id="negro2021graph" class="unread" data-type="book" data-sequence="000070">
+          <span class="author">Negro, Alessandro</span> (<span class="year">2021</span>). <span class="title">Graph-Powered Machine Learning</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/graph-powered-machine-learning">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>graph-<wbr>powered-<wbr>machine-<wbr>learning</a>
+        </p>
+
+        <p id="villa2025causal" class="unread" data-type="book" data-sequence="000080">
+          <span class="author">de Villa, Aleix Ruiz</span> (<span class="year">2025</span>). <span class="title">Causal Inference for Data Science</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/causal-inference-for-data-science">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>causal-<wbr>inference-<wbr>for-<wbr>data-<wbr>science</a>
+        </p>
+
+        <p id="ness2025causal" class="unread" data-type="book" data-sequence="000090">
+          <span class="author">Ness, Robert Osazuwa</span> (<span class="year">2025</span>). <span class="title">Causal AI</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/causal-ai">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>causal-<wbr>ai</a>
+        </p>
+
+        <p id="benatan2023enhancing" class="unread" data-type="book" data-sequence="000100">
+          <span class="author">Benatan, Matt; Gietema, Jochem; and Schneider, Marian</span> (<span class="year">2023</span>). <span class="title">Enhancing Deep Learning with Bayesian Inference</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/enhancing-deep-learning/9781803246888/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>enhancing-<wbr>deep-<wbr>learning/<wbr>9781803246888/<wbr></a>
+        </p>
+
+        <p id="nguyen2023bayesian" class="unread" data-type="book" data-sequence="000110">
+          <span class="author">Nguyen, Quan</span> (<span class="year">2023</span>). <span class="title">Bayesian Optimization in Action</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/bayesian-optimization-in-action">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>bayesian-<wbr>optimization-<wbr>in-<wbr>action</a>
+        </p>
+
+        <p id="hapke2020building" class="unread" data-type="book" data-sequence="000120">
+          <span class="author">Hapke, Hannes; and Nelson, Catherine</span> (<span class="year">2020</span>). <span class="title">Building Machine Learning Pipelines</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/building-machine-learning/9781492053187/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>building-<wbr>machine-<wbr>learning/<wbr>9781492053187/<wbr></a>
+        </p>
+
+        <p id="huyen2022designing" class="unread" data-type="book" data-sequence="000130">
+          <span class="author">Huyen, Chip</span> (<span class="year">2022</span>). <span class="title">Designing Machine Learning Systems: An Iterative Process for Production-Ready Applications</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>designing-<wbr>machine-<wbr>learning/<wbr>9781098107956/<wbr></a>
+        </p>
+
+        <p id="treveil2020introducing" class="unread" data-type="book" data-sequence="000140">
+          <span class="author">Treveil, Mark; Omont, Nicolas; Stenac, Clément; Lefevre, Kenji; Phan, Du; Zentici, Joachim; Lavoillotte, Adrien; Miyazaki, Makoto; and Heidmann, Lynn</span> (<span class="year">2020</span>). <span class="title">Introducing MLOps: How to Scale Machine Learning in the Enterprise</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/introducing-mlops/9781492083283/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>introducing-<wbr>mlops/<wbr>9781492083283/<wbr></a>
+        </p>
+
+        <p id="croll2013lean" class="unread" data-type="book" data-sequence="000150">
+          <span class="author">Croll, Alistair; and Yoskovitz, Benjamin</span> (<span class="year">2013</span>). <span class="title">Lean Analytics</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/lean-analytics/9781449335687/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>lean-<wbr>analytics/<wbr>9781449335687/<wbr></a>
+        </p>
+
+        <p id="kohavi2020trustworthy" class="unread" data-type="book" data-sequence="000160">
+          &#x272A; <span class="author">Kohavi, Ron; Tang, Diane; and Xu, Ya</span> (<span class="year">2020</span>). <span class="title">Trustworthy Online Controlled Experiments</span>. Cambridge University Press. <a class="ref-link" href="https://www.cambridge.org/br/universitypress/subjects/computer-science/knowledge-management-databases-and-data-mining/trustworthy-online-controlled-experiments-practical-guide-b-testing">https://<wbr>www.<wbr>cambridge.<wbr>org/<wbr>br/<wbr>universitypress/<wbr>subjects/<wbr>computer-<wbr>science/<wbr>knowledge-<wbr>management-<wbr>databases-<wbr>and-<wbr>data-<wbr>mining/<wbr>trustworthy-<wbr>online-<wbr>controlled-<wbr>experiments-<wbr>practical-<wbr>guide-<wbr>b-<wbr>testing</a>
+        </p>
+      </details>
+      <details data-topic="time-series" class="level-0">
+        <summary>Time Series Analysis</summary>
+        <!--
+        keys = ["rafferty2023forecasting", "mehtas2022modern", "maharaj2019time"]
+        -->
+        <p id="rafferty2023forecasting" class="unread" data-type="book" data-sequence="000010">
+          &#x272A; <span class="author">Rafferty, Greg</span> (<span class="year">2023</span>). <span class="title">Forecasting Time Series Data with Prophet</span>. 2nd Edition. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/forecasting-time-series/9781837630417/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>forecasting-<wbr>time-<wbr>series/<wbr>9781837630417/<wbr></a>
+        </p>
+
+        <p id="mehtas2022modern" class="unread" data-type="book" data-sequence="000020">
+          <span class="author">Manu, Joseph</span> (<span class="year">2022</span>). <span class="title">Modern Time Series Forecasting with Python</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/modern-time-series/9781803246802/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>modern-<wbr>time-<wbr>series/<wbr>9781803246802/<wbr></a>
+        </p>
+
+        <p id="maharaj2019time" class="unread" data-type="book" data-sequence="000030">
+          &#x272A; <span class="author">Maharaj, Elizabeth Ann; D.'Urso, Pierpaolo; and Caiado, Jorge</span> (<span class="year">2019</span>). <span class="title">Time Series Clustering and Classification</span>. CRC Press. <a class="ref-link" href="https://www.taylorfrancis.com/books/mono/10.1201/9780429058264/time-series-clustering-classification-elizabeth-ann-maharaj-jorge-caiado-pierpaolo-urso">https://<wbr>www.<wbr>taylorfrancis.<wbr>com/<wbr>books/<wbr>mono/<wbr>10.<wbr>1201/<wbr>9780429058264/<wbr>time-<wbr>series-<wbr>clustering-<wbr>classification-<wbr>elizabeth-<wbr>ann-<wbr>maharaj-<wbr>jorge-<wbr>caiado-<wbr>pierpaolo-<wbr>urso</a>
+        </p>
+      </details>
+      <details data-topic="gcp" class="level-0">
+        <summary>Google Cloud Platform</summary>
+        <!--
+        keys = ["lakshmanan2022data", "edmondson2022learning", "tranquillin2023architecting", "wijaya2024data", "bhatia2023definitive", "lanham2020practical"]
+         -->
+        <p id="lakshmanan2022data" class="unread" data-type="book" data-sequence="000010">
+          &#x272A; <span class="author">Lakshmanan, Valliappa</span> (<span class="year">2022</span>). <span class="title">Data Science on the Google Cloud Platform: Implementing End-to-End Real-Time Data Pipelines</span>. 2nd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/data-science-on/9781098118945/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>data-<wbr>science-<wbr>on/<wbr>9781098118945/<wbr></a>
+        </p>
+
+        <p id="edmondson2022learning" class="unread" data-type="book" data-sequence="000020">
+          &#x272A; <span class="author">Edmondson, Mark</span> (<span class="year">2022</span>). <span class="title">Learning Google Analytics</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/learning-google-analytics/9781098113070/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>learning-<wbr>google-<wbr>analytics/<wbr>9781098113070/<wbr></a>
+        </p>
+
+        <p id="tranquillin2023architecting" class="unread" data-type="book" data-sequence="000030">
+          <span class="author">Tranquillin, Marco; Lakshmanan, Valliappa; and Tekiner, Firat</span> (<span class="year">2023</span>). <span class="title">Architecting Data and Machine Learning Platforms: Enable Analytics and AI-Driven Innovation in the Cloud</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/architecting-data-and/9781098151607/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>architecting-<wbr>data-<wbr>and/<wbr>9781098151607/<wbr></a>
+        </p>
+
+        <p id="wijaya2024data" class="unread" data-type="book" data-sequence="000040">
+          &#x272A; <span class="author">Wijaya, Adi</span> (<span class="year">2024</span>). <span class="title">Data Engineering with Google Cloud Platform</span>. Second Editionth Edition. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/data-engineering-with/9781835080115/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>data-<wbr>engineering-<wbr>with/<wbr>9781835080115/<wbr></a>
+        </p>
+
+        <p id="bhatia2023definitive" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Bhatia, Jasmeet; and Chaudhary, Kartik</span> (<span class="year">2023</span>). <span class="title">The Definitive Guide to Google Vertex AI: Build, Optimize, and Scale Machine Learning Applications on Google Cloud</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/the-definitive-guide/9781801815260/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>the-<wbr>definitive-<wbr>guide/<wbr>9781801815260/<wbr></a>
+        </p>
+
+        <p id="lanham2020practical" class="unread" data-type="book" data-sequence="000060">
+          <span class="author">Lanham, Micheal</span> (<span class="year">2020</span>). <span class="title">Practical AI on the Google Cloud Platform</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/practical-ai-on/9781492075806/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>practical-<wbr>ai-<wbr>on/<wbr>9781492075806/<wbr></a>
+        </p>
+      </details>
+      <details data-topic="data-contracts" class="level-0">
+        <summary>Data Contracts</summary>
+        <!--
+        keys = ["sanderson2024data", "zagni2023data", "machado2023analytics"]
+        -->
+        <p id="sanderson2024data" class="unread" data-type="book" data-sequence="000010">
+          <span class="author">Sanderson, Chad; Freeman, Mark; and Schmidt, B. E.</span> (<span class="year">2024</span>). <span class="title">Data Contracts: Developing Production Grade Pipelines at Scale</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/data-contracts/9781098157623/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>data-<wbr>contracts/<wbr>9781098157623/<wbr></a>
+        </p>
+
+        <p id="zagni2023data" class="unread" data-type="book" data-sequence="000020">
+          <span class="author">Zagni, Roberto</span> (<span class="year">2023</span>). <span class="title">Data Engineering with dbt</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/data-engineering-with/9781803246284/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>data-<wbr>engineering-<wbr>with/<wbr>9781803246284/<wbr></a>
+        </p>
+
+        <p id="machado2023analytics" class="unread" data-type="book" data-sequence="000030">
+          <span class="author">Machado, Rui; and Russa, Helder</span> (<span class="year">2023</span>). <span class="title">Analytics Engineering with SQL and dbt</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/analytics-engineering-with/9781098142377/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>analytics-<wbr>engineering-<wbr>with/<wbr>9781098142377/<wbr></a>
+        </p>
+      </details>
+      <details data-topic="graph-analytics" class="level-0">
+        <summary>Graph Analytics</summary>
+        <!--
+        keys = ["hutson2023graph", "knickerbocker2023network", "sargent2024economic", "bechberger2020graph", "bratanic2024graph", "barrasa2023building", "scifo2023graph"]
+        -->
+        <p id="hutson2023graph" class="read" data-type="book" data-sequence="000010">
+          <span class="author">Hutson, Gary; and Jackson, Matt</span> (<span class="year">2023</span>). <span class="title">Graph Data Modeling in Python: A Practical Guide to Curating, Analyzing, and Modeling Data with Graphs</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/graph-data-modeling/9781804618035/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>graph-<wbr>data-<wbr>modeling/<wbr>9781804618035/<wbr></a>
+        </p>
+
+        <p id="knickerbocker2023network" class="unread" data-type="book" data-sequence="000020">
+          &#x272A; <span class="author">Knickerbocker, David</span> (<span class="year">2023</span>). <span class="title">Network Science with Python: Explore the Networks Around Us Using Network Science, Social Network Analysis, and Machine Learning</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/network-science-with/9781801073691/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>network-<wbr>science-<wbr>with/<wbr>9781801073691/<wbr></a>
+        </p>
+
+        <p id="sargent2024economic" class="unread" data-type="book" data-sequence="000030">
+          <span class="author">Sargent, Thomas J.; and Stachurski, John</span> (<span class="year">2024</span>). <span class="title">Economic Networks: Theory and Computation</span>. Cambridge University Press. <a class="ref-link" href="https://www.cambridge.org/core/books/economic-networks/2684D7986C7E48A82A762DFEEEA49B46">https://<wbr>www.<wbr>cambridge.<wbr>org/<wbr>core/<wbr>books/<wbr>economic-<wbr>networks/<wbr>2684D7986C7E48A82A762DFEEEA49B46</a>
+        </p>
+
+        <p id="bechberger2020graph" class="unread" data-type="book" data-sequence="000040">
+          &#x272A; <span class="author">Bechberger, Dave; and Perryman, Josh</span> (<span class="year">2020</span>). <span class="title">Graph Databases in Action</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/graph-databases-in-action">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>graph-<wbr>databases-<wbr>in-<wbr>action</a>
+        </p>
+
+        <p id="bratanic2024graph" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Bratanič, Tomaž</span> (<span class="year">2024</span>). <span class="title">Graph Algorithms for Data Science: With Examples in Neo4j</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/graph-algorithms-for-data-science">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>graph-<wbr>algorithms-<wbr>for-<wbr>data-<wbr>science</a>
+        </p>
+
+        <p id="barrasa2023building" class="unread" data-type="book" data-sequence="000060">
+          <span class="author">Barrasa, Jesús; and Webber, Jim</span> (<span class="year">2023</span>). <span class="title">Building Knowledge Graphs: A Practitioner's Guide</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/building-knowledge-graphs/9781098127091/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>building-<wbr>knowledge-<wbr>graphs/<wbr>9781098127091/<wbr></a>
+        </p>
+
+        <p id="scifo2023graph" class="unread" data-type="book" data-sequence="000070">
+          <span class="author">Scifo, Estelle</span> (<span class="year">2023</span>). <span class="title">Graph Data Science with Neo4j: Learn How to Use Neo4j 5 with Graph Data Science Library 2.0 and Its Python Driver for Your Project</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/graph-data-science/9781804612743/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>graph-<wbr>data-<wbr>science/<wbr>9781804612743/<wbr></a>
+        </p>
+      </details>
+      <details data-topic="data-visualization" class="level-0">
+        <summary>Data Visualization</summary>
+        <!--
+        keys = ["wilke2019fundamentals", "healy2018data", "raghavendra2023beginner", "richards2023streamlit", "khorasani2025streamlit", "moscato2024web", "dale2022data", "dabbas2021interactive", "schroeder2022book", "rocha2026learn", "cuomo2024vuejs", "kottwitz2023latex"]
+        -->
+        <p id="wilke2019fundamentals" class="unread" data-type="book" data-sequence="000010">
+          <span class="author">Wilke, Claus O.</span> (<span class="year">2019</span>). <span class="title">Fundamentals of Data Visualization</span>. O'Reilly Media. <a class="ref-link" href="https://clauswilke.com/dataviz/">https://<wbr>clauswilke.<wbr>com/<wbr>dataviz/<wbr></a>
+        </p>
+
+        <p id="healy2018data" class="unread" data-type="book" data-sequence="000020">
+          <span class="author">Healy, Kieran</span> (<span class="year">2018</span>). <span class="title">Data Visualization: A Practical Introduction</span>. Princeton University Press. <a class="ref-link" href="https://press.princeton.edu/books/paperback/9780691181622/data-visualization">https://<wbr>press.<wbr>princeton.<wbr>edu/<wbr>books/<wbr>paperback/<wbr>9780691181622/<wbr>data-<wbr>visualization</a>
+        </p>
+
+        <p id="raghavendra2023beginner" class="unread" data-type="book" data-sequence="000030">
+          &#x272A; <span class="author">Raghavendra, Sujay</span> (<span class="year">2023</span>). <span class="title">Beginner's Guide to Streamlit with Python</span>. Apress. <a class="ref-link" href="https://link.springer.com/book/10.1007/978-1-4842-8983-9">https://<wbr>link.<wbr>springer.<wbr>com/<wbr>book/<wbr>10.<wbr>1007/<wbr>978-<wbr>1-<wbr>4842-<wbr>8983-<wbr>9</a>
+        </p>
+
+        <p id="richards2023streamlit" class="unread" data-type="book" data-sequence="000040">
+          &#x272A; <span class="author">Richards, Tyler</span> (<span class="year">2023</span>). <span class="title">Streamlit for Data Science</span>. 2nd Edition. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/streamlit-for-data/9781803248226/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>streamlit-<wbr>for-<wbr>data/<wbr>9781803248226/<wbr></a>
+        </p>
+
+        <p id="khorasani2025streamlit" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Khorasani, Mohammad; Abdou, Mohamed; and Fernández, Javier Hernández</span> (<span class="year">2025</span>). <span class="title">Streamlit for Web Development: Build and Scale Secure Python Web Applications</span>. 2nd Edition. Apress. <a class="ref-link" href="https://www.oreilly.com/library/view/streamlit-for-web/9798868818264/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>streamlit-<wbr>for-<wbr>web/<wbr>9798868818264/<wbr></a>
+        </p>
+
+        <p id="moscato2024web" class="unread" data-type="book" data-sequence="000060">
+          <span class="author">Moscato, Rosario</span> (<span class="year">2024</span>). <span class="title">Web App Development Made Simple with Streamlit</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/web-app-development/9781835086315/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>web-<wbr>app-<wbr>development/<wbr>9781835086315/<wbr></a>
+        </p>
+
+        <p id="dale2022data" class="unread" data-type="book" data-sequence="000070">
+          <span class="author">Dale, Kyran</span> (<span class="year">2022</span>). <span class="title">Data Visualization with Python and JavaScript: Smart Data Visualization for the Web</span>. 2nd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/data-visualization-with/9781098111861">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>data-<wbr>visualization-<wbr>with/<wbr>9781098111861</a>
+        </p>
+
+        <p id="dabbas2021interactive" class="unread" data-type="book" data-sequence="000080">
+          <span class="author">Dabbas, Elias</span> (<span class="year">2021</span>). <span class="title">Interactive Dashboards and Data Apps with Plotly and Dash: Harness the Power of a Fully Fledged Frontend Web Framework in Python - No JavaScript Required</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/interactive-dashboards-and/9781800568914/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>interactive-<wbr>dashboards-<wbr>and/<wbr>9781800568914/<wbr></a>
+        </p>
+
+        <p id="schroeder2022book" class="unread" data-type="book" data-sequence="000090">
+          <span class="author">Schroeder, Adam; Mayer, Christian; and Ward, Ann Marie</span> (<span class="year">2022</span>). <span class="title">The Book of Dash: Build Dashboards with Python and Plotly</span>. No Starch Press. <a class="ref-link" href="https://nostarch.com/book-dash">https://<wbr>nostarch.<wbr>com/<wbr>book-<wbr>dash</a>
+        </p>
+
+        <p id="rocha2026learn" class="unread" data-type="book" data-sequence="000100">
+          <span class="author">da Rocha, Helder</span> (<span class="year">2026</span>). <span class="title">Learn D3.js: Build Interactive Data Visualizations, Dashboards, and Web Applications</span>. 2nd Edition. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/learn-d3-js/9781837636860/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>learn-<wbr>d3-<wbr>js/<wbr>9781837636860/<wbr></a>
+        </p>
+
+        <p id="cuomo2024vuejs" class="unread" data-type="book" data-sequence="000110">
+          <span class="author">Cuomo, Simone</span> (<span class="year">2024</span>). <span class="title">Vue.js 3 for Beginners: Learn the Essentials of Vue.js 3 and Its Ecosystem to Build Modern Web Applications</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/vuejs-3-for/9781805126775/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>vuejs-<wbr>3-<wbr>for/<wbr>9781805126775/<wbr></a>
+        </p>
+
+        <p id="kottwitz2023latex" class="unread" data-type="book" data-sequence="000110">
+          <span class="author">Kottwitz, Stefan</span> (<span class="year">2023</span>). <span class="title">LaTeX Graphics with TikZ: A Practitioner's Guide to Drawing 2D and 3D Images</span>. Packt Publishing. <a class="ref-link" href="https://www.packtpub.com/en-no/product/latex-graphics-with-tikz-9781804618233">https://<wbr>www.<wbr>packtpub.<wbr>com/<wbr>en-<wbr>no/<wbr>product/<wbr>latex-<wbr>graphics-<wbr>with-<wbr>tikz-<wbr>9781804618233</a>
+        </p>
+      </details>
+      <details data-topic="javascript" class="level-0">
+        <summary>JavaScript</summary>
+        <!--
+        keys = ["flanagan2020javascript", "davis2018data", "gans2020javascript"]
+        -->
+        <p id="flanagan2020javascript" class="unread" data-type="book" data-sequence="000010">
+          &#x272A; <span class="author">Flanagan, David</span> (<span class="year">2020</span>). <span class="title">JavaScript: The Definitive Guide</span>. 7th Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/javascript-the-definitive/9781491952016/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>javascript-<wbr>the-<wbr>definitive/<wbr>9781491952016/<wbr></a>
+        </p>
+
+        <p id="davis2018data" class="unread" data-type="book" data-sequence="000020">
+          &#x272A; <span class="author">Davis, Ashley</span> (<span class="year">2018</span>). <span class="title">Data Wrangling with JavaScript</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/data-wrangling-with-javascript">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>data-<wbr>wrangling-<wbr>with-<wbr>javascript</a>
+        </p>
+
+        <p id="gans2020javascript" class="unread" data-type="book" data-sequence="000030">
+          <span class="author">Gans, Maya; Hodges, Toby; and Wilson, Greg</span> (<span class="year">2020</span>). <span class="title">JavaScript for Data Science</span>. Routledge. <a class="ref-link" href="https://www.routledge.com/JavaScript-for-Data-Science/Gans-Hodges-Wilson/p/book/9780367422486">https://<wbr>www.<wbr>routledge.<wbr>com/<wbr>JavaScript-<wbr>for-<wbr>Data-<wbr>Science/<wbr>Gans-<wbr>Hodges-<wbr>Wilson/<wbr>p/<wbr>book/<wbr>9780367422486</a>
+        </p>
+      </details>
+      <details data-topic="sql" class="level-0">
+        <summary>SQL</summary>
+        <!--
+        keys = ["beaulieu2020learning", "kahn2023data", "lakshmanan2019google", "bechberger2020graph"]
+        -->
+        <p id="beaulieu2020learning" class="unread" data-type="book" data-sequence="000010">
+          &#x272A; <span class="author">Beaulieu, Alan</span> (<span class="year">2020</span>). <span class="title">Learning SQL: Generate, Manipulate, and Retrieve Data</span>. 3rd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/learning-sql-3rd/9781492057604/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>learning-<wbr>sql-<wbr>3rd/<wbr>9781492057604/<wbr></a>
+        </p>
+
+        <p id="kahn2023data" class="read" data-type="book" data-sequence="000020">
+          <span class="author">Kahn, Mike</span> (<span class="year">2023</span>). <span class="title">Data Exploration and Preparation with BigQuery</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/data-exploration-and/9781805125266/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>data-<wbr>exploration-<wbr>and/<wbr>9781805125266/<wbr></a>
+        </p>
+
+        <p id="lakshmanan2019google" class="read" data-type="book" data-sequence="000030">
+          <span class="author">Lakshmanan, Valliappa; and Tigani, Jordan</span> (<span class="year">2019</span>). <span class="title">Google BigQuery: The Definitive Guide</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/google-bigquery-the/9781492044451/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>google-<wbr>bigquery-<wbr>the/<wbr>9781492044451/<wbr></a>
+        </p>
+
+        <p id="bechberger2020graph" class="unread" data-type="book" data-sequence="000040">
+          <span class="author">Bechberger, Dave; and Perryman, Josh</span> (<span class="year">2020</span>). <span class="title">Graph Databases in Action</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/graph-databases-in-action">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>graph-<wbr>databases-<wbr>in-<wbr>action</a>
+        </p>
+      </details>
+      <details data-topic="python" class="level-0">
+        <summary>Python</summary>
+        <!--
+        keys = ["mckinney2022python", "janssens2025python", "mattingly2023introduction", "bonaretti2024learn", "mitchell2024web", "anaya2021clean", "lutz2025learning", "romano2024learn", "viafore2021robust", "farrell2023well", "ramalho2022fluent", "beuzen2022python", "hillard2023publishing", "pajankar2022python"]
+        -->
+        <p id="mckinney2022python" class="read" data-type="book" data-sequence="000010">
+          <span class="author">McKinney, Wes</span> (<span class="year">2022</span>). <span class="title">Python for Data Analysis: Data Wrangling with Pandas, NumPy, and Jupyter</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/python-for-data-analysis/9781098104023/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>python-<wbr>for-<wbr>data-<wbr>analysis/<wbr>9781098104023/<wbr></a>
+        </p>
+
+        <p id="janssens2025python" class="unread" data-type="book" data-sequence="000020">
+          &#x272A; <span class="author">Janssens, Jeroen; and Nieuwdorp, Thijs</span> (<span class="year">2025</span>). <span class="title">Python Polars: The Definitive Guide</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/python-polars-the/9781098156077/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>python-<wbr>polars-<wbr>the/<wbr>9781098156077/<wbr></a>
+        </p>
+
+        <p id="mattingly2023introduction" class="unread" data-type="book" data-sequence="000030">
+          &#x272A; <span class="author">Mattingly, William</span> (<span class="year">2023</span>). <span class="title">Introduction to Python for Humanists</span>. Chapman & Hall/CRC. <a class="ref-link" href="https://www.routledge.com/Introduction-to-Python-for-Humanists/Mattingly/p/book/9781032378374">https://<wbr>www.<wbr>routledge.<wbr>com/<wbr>Introduction-<wbr>to-<wbr>Python-<wbr>for-<wbr>Humanists/<wbr>Mattingly/<wbr>p/<wbr>book/<wbr>9781032378374</a>
+        </p>
+
+        <p id="bonaretti2024learn" class="unread" data-type="book" data-sequence="000040">
+          &#x272A; <span class="author">Bonaretti, Serena</span> (<span class="year">2024</span>). <span class="title">Learn Python with Jupyter</span>. Self-published. <a class="ref-link" href="https://www.learnpythonwithjupyter.com/">https://<wbr>www.<wbr>learnpythonwithjupyter.<wbr>com/<wbr></a>
+        </p>
+
+        <p id="mitchell2024web" class="read" data-type="book" data-sequence="000050">
+          <span class="author">Mitchell, Ryan</span> (<span class="year">2024</span>). <span class="title">Web Scraping with Python: Collecting More Data from the Modern Web</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/web-scraping-with/9781098145347/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>web-<wbr>scraping-<wbr>with/<wbr>9781098145347/<wbr></a>
+        </p>
+
+        <p id="anaya2021clean" class="unread" data-type="book" data-sequence="000060">
+          <span class="author">Anaya, Mariano</span> (<span class="year">2021</span>). <span class="title">Clean Code in Python: Develop Maintainable and Efficient Code</span>. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/clean-code-in/9781800560215/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>clean-<wbr>code-<wbr>in/<wbr>9781800560215/<wbr></a>
+        </p>
+
+        <p id="lutz2025learning" class="unread" data-type="book" data-sequence="000070">
+          &#x272A; <span class="author">Lutz, Mark</span> (<span class="year">2025</span>). <span class="title">Learning Python: Powerful Object-Oriented Programming</span>. 6th Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/learning-python-6th/9781098171292/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>learning-<wbr>python-<wbr>6th/<wbr>9781098171292/<wbr></a>
+        </p>
+
+        <p id="romano2024learn" class="unread" data-type="book" data-sequence="000080">
+          <span class="author">Romano, Fabrizio</span> (<span class="year">2024</span>). <span class="title">Learn Python Programming: A Comprehensive, Up-to-Date Guide to Python Programming</span>. 4th Edition. Packt Publishing. <a class="ref-link" href="https://www.oreilly.com/library/view/learn-python-programming/9781835882948/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>learn-<wbr>python-<wbr>programming/<wbr>9781835882948/<wbr></a>
+        </p>
+
+        <p id="viafore2021robust" class="unread" data-type="book" data-sequence="000090">
+          <span class="author">Viafore, Patrick</span> (<span class="year">2021</span>). <span class="title">Robust Python: Write Clean and Maintainable Code</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/robust-python/9781098100650/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>robust-<wbr>python/<wbr>9781098100650/<wbr></a>
+        </p>
+
+        <p id="farrell2023well" class="unread" data-type="book" data-sequence="000100">
+          <span class="author">Farrell, Doug</span> (<span class="year">2023</span>). <span class="title">The Well-Grounded Python Developer</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/the-well-grounded-python-developer">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>the-<wbr>well-<wbr>grounded-<wbr>python-<wbr>developer</a>
+        </p>
+
+        <p id="ramalho2022fluent" class="unread" data-type="book" data-sequence="000110">
+          <span class="author">Ramalho, Luciano</span> (<span class="year">2022</span>). <span class="title">Fluent Python</span>. 2nd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>fluent-<wbr>python-<wbr>2nd/<wbr>9781492056348/<wbr></a>
+        </p>
+
+        <p id="beuzen2022python" class="unread" data-type="book" data-sequence="000120">
+          <span class="author">Beuzen, Tomas; and Timbers, Tiffany</span> (<span class="year">2022</span>). <span class="title">Python Packages</span>. CRC Press. <a class="ref-link" href="https://www.routledge.com/Python-Packages/Beuzen-Timbers/p/book/9781032029443">https://<wbr>www.<wbr>routledge.<wbr>com/<wbr>Python-<wbr>Packages/<wbr>Beuzen-<wbr>Timbers/<wbr>p/<wbr>book/<wbr>9781032029443</a>
+        </p>
+
+        <p id="hillard2023publishing" class="unread" data-type="book" data-sequence="000130">
+          <span class="author">Hillard, Dane</span> (<span class="year">2023</span>). <span class="title">Publishing Python Packages: Test, Share, and Automate Your Projects</span>. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/publishing-python-packages">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>publishing-<wbr>python-<wbr>packages</a>
+        </p>
+
+        <p id="pajankar2022python" class="unread" data-type="book" data-sequence="000140">
+          <span class="author">Pajankar, Ashwin</span> (<span class="year">2022</span>). <span class="title">Python Unit Test Automation: Automate, Organize, and Execute Unit Tests in Python</span>. 2nd Edition. Apress. <a class="ref-link" href="https://link.springer.com/book/10.1007/978-1-4842-7854-3">https://<wbr>link.<wbr>springer.<wbr>com/<wbr>book/<wbr>10.<wbr>1007/<wbr>978-<wbr>1-<wbr>4842-<wbr>7854-<wbr>3</a>
+        </p>
+      </details>
+      <details data-topic="r" class="level-0">
+        <summary>R</summary>
+        <!--
+        keys = ["wickham2023data", "grolemund2014hands", "wickham2019advanced", "wickham2023packages"]
+        -->
+        <p id="wickham2023data" class="read" data-type="book" data-sequence="000010">
+          <span class="author">Wickham, Hadley; Çetinkaya-Rundel, Mine; and Grolemund, Garrett</span> (<span class="year">2023</span>). <span class="title">R for Data Science</span>. 2nd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/r-for-data/9781492097396/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>r-<wbr>for-<wbr>data/<wbr>9781492097396/<wbr></a>
+        </p>
+
+        <p id="kabacoff2022r" class="unread" data-type="book" data-sequence="000020">
+          <span class="author">Kabacoff</span> (<span class="year">2022</span>). <span class="title">R in Action: Data analysis and graphics with R and Tidyverse</span>. 3rd Edition. Manning Publications. <a class="ref-link" href="https://www.manning.com/books/r-in-action-third-edition">https://<wbr>www.<wbr>manning.<wbr>com/<wbr>books/<wbr>r-<wbr>in-<wbr>action-<wbr>third-<wbr>edition</a>
+        </p>
+
+        <p id="grolemund2014hands" class="unread" data-type="book" data-sequence="000030">
+          &#x272A; <span class="author">Grolemund, Garrett</span> (<span class="year">2014</span>). <span class="title">Hands-On Programming with R</span>. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/hands-on-programming-with/9781449359089/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>hands-<wbr>on-<wbr>programming-<wbr>with/<wbr>9781449359089/<wbr></a>
+        </p>
+
+        <p id="wickham2019advanced" class="unread" data-type="book" data-sequence="000040">
+          <span class="author">Wickham, Hadley</span> (<span class="year">2019</span>). <span class="title">Advanced R</span>. 2nd Edition. CRC Press. <a class="ref-link" href="https://www.routledge.com/Advanced-R-Second-Edition/Wickham/p/book/9780815384571">https://<wbr>www.<wbr>routledge.<wbr>com/<wbr>Advanced-<wbr>R-<wbr>Second-<wbr>Edition/<wbr>Wickham/<wbr>p/<wbr>book/<wbr>9780815384571</a>
+        </p>
+
+        <p id="wickham2023packages" class="unread" data-type="book" data-sequence="000050">
+          <span class="author">Wickham, Hadley; and Bryan, Jennifer</span> (<span class="year">2023</span>). <span class="title">R Packages</span>. 2nd Edition. O'Reilly Media. <a class="ref-link" href="https://www.oreilly.com/library/view/r-packages-2nd/9781098134938/">https://<wbr>www.<wbr>oreilly.<wbr>com/<wbr>library/<wbr>view/<wbr>r-<wbr>packages-<wbr>2nd/<wbr>9781098134938/<wbr></a>
+        </p>
+      </details>
+    </section>
+  </main>
+</body>
+</html>
